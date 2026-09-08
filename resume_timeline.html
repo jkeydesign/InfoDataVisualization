@@ -203,15 +203,7 @@
 
   </div>
 
-  <!-- Hover Tooltip -->
-  <div id="tooltip" class="fixed hidden z-50 bg-slate-950 border border-pink-500 p-3 rounded-xl shadow-2xl text-xs max-w-xs pointer-events-none space-y-1">
-    <div class="flex items-center justify-between space-x-2">
-      <span id="tt-year" class="px-2 py-0.5 rounded text-[11px] font-extrabold text-slate-950 bg-pink-400 font-mono shadow-sm"></span>
-      <span id="tt-tag" class="text-[10px] text-pink-300 font-mono"></span>
-    </div>
-    <div id="tt-title" class="font-bold text-sm text-white pt-1"></div>
-    <div id="tt-desc" class="text-slate-300 text-[11px] font-mono"></div>
-  </div>
+  <!-- Hover Tooltip Removed per User Request (All info displayed cleanly in Central Oval Hub) -->
 
   <script>
     const CATEGORY_COLORS = {
@@ -474,10 +466,6 @@
       if (found !== hoveredNode) {
         hoveredNode = found;
         updateCenterHub(found || selectedNode);
-        if (found) showTooltip(found, e.clientX, e.clientY);
-        else hideTooltip();
-      } else if (found) {
-        positionTooltip(e.clientX, e.clientY);
       }
     });
 
@@ -508,23 +496,6 @@
       document.getElementById('insp-status').innerHTML = `• ${node.status}`;
       document.getElementById('insp-path').innerText = `D:/○바로바로서류/2.전시 연구 실적`;
     }
-
-    const tooltip = document.getElementById('tooltip');
-    function showTooltip(node, x, y) {
-      document.getElementById('tt-year').innerText = `📅 ${node.year}년 ${node.month}월`;
-      document.getElementById('tt-tag').innerText = node.date;
-      document.getElementById('tt-title').innerText = node.label;
-      document.getElementById('tt-desc').innerText = node.org;
-      positionTooltip(x, y);
-      tooltip.classList.remove('hidden');
-    }
-
-    function positionTooltip(x, y) {
-      tooltip.style.left = `${x + 15}px`;
-      tooltip.style.top = `${y + 15}px`;
-    }
-
-    function hideTooltip() { tooltip.classList.add('hidden'); }
 
     function setCategoryFilter(filter) {
       currentCategoryFilter = filter;
