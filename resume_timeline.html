@@ -3,295 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>강은영 (Eun-Young Kang) - 시계열 커리어 & 연구 시각화 포트폴리오</title>
+  <title>강은영 (Eun-Young Kang) - 방사형 아크 시계열 포트폴리오</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      user-select: none;
     }
     .custom-scroll::-webkit-scrollbar {
       width: 5px;
       height: 5px;
     }
     .custom-scroll::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.03);
+      background: rgba(0, 0, 0, 0.05);
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(160, 160, 175, 0.3);
+      background: rgba(236, 72, 153, 0.4);
       border-radius: 3px;
     }
-    .timeline-bar {
-      transition: all 0.2s ease-in-out;
+    /* Pink & Gray Palette */
+    .bg-pink-main { background-color: #ec4899; }
+    .text-pink-main { color: #ec4899; }
+    .border-pink-main { border-color: #ec4899; }
+
+    .glow-pink {
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.4);
     }
-    .timeline-bar:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.2);
-    }
-    .btn-active {
-      background-color: #4f46e5 !important;
-      color: #ffffff !important;
-      border-color: #4f46e5 !important;
+    .glow-pink-node {
+      box-shadow: 0 0 15px rgba(244, 114, 182, 0.8);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
+<body class="bg-slate-950 text-slate-100 h-screen w-screen flex flex-col overflow-hidden antialiased">
 
-  <!-- Header Navigation -->
-  <header class="h-16 bg-slate-950 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 sticky top-0 z-30">
+  <!-- Top Header Navigation -->
+  <header class="h-16 bg-slate-950/90 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 z-30 backdrop-blur">
     <div class="flex items-center space-x-3">
-      <a href="index.html" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-white transition bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl mr-2">
+      <a href="index.html" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-pink-400 transition bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl mr-2">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         <span>포털 메인</span>
       </a>
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-base shadow-md">
-        K
+      <div class="w-8 h-8 rounded-xl bg-pink-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-md">
+        EY
       </div>
       <div>
         <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
-          <span>강은영 (Eun-Young Kang) - 시계열 커리어 & 연구 포트폴리오</span>
-          <span class="text-[10px] bg-purple-950 text-purple-300 border border-purple-800 px-2 py-0.5 rounded-full font-mono">15년+ 브랜드 & 연구</span>
+          <span>강은영 (Eun-Young Kang) - 방사형 아크 시계열 인포그래픽</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">Pink & Gray Theme</span>
         </h1>
-        <p class="text-[11px] text-slate-400">브랜드 전략 기획, 시각디자인, 대학 강의 및 AI 융합 연구 25년간의 시계열 분석 타임라인</p>
+        <p class="text-[11px] text-slate-400">인물 중심 방사형 아크 궤도 25개년 커리어 & 학술 연구 마우스 대화형 인포그래픽</p>
       </div>
     </div>
 
-    <!-- Quick Profile Stat -->
-    <div class="flex items-center space-x-3 text-xs">
-      <span class="text-slate-400">학력: <b class="text-purple-400">홍익대 박사 수료</b></span>
-      <span class="h-3 border-r border-slate-800"></span>
-      <span class="text-slate-400">KCI 등재: <b class="text-indigo-400">4편 (주저자)</b></span>
+    <!-- Right Summary Metric -->
+    <div class="flex items-center space-x-4 text-xs font-mono">
+      <span class="text-slate-400">실무 경력: <b class="text-pink-400">15년+</b></span>
+      <span class="text-slate-600">|</span>
+      <span class="text-slate-400">홍익대 박사수료: <b class="text-pink-400">4.17 GPA</b></span>
+      <span class="text-slate-600">|</span>
+      <span class="text-slate-400">KCI 등재: <b class="text-pink-400">4편</b></span>
     </div>
   </header>
 
-  <!-- Profile Hero Section -->
-  <section class="bg-slate-900/60 border-b border-slate-800 px-8 py-6">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+  <!-- Main 3-Section Radial Canvas Body -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT SIDEBAR: Category Selector & Skills -->
+    <aside class="w-80 bg-slate-950 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0 z-20">
       
-      <div class="flex items-center space-x-5">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-0.5 shadow-xl">
-          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-2xl font-black text-white">
-            EY
+      <div class="space-y-6">
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">궤도 카테고리 필터</h2>
+          <div class="space-y-2 text-xs">
+            <button onclick="setFilter('all')" id="btn-all" class="w-full text-left px-4 py-3 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
+              <span>💖 전체 방사형 아크 타임라인</span>
+              <span class="text-[10px] font-mono text-pink-400">ALL</span>
+            </button>
+            <button onclick="setFilter('career')" id="btn-career" class="w-full text-left px-4 py-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <span>🏢 1. 실무 및 기업 경력 (15년+)</span>
+              <span class="text-[10px] font-mono text-slate-500">Outer Arc</span>
+            </button>
+            <button onclick="setFilter('research')" id="btn-research" class="w-full text-left px-4 py-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <span>🎓 2. 학력 & KCI 논문 4편</span>
+              <span class="text-[10px] font-mono text-slate-500">Mid Arc</span>
+            </button>
+            <button onclick="setFilter('teaching')" id="btn-teaching" class="w-full text-left px-4 py-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <span>👩‍🏫 3. 대학강의 & 수상/전시</span>
+              <span class="text-[10px] font-mono text-slate-500">Inner Arc</span>
+            </button>
           </div>
         </div>
-        <div class="space-y-1">
-          <div class="flex items-center space-x-3">
-            <h2 class="text-xl font-extrabold text-white">강은영 (Kang Eun-Young)</h2>
-            <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-0.5 rounded-full border border-slate-700">시각디자인 / 브랜딩 / AI연구</span>
-          </div>
-          <p class="text-xs text-slate-400 leading-relaxed max-w-xl">
-            "단순 제작자가 아닌 콘텐츠 프로듀싱과 브랜딩 전략을 전개하는 기획형 디자이너이자 연구자입니다."
+
+        <!-- Instructions -->
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
+          <h3 class="font-bold text-pink-400 flex items-center space-x-1.5">
+            <span>💡 마우스 반응 조작 가이드</span>
+          </h3>
+          <p class="text-slate-300 leading-relaxed text-[11.5px]">
+            중앙 방사형 아크 궤도상의 <b>핑크/그레이 노드에 마우스를 올리거나 클릭</b>하면, 인물과 연동된 분사 광선과 함께 상세 인포그래픽 카드가 표시됩니다.
           </p>
-          <div class="flex items-center space-x-4 text-xs text-slate-400 pt-1 font-mono">
-            <span>📧 kjully1492@gmail.com</span>
-            <span>🌐 jkey.co.kr</span>
-            <span>📍 서울 송파구</span>
-          </div>
         </div>
       </div>
 
-      <!-- Skill Badges Summary -->
-      <div class="flex flex-wrap gap-1.5 max-w-md justify-end">
-        <span class="px-2.5 py-1 bg-indigo-950 text-indigo-300 border border-indigo-800 rounded-lg text-[11px] font-medium">브랜드 전략</span>
-        <span class="px-2.5 py-1 bg-purple-950 text-purple-300 border border-purple-800 rounded-lg text-[11px] font-medium">BX / CI / BI</span>
-        <span class="px-2.5 py-1 bg-blue-950 text-blue-300 border border-blue-800 rounded-lg text-[11px] font-medium">패키지 디자인</span>
-        <span class="px-2.5 py-1 bg-emerald-950 text-emerald-300 border border-emerald-800 rounded-lg text-[11px] font-medium">AI 로고/디자인 연구</span>
-        <span class="px-2.5 py-1 bg-amber-950 text-amber-300 border border-amber-800 rounded-lg text-[11px] font-medium">대학 강의 & 컨설팅</span>
+      <!-- Core Skills List -->
+      <div class="space-y-2">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">주요 브랜드 역량</h4>
+        <div class="flex flex-wrap gap-1.5 text-[11px]">
+          <span class="px-2.5 py-1 bg-pink-950/60 text-pink-300 border border-pink-800/80 rounded-lg">브랜드 전략</span>
+          <span class="px-2.5 py-1 bg-slate-900 text-slate-300 border border-slate-800 rounded-lg">BX/CI/BI</span>
+          <span class="px-2.5 py-1 bg-slate-900 text-slate-300 border border-slate-800 rounded-lg">패키지 디자인</span>
+          <span class="px-2.5 py-1 bg-pink-950/60 text-pink-300 border border-pink-800/80 rounded-lg">AI 융합 연구</span>
+          <span class="px-2.5 py-1 bg-slate-900 text-slate-300 border border-slate-800 rounded-lg">대학 강의</span>
+        </div>
       </div>
 
-    </div>
-  </section>
+    </aside>
 
-  <!-- Main Content: Interactive Timeline & Detail Inspector -->
-  <div class="flex-1 flex overflow-hidden">
-    
-    <!-- LEFT & CENTER: Timeline Viewport -->
-    <main class="flex-1 overflow-y-auto custom-scroll p-6 space-y-6 bg-slate-950">
+    <!-- CENTER CANVAS: Radial Arc Timeline Viewport -->
+    <main class="flex-1 relative bg-slate-950 flex flex-col justify-end items-center overflow-hidden">
       
-      <!-- Filter Bar -->
-      <div class="flex items-center justify-between bg-slate-900 p-2 rounded-2xl border border-slate-800 text-xs">
-        <div class="flex items-center space-x-1">
-          <button onclick="setFilter('all')" id="btn-all" class="px-3.5 py-2 rounded-xl font-semibold transition btn-active">전체 시계열 타임라인</button>
-          <button onclick="setFilter('career')" id="btn-career" class="px-3.5 py-2 rounded-xl font-medium transition text-slate-400 hover:text-white">🏢 실무 & 기업 경력 (15년+)</button>
-          <button onclick="setFilter('research')" id="btn-research" class="px-3.5 py-2 rounded-xl font-medium transition text-slate-400 hover:text-white">🎓 학력 & 논문/연구</button>
-          <button onclick="setFilter('teaching')" id="btn-teaching" class="px-3.5 py-2 rounded-xl font-medium transition text-slate-400 hover:text-white">👩‍🏫 대학 강의 & 수행과제</button>
-          <button onclick="setFilter('awards')" id="btn-awards" class="px-3.5 py-2 rounded-xl font-medium transition text-slate-400 hover:text-white">🏆 수상 & 자격증</button>
+      <!-- Interactive Radial Arc Canvas -->
+      <canvas id="radialCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
+
+      <!-- Center Bottom Person Photo Overlay -->
+      <div class="relative z-10 pointer-events-none flex flex-col items-center mb-0 transform translate-y-4">
+        <div class="relative group">
+          <!-- Pink Glow aura around portrait -->
+          <div class="absolute -inset-1 bg-gradient-to-t from-pink-600 to-transparent rounded-full opacity-60 blur-xl"></div>
+          <img src="profile_eunyoung.jpg" alt="강은영" class="h-[430px] object-contain relative drop-shadow-2xl">
         </div>
-        <span class="text-[11px] text-slate-500 font-mono pr-2">2001년 ~ 2026년 (25 Years Timeline)</span>
+        <div class="bg-slate-950/90 border border-pink-500/50 px-4 py-1 rounded-full text-xs font-bold text-pink-300 backdrop-blur -translate-y-6 shadow-xl">
+          강은영 (Eun-Young Kang)
+        </div>
       </div>
 
-      <!-- Timeline Chart Box -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl relative">
-        
-        <!-- Timeline Years Axis Bar (2001 - 2026) -->
-        <div class="relative h-8 border-b border-slate-800 flex justify-between text-[11px] text-slate-400 font-mono px-2">
-          <span>2001</span><span>2005</span><span>2009</span><span>2013</span><span>2017</span><span>2021</span><span>2026</span>
-        </div>
-
-        <!-- TRACK 1: 실무 & 기업 경력 (Industry Experience) -->
-        <div id="track-career" class="space-y-2">
-          <div class="text-xs font-bold text-indigo-400 flex items-center justify-between">
-            <span>🏢 1. 실무 및 기업 경력 (Industry Experience)</span>
-            <span class="text-[10px] text-slate-500 font-mono">2001 ~ 2025</span>
-          </div>
-
-          <div class="relative h-28 bg-slate-950 rounded-xl border border-slate-800/80 p-2 overflow-hidden flex flex-col justify-around">
-            
-            <!-- Company Timeline Bars -->
-            <div class="relative h-6 w-full">
-              <div onclick="selectItem('c1')" class="timeline-bar absolute h-full rounded-lg bg-indigo-600 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 68%; width: 28%;" title="제이키 디자인 연구소 (2018-2024)">
-                제이키디자인연구소 (임원/7년)
-              </div>
-              <div onclick="selectItem('c2')" class="timeline-bar absolute h-full rounded-lg bg-indigo-500 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 81%; width: 4.5%;" title="고트레 (2021-2022)">
-                고트레
-              </div>
-              <div onclick="selectItem('c3')" class="timeline-bar absolute h-full rounded-lg bg-indigo-700 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 95%; width: 4.5%;" title="상상공장 (2025)">
-                상상공장
-              </div>
-              <div onclick="selectItem('c4')" class="timeline-bar absolute h-full rounded-lg bg-indigo-800 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer" style="left: 57.5%; width: 7.5%;" title="이호 (2015-2017)">
-                이호 (팀장)
-              </div>
-              <div onclick="selectItem('c5')" class="timeline-bar absolute h-full rounded-lg bg-indigo-900 text-[10px] font-bold text-slate-300 flex items-center px-2 cursor-pointer text-[9px]" style="left: 45.8%; width: 10%;" title="지구촌교회 (2012-2015)">
-                지구촌교회
-              </div>
-            </div>
-
-            <!-- Earlier Career Bars -->
-            <div class="relative h-6 w-full">
-              <div onclick="selectItem('c6')" class="timeline-bar absolute h-full rounded-lg bg-indigo-950 text-[10px] text-slate-300 border border-indigo-800 flex items-center px-2 cursor-pointer" style="left: 16%; width: 12%;" title="CBS 기독교방송 (2005-2008)">
-                CBS방송
-              </div>
-              <div onclick="selectItem('c7')" class="timeline-bar absolute h-full rounded-lg bg-indigo-950 text-[10px] text-slate-300 border border-indigo-800 flex items-center px-2 cursor-pointer" style="left: 35%; width: 4%;" title="서울신문 Stv (2009-2010)">
-                서울신문Stv
-              </div>
-              <div onclick="selectItem('c8')" class="timeline-bar absolute h-full rounded-lg bg-indigo-950 text-[10px] text-slate-300 border border-indigo-800 flex items-center px-2 cursor-pointer" style="left: 52%; width: 4%;" title="CJ 온게임넷 (2014-2015)">
-                CJ온게임넷
-              </div>
-              <div onclick="selectItem('c9')" class="timeline-bar absolute h-full rounded-lg bg-indigo-950 text-[9px] text-slate-400 border border-indigo-900 flex items-center px-1 cursor-pointer" style="left: 3%; width: 8%;" title="인디비전 (2003-2004)">
-                인디비전
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- TRACK 2: 학력 & 논문/연구 (Academic & Papers) -->
-        <div id="track-research" class="space-y-2">
-          <div class="text-xs font-bold text-purple-400 flex items-center justify-between">
-            <span>🎓 2. 학력 & KCI 논문 / AI 연구 (Academic & Publications)</span>
-            <span class="text-[10px] text-slate-500 font-mono">석사·박사 및 KCI 등재</span>
-          </div>
-
-          <div class="relative h-24 bg-slate-950 rounded-xl border border-slate-800/80 p-2 overflow-hidden flex flex-col justify-around">
-            <!-- Degrees -->
-            <div class="relative h-6 w-full">
-              <div onclick="selectItem('d1')" class="timeline-bar absolute h-full rounded-lg bg-purple-600 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 76%; width: 14%;" title="홍익대학교 박사 수료 (2020-2023)">
-                홍익대 박사 수료 (GPA 4.17)
-              </div>
-              <div onclick="selectItem('d2')" class="timeline-bar absolute h-full rounded-lg bg-purple-700 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 56%; width: 8%;" title="홍익대학교 석사 졸업 (2015-2017)">
-                홍익대 석사 졸업 (GPA 4.28)
-              </div>
-              <div onclick="selectItem('d3')" class="timeline-bar absolute h-full rounded-lg bg-purple-900 text-[10px] text-slate-300 flex items-center px-2 cursor-pointer" style="left: 0%; width: 8%;" title="여주대학교 산업디자인">
-                여주대 전학
-              </div>
-            </div>
-
-            <!-- Publications Pins -->
-            <div class="relative h-6 w-full flex items-center">
-              <div onclick="selectItem('p1')" class="timeline-bar absolute h-5 rounded-full bg-pink-600 text-[9.5px] font-bold text-white px-2.5 flex items-center cursor-pointer shadow-md" style="left: 76.5%;" title="KCI 2020: 도시락 라벨디자인">
-                📄 KCI 2020 (도시락 라벨)
-              </div>
-              <div onclick="selectItem('p2')" class="timeline-bar absolute h-5 rounded-full bg-pink-600 text-[9.5px] font-bold text-white px-2.5 flex items-center cursor-pointer shadow-md" style="left: 92.5%;" title="KCI 2024: AI 로고 제작 연구">
-                📄 KCI 2024 (AI 로고)
-              </div>
-              <div onclick="selectItem('p3')" class="timeline-bar absolute h-5 rounded-full bg-pink-600 text-[9.5px] font-bold text-white px-2.5 flex items-center cursor-pointer shadow-md" style="left: 97%;" title="KCI 2026: AI 로고 생성과 디자이너 판단">
-                📄 KCI 2026 (AI 생성)
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TRACK 3: 대학 강의 & 수행과제 (Teaching) -->
-        <div id="track-teaching" class="space-y-2">
-          <div class="text-xs font-bold text-emerald-400 flex items-center justify-between">
-            <span>👩‍🏫 3. 대학 강의 & 공공 디자인 컨설팅 (Teaching & Projects)</span>
-            <span class="text-[10px] text-slate-500 font-mono">충북대/경복대/청운대/수원시</span>
-          </div>
-
-          <div class="relative h-16 bg-slate-950 rounded-xl border border-slate-800/80 p-2 flex items-center">
-            <div onclick="selectItem('t1')" class="timeline-bar absolute h-7 rounded-lg bg-emerald-600 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 84%; width: 14%;" title="충북대학교 외래교수 (2024-현재)">
-              충북대 외래교수
-            </div>
-            <div onclick="selectItem('t2')" class="timeline-bar absolute h-7 rounded-lg bg-emerald-700 text-[10px] font-bold text-white flex items-center px-2 cursor-pointer shadow-md" style="left: 85%; width: 12%;" title="수원시청 도시디자인단 위원 (2022-2025)">
-              수원시 위원
-            </div>
-            <div onclick="selectItem('t3')" class="timeline-bar absolute h-7 rounded-lg bg-emerald-800 text-[10px] text-slate-200 flex items-center px-2 cursor-pointer" style="left: 84%; width: 13%;" title="경복대학교 겸임교수 (2022-2025)">
-              경복대 겸임
-            </div>
-          </div>
-        </div>
-
-        <!-- TRACK 4: 수상 & 전시 (Awards & Exhibits) -->
-        <div id="track-awards" class="space-y-2">
-          <div class="text-xs font-bold text-amber-400 flex items-center justify-between">
-            <span>🏆 4. 수상 실적 & 전시 (Awards & Exhibitions)</span>
-            <span class="text-[10px] text-slate-500 font-mono">DDP/비엔날레/국제전시</span>
-          </div>
-
-          <div class="relative h-12 bg-slate-950 rounded-xl border border-slate-800/80 p-2 flex items-center">
-            <div onclick="selectItem('a1')" class="timeline-bar absolute h-6 rounded-full bg-amber-500 text-[9.5px] font-extrabold text-slate-950 px-2 cursor-pointer" style="left: 86.5%;" title="2022 서울디자인컨설턴트 우수상">
-              🥇 2022 서울디자인 우수상
-            </div>
-            <div onclick="selectItem('a2')" class="timeline-bar absolute h-6 rounded-full bg-amber-500 text-[9.5px] font-extrabold text-slate-950 px-2 cursor-pointer" style="left: 96%;" title="2025 IJCC 최우수 논문상">
-              🏆 2025 IJCC 최우수논문상
-            </div>
-            <div onclick="selectItem('a3')" class="timeline-bar absolute h-6 rounded-full bg-amber-600 text-[9.5px] font-bold text-white px-2 cursor-pointer" style="left: 87.5%;" title="2022 DDP D-SPACE 국제전시">
-              🎨 2022 DDP 국제전시
-            </div>
-            <div onclick="selectItem('a4')" class="timeline-bar absolute h-6 rounded-full bg-amber-600 text-[9.5px] font-bold text-white px-2 cursor-pointer" style="left: 90%;" title="2023 광주디자인비엔날레 전시">
-              🎨 2023 광주비엔날레
-            </div>
-          </div>
-        </div>
-
-      </div>
     </main>
 
-    <!-- RIGHT SIDEBAR: Selected Item Inspector & Metrics -->
-    <aside id="inspector-panel" class="w-96 bg-slate-950 border-l border-slate-800 p-6 flex flex-col shrink-0 space-y-6 z-10 overflow-y-auto custom-scroll">
+    <!-- RIGHT SIDEBAR: Dynamic Infographic Inspector -->
+    <aside id="inspector" class="w-96 bg-slate-950 border-l border-slate-800 p-6 flex flex-col shrink-0 space-y-6 z-20 overflow-y-auto custom-scroll">
       
       <div class="border-b border-slate-800 pb-4">
-        <span id="insp-tag" class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800 uppercase">
-          Career Highlight
-        </span>
-        <h3 id="insp-title" class="text-lg font-extrabold text-white mt-2">제이키 디자인 연구소</h3>
-        <p id="insp-period" class="text-xs text-slate-400 font-mono mt-0.5">2018.01 ~ 2024.12 (7년 근무)</p>
+        <div id="insp-tag" class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 uppercase mb-2">
+          SELECT NODE
+        </div>
+        <h3 id="insp-title" class="text-xl font-black text-white leading-tight">제이키 디자인 연구소</h3>
+        <p id="insp-period" class="text-xs text-pink-400 font-mono mt-1 font-semibold">2018.01 ~ 2024.12 (7년 근무)</p>
       </div>
 
-      <!-- Key Achievements Box -->
+      <!-- Description & Role -->
       <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
-        <h4 class="font-bold text-indigo-400 uppercase tracking-wider text-[11px]">핵심 역할 & 수행 업무</h4>
-        <div id="insp-role" class="text-slate-200 font-semibold">마케팅 디자인 · 임원 (실장) | 브랜드기획</div>
+        <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">수행 역할 & 사업 내용</h4>
+        <div id="insp-role" class="text-pink-300 font-bold">마케팅 디자인 · 임원 (실장) | 브랜드기획</div>
         <p id="insp-desc" class="text-slate-300 leading-relaxed text-[11.5px] pt-1">
-          남원시 관광 B.I 및 커뮤니케이션 디자인 프로젝트('지금여행', '힛잇남원', '리플러스'), 드림플라이 MCN 브랜드 아이덴티티, 강릉관광개발공사 C.I BX 디자인 총괄.
+          남원시 관광 B.I 및 커뮤니케이션 디자인 총괄 개발('지금여행', '힛잇남원', '리플러스'), 드림플라이 MCN 브랜드 아이덴티티, 강릉관광개발공사 C.I BX 디자인 리디자인 주도.
         </p>
       </div>
 
-      <!-- Metric Highlights -->
-      <div class="bg-purple-950/40 border border-purple-900/60 p-4 rounded-2xl space-y-2 text-xs">
-        <h4 class="font-bold text-purple-300 uppercase tracking-wider text-[11px]">핵심 성과 지표 (Impact Metric)</h4>
-        <div id="insp-impact" class="text-purple-200 text-[11.5px] leading-relaxed font-medium">
-          • 브랜드 리디자인 내부 지지율 90% 이상 획득<br>
-          • 지자체 관광 활성화 및 브랜드 통합 가이드 개발 완료
+      <!-- Impact Metric Box -->
+      <div class="bg-pink-950/40 border border-pink-900/60 p-4 rounded-2xl space-y-2 text-xs">
+        <h4 class="font-bold text-pink-400 uppercase tracking-wider text-[11px]">핵심 성과 수치 (Key Impact Metric)</h4>
+        <div id="insp-impact" class="text-slate-200 text-[11.5px] leading-relaxed font-medium">
+          • 브랜드 전략 리디자인 내부 지지율 90% 이상 채택<br>
+          • 지역 관광 활성화 및 브랜드 가이드라인 구축
         </div>
       </div>
 
-      <!-- Key Skill Tags for Selected Item -->
+      <!-- Related Skill Tags -->
       <div class="space-y-2">
-        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">관련 역량 스킬</h4>
-        <div id="insp-skills" class="flex flex-wrap gap-1 text-[11px]">
-          <span class="px-2 py-0.5 bg-slate-900 text-slate-300 rounded border border-slate-800">브랜드 전략</span>
-          <span class="px-2 py-0.5 bg-slate-900 text-slate-300 rounded border border-slate-800">BX 디자인</span>
-          <span class="px-2 py-0.5 bg-slate-900 text-slate-300 rounded border border-slate-800">CI / BI 개발</span>
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">주요 키워드</h4>
+        <div id="insp-skills" class="flex flex-wrap gap-1.5 text-[11px]">
+          <span class="px-2.5 py-1 bg-slate-900 text-pink-300 rounded border border-pink-900/60">브랜드 전략</span>
+          <span class="px-2.5 py-1 bg-slate-900 text-slate-300 rounded border border-slate-800">BX 디자인</span>
+          <span class="px-2.5 py-1 bg-slate-900 text-slate-300 rounded border border-slate-800">CI / BI 개발</span>
         </div>
       </div>
 
@@ -299,196 +182,233 @@
 
   </div>
 
+  <!-- Hover Tooltip -->
+  <div id="tooltip" class="fixed hidden z-50 bg-slate-950 border border-pink-500/80 p-3 rounded-xl shadow-2xl text-xs max-w-xs pointer-events-none">
+    <div id="tt-title" class="font-bold text-sm text-white mb-1"></div>
+    <div id="tt-tag" class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold mb-1 text-pink-300 bg-pink-950 border border-pink-800"></div>
+    <div id="tt-desc" class="text-slate-300 text-[11px] mt-1 font-mono"></div>
+  </div>
+
   <script>
-    const itemsData = {
-      c1: {
-        tag: '기업 실무 경력',
-        title: '제이키 디자인 연구소',
-        period: '2018.01 ~ 2024.12 (7년 근무)',
-        role: '마케팅 디자인 · 임원 (실장) | 브랜드기획',
-        desc: '남원시 관광 B.I 및 커뮤니케이션 디자인 총괄 개발(지금여행, 힛잇남원 등), 드림플라이 MCN 브랜드 아이덴티티, 강릉관광개발공사 CI BX 디자인 리디자인 주도.',
-        impact: '• 브랜드 전략 리디자인 내부 지지율 90% 이상 채택<br>• 지자체 및 유통 기업 브랜딩 통합 가이드 구축',
-        skills: ['브랜드 전략', 'BX 디자인', 'CI / BI', '통합 커뮤니케이션']
-      },
-      c2: {
-        tag: '기업 실무 경력',
-        title: '고트레 (Gootre)',
-        period: '2021.06 ~ 2022.05 (1년)',
-        role: '브랜드마케팅부서 · 책임연구원/팀장',
-        desc: '자사몰 리뉴얼, 퍼포먼스 광고(Facebook/Google/네이버) 운영, 롯데백화점 자사 라이브 방송 기획 및 출연.',
-        impact: '• 온라인 매출 2.5배 신장 및 광고비 40% 절감<br>• 광고 CTR 2배 상승 및 30분 라이브 방송 2천만 원 매출 달성',
-        skills: ['퍼포먼스 마케팅', 'SNS 콘텐츠', '라이브 커머스', '매출 신장']
-      },
-      c3: {
-        tag: '기업 실무 경력',
-        title: '상상공장',
-        period: '2025.01 ~ 2025.12 (12개월)',
-        role: '문화콘텐츠 기획전략부서 · 과장',
-        desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역기반 콘텐츠 행사 홍보 및 디지털 광고/이벤트 기획.',
-        impact: '• 지역 기반 콘텐츠 행사 마케팅 및 크리에이티브 소재 개발',
-        skills: ['문화콘텐츠', '행사 홍보', '디지털 광고']
-      },
-      c4: {
-        tag: '기업 실무 경력',
-        title: '이호 (Lee Ho)',
-        period: '2015.07 ~ 2017.04 (1년 10개월)',
-        role: '브랜드 패키지 · 팀장/대리',
-        desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 브랜드 패키지 디자인 및 시각 마케팅 전략 수립.',
-        impact: '• COSTCO 입점 파트너사 관리 및 식품 패키지 브랜딩 총괄',
-        skills: ['식품 패키지', 'VMD 연출', '쇼핑몰 상세페이지']
-      },
-      c5: {
-        tag: '기업 실무 경력',
-        title: '지구촌교회 미디어 홍보부',
-        period: '2012.08 ~ 2015.01 (2년 6개월)',
-        role: '미디어 홍보부서 · 사원',
-        desc: '교회 내부 및 외부 행사 홍보를 위한 영상 콘텐츠 디자인 및 그래픽 제작.',
-        impact: '• 영상 콘텐츠 기획 및 미디어 홍보 총괄',
-        skills: ['영상 디자인', '행사 홍보', '그래픽 콘텐츠']
-      },
-      c6: {
-        tag: '기업 실무 경력',
-        title: 'CBS 기독교방송',
-        period: '2005.03 ~ 2008.03 (3년 1개월)',
-        role: '방송디자인실 · 사원',
-        desc: '뉴스 및 교양 프로그램 타이포 모션, 방송 그래픽 디자인 ("새롭게 하소서", "성서학당").',
-        impact: '• 주요 프로그램 타이틀 그래픽 및 모션 제작',
-        skills: ['방송 그래픽', '모션 디자인', '타이틀 디자인']
-      },
-      c7: {
-        tag: '기업 실무 경력',
-        title: '서울신문 Stv',
-        period: '2009.10 ~ 2010.09 (1년)',
-        role: '편성부 · 사원',
-        desc: '사내 방송 뉴스 그래픽 디자인 및 행사 전시 시각 콘텐츠 디자인.',
-        impact: '• 방송 뉴스 그래픽 및 전시 콘텐츠 주도',
-        skills: ['뉴스 그래픽', '전시 콘텐츠']
-      },
-      c8: {
-        tag: '기업 실무 경력',
-        title: 'CJ 온게임넷',
-        period: '2014.03 ~ 2015.02 (1년)',
-        role: '제작부서 · 프리랜서',
-        desc: '온게임넷 예능 및 정보 프로그램 그래픽 콘텐츠 디자인 ("하트비트", "양뿔이 간다").',
-        impact: '• 방송 예능 그래픽 연출',
-        skills: ['예능 그래픽', '모션 그래픽']
-      },
-      d1: {
-        tag: '학력 및 연구',
-        title: '홍익대학교 대학원 박사 수료',
-        period: '2020.02 ~ 2023.08 (박사 수료)',
-        role: '시각디자인전공 | 평점 4.17 / 4.5',
-        desc: '인공지능과 디자인, 브랜드 시각 커뮤니케이션 연구. 생성형 AI 환경에서 디자이너 판단 과정 탐구.',
-        impact: '• 박사 평점 4.17 우수 수료<br>• AI 기반 로고 생성 및 판단 프로세스 학술 논문 게재',
-        skills: ['AI 융합 디자인', '학술 연구', '디자인 논문']
-      },
-      d2: {
-        tag: '학력 및 연구',
-        title: '홍익대학교 대학원 석사 졸업',
-        period: '2015.02 ~ 2017.02 (미술학석사)',
-        role: '시각디자인전공 | 평점 4.28 / 4.5',
-        desc: 'OEM 표기사항 불일치가 식품 브랜드 신뢰도 및 구매의도에 미치는 영향 논문 작성.',
-        impact: '• 석사 평점 4.28 우수 졸업<br>• 편의점 도시락 라벨 디자인 연구 KCI 등재',
-        skills: ['시각디자인 석사', '브랜드 신뢰도 연구', 'SPSS 통계']
-      },
-      p1: {
-        tag: 'KCI 등재 논문',
-        title: 'KCI 2020 등재 논문 (도시락 라벨)',
-        period: '2020.11.18 게재',
-        role: '주저자 (2인 연구)',
-        desc: '편의점 프리미엄 도시락 라벨디자인 이미지 요소와 구매의도에 관한 연구 (한국디지털정책학회).',
-        impact: '• 프리미엄 도시락 시각 차별화 t=14.921*** 유의성 입증',
-        skills: ['KCI 등재', '도시락 라벨', 'SPSS T-Test']
-      },
-      p2: {
-        tag: 'KCI 등재 논문',
-        title: 'KCI 2024 등재 논문 (AI 로고)',
-        period: '2024.12.04 게재',
-        role: '주저자',
-        desc: '인공지능 로고 제작 웹 서비스를 활용한 로고 디자인 연구 -아이디어 유형을 중심으로 (IJACT).',
-        impact: '• AI 생성 로고 디자인 프로세스 모델 제안',
-        skills: ['AI 로고 생성', '학술 연구', 'IJACT']
-      },
-      p3: {
-        tag: 'KCI 등재 논문',
-        title: 'KCI 2026 등재 논문 (AI 디자이너 상호작용)',
-        period: '2026.03.26 게재',
-        role: '주저자',
-        desc: 'AI 로고 생성 환경에서 디자이너의 감정-인지 상호작용과 디자인 판단 과정 연구.',
-        impact: '• 2025 IJCC 국제컨퍼런스 최우수 논문상 수상 연계',
-        skills: ['AI 융합', '디자인 판단', '최우수 논문상']
-      },
-      t1: {
-        tag: '대학 강의',
-        title: '국립충북대학교 외래교수',
-        period: '2024.03 ~ 현재 재직중',
-        role: '융복합디자인학과 외래교수',
-        desc: '디지털기초영상편집, 포토샵 기초와 응용 수업 진행.',
-        impact: '• 융복합 디자인 실무 기술 전수',
-        skills: ['대학 강의', '영상 편집', '포토샵 응용']
-      },
-      t2: {
-        tag: '공공 컨설팅',
-        title: '수원시청 / 서울디자인재단 컨설턴트',
-        period: '2022.05 ~ 2025.06',
-        role: '도시디자인단 위원 / 디자인컨설턴트',
-        desc: '수원시 상징물 및 공공브랜드 위원회 위원, 관악구 은천마을 축제 브랜딩 디자인 컨설팅.',
-        impact: '• 2022 서울디자인컨설턴트 사업 우수상 수상',
-        skills: ['공공 브랜드', '축제 브랜딩', '디자인 컨설팅']
-      },
-      a1: {
-        tag: '수상 실적',
-        title: '2022 서울디자인컨설턴트 우수상',
-        period: '2022.11.29',
-        role: '서울디자인재단',
-        desc: '은천동 희망마을 축제 브랜드 디자인 컨설팅 우수상 수상.',
-        impact: '• 서울시 공공디자인 우수 성과 검증',
-        skills: ['우수상', '공공디자인']
-      },
-      a2: {
-        tag: '수상 실적',
-        title: '2025 IJCC 최우수 논문상',
-        period: '2025.02.15',
-        role: '국제문화기술진흥원',
-        desc: '국제컨퍼런스 AI 디자인 융합 연구 최우수 논문상 수상.',
-        impact: '• AI 디자인 연구 학술 경쟁력 입증',
-        skills: ['최우수 논문상', 'IJCC']
-      }
-    };
+    const radialNodesData = [
+      // Outer Arc: Industry Career
+      { id: 'c1', label: '제이키디자인연구소 (실장 7년)', category: 'career', arcTier: 1, angle: -140, period: '2018.01 ~ 2024.12', role: '마케팅 디자인 · 임원 (실장)', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인 프로젝트(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', impact: '• 브랜딩 최종안 내부 지지율 90% 이상 획득<br>• 지자체 관광 활성화 통합 디자인 가이드 구축', skills: ['브랜드 전략', 'BX디자인', 'CI/BI'] },
+      { id: 'c2', label: '고트레 (팀장 1년)', category: 'career', arcTier: 1, angle: -110, period: '2021.06 ~ 2022.05', role: '브랜드마케팅부서 · 팀장', desc: '자사몰 리뉴얼 및 퍼포먼스 광고(Facebook/Google/네이버) 운영, 롯데백화점 자사 라이브 방송 기획 출연.', impact: '• 온라인 매출 2.5배 신장 및 광고비 40% 절감<br>• 30분 단일 라이브 방송으로 2천만 원 매출 달성', skills: ['퍼포먼스 마케팅', 'SNS 전략', '매출 신장'] },
+      { id: 'c3', label: '상상공장 (과장 1년)', category: 'career', arcTier: 1, angle: -80, period: '2025.01 ~ 2025.12', role: '문화콘텐츠 기획전략부서 · 과장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역기반 콘텐츠 행사 홍보 및 디지털 광고 개발.', impact: '• 크리에이티브 콘텐츠 및 이벤트 기획 총괄', skills: ['문화콘텐츠', '디지털 광고'] },
+      { id: 'c4', label: '이호 (팀장/대리 2년)', category: 'career', arcTier: 1, angle: -165, period: '2015.07 ~ 2017.04', role: '브랜드 패키지 · 팀장/대리', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', impact: '• COSTCO 입점 파트너사 관리 및 패키지 컨설팅', skills: ['식품 패키지', 'VMD 연출'] },
+      { id: 'c5', label: 'CBS 기독교방송 (3년)', category: 'career', arcTier: 1, angle: 160, period: '2005.03 ~ 2008.03', role: '방송디자인실 · 사원', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', impact: '• 주요 프로그램 모션 그래픽 연출', skills: ['방송 그래픽', '모션 디자인'] },
 
-    function selectItem(key) {
-      const data = itemsData[key];
-      if (!data) return;
+      // Mid Arc: Education & Research Papers
+      { id: 'd1', label: '홍익대 시각디자인 박사 수료', category: 'research', arcTier: 2, angle: -125, period: '2020.02 ~ 2023.08', role: '박사 수료 | 평점 4.17 / 4.5', desc: '인공지능과 디자인, 생성형 AI 환경에서 디자이너 판단 과정 학술 연구.', impact: '• 박사 평점 4.17 우수 수료<br>• AI 로고 생성 학술 논문 게재', skills: ['AI 융합', '박사 수료', '학술 연구'] },
+      { id: 'd2', label: '홍익대 시각디자인 석사 졸업', category: 'research', arcTier: 2, angle: -150, period: '2015.02 ~ 2017.02', role: '미술학석사 | 평점 4.28 / 4.5', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 논문 작성.', impact: '• 석사 평점 4.28 우수 졸업<br>• 편의점 도시락 라벨 KCI 등재 연구', skills: ['석사 학위', 'SPSS 통계'] },
+      { id: 'p1', label: '📄 KCI 2020 논문 (도시락 라벨)', category: 'research', arcTier: 2, angle: -100, period: '2020.11.18 게재', role: '주저자 (한국디지털정책학회)', desc: '편의점 프리미엄 도시락 라벨디자인 이미지 요소와 구매의도 연구.', impact: '• 프리미엄 시각 차별화 t=14.921*** 유의성 검증', skills: ['KCI 등재', 'T-Test 통계'] },
+      { id: 'p2', label: '📄 KCI 2024 논문 (AI 로고)', category: 'research', arcTier: 2, angle: -70, period: '2024.12.04 게재', role: '주저자 (IJACT)', desc: '인공지능 로고 제작 웹 서비스를 활용한 로고 디자인 연구.', impact: '• AI 기반 아이디어 유형화 프로세스 수립', skills: ['KCI 등재', 'AI 디자인'] },
+      { id: 'p3', label: '📄 KCI 2026 논문 (AI 디자이너 판단)', category: 'research', arcTier: 2, angle: -45, period: '2026.03.26 게재', role: '주저자 (브랜드디자인학연구)', desc: 'AI 로고 생성 환경에서 디자이너의 감정-인지 상호작용 연구.', impact: '• 국제컨퍼런스 최우수 논문상 연계', skills: ['KCI 등재', 'AI 판단'] },
 
-      document.getElementById('insp-tag').innerText = data.tag;
-      document.getElementById('insp-title').innerText = data.title;
-      document.getElementById('insp-period').innerText = data.period;
-      document.getElementById('insp-role').innerText = data.role;
-      document.getElementById('insp-desc').innerText = data.desc;
-      document.getElementById('insp-impact').innerHTML = data.impact;
+      // Inner Arc: Teaching & Awards
+      { id: 't1', label: '국립충북대학교 외래교수', category: 'teaching', arcTier: 3, angle: -135, period: '2024.03 ~ 현재', role: '융복합디자인학과 외래교수', desc: '디지털기초영상편집, 포토샵 기초와 응용 수업 주도.', impact: '• 융복합 디자인 실무 지도', skills: ['대학 강의', '영상 편집'] },
+      { id: 't2', label: '경복대학교 겸임교수', category: 'teaching', arcTier: 3, angle: -105, period: '2022.03 ~ 2025.08', role: '시각디자인과 겸임교수', desc: '디자인기획, 포트폴리오, 비주얼아이데이션 수업 진행.', impact: '•학과 접속률 50만 건 달성 기여', skills: ['겸임 교수', '포트폴리오'] },
+      { id: 'a1', label: '🥇 2022 서울디자인 우수상', category: 'teaching', arcTier: 3, angle: -60, period: '2022.11.29', role: '서울디자인재단', desc: '은천동 희망마을 축제 브랜드 디자인 컨설팅 우수상.', impact: '• 공공디자인 우수 성과 표창', skills: ['서울시 우수상', '공공 브랜딩'] },
+      { id: 'a2', label: '🏆 2025 IJCC 최우수 논문상', category: 'teaching', arcTier: 3, angle: -30, period: '2025.02.15', role: '국제문화기술진흥원', desc: 'IJCC 국제컨퍼런스 AI 디자인 융합 연구 최우수 논문상.', impact: '• AI 학술 경쟁력 1위 검증', skills: ['최우수 논문상', '학술 수상'] }
+    ];
 
-      document.getElementById('insp-skills').innerHTML = data.skills.map(s => `
-        <span class="px-2 py-0.5 bg-slate-900 text-indigo-300 rounded border border-indigo-900/60">${s}</span>
-      `).join('');
-    }
+    const canvas = document.getElementById('radialCanvas');
+    const ctx = canvas.getContext('2d');
 
-    function setFilter(type) {
-      document.querySelectorAll('.flex.items-center.space-x-1 button').forEach(b => b.classList.remove('btn-active'));
-      document.getElementById(`btn-${type}`).classList.add('btn-active');
+    let width = canvas.width = canvas.clientWidth;
+    let height = canvas.height = canvas.clientHeight;
 
-      const tracks = ['career', 'research', 'teaching', 'awards'];
-      tracks.forEach(tr => {
-        const el = document.getElementById(`track-${tr}`);
-        if (type === 'all') {
-          el.style.display = 'block';
-        } else {
-          el.style.display = (tr === type) ? 'block' : 'none';
-        }
+    let centerPos = { x: width / 2, y: height * 0.78 };
+    let hoveredNode = null;
+    let selectedNode = null;
+    let currentFilter = 'all';
+
+    function calculateRadialCoords() {
+      centerPos = { x: width / 2, y: height * 0.78 };
+
+      radialNodesData.forEach(node => {
+        let baseRadius = 220;
+        if (node.arcTier === 1) baseRadius = 380; // Outer Arc
+        if (node.arcTier === 2) baseRadius = 280; // Mid Arc
+        if (node.arcTier === 3) baseRadius = 180; // Inner Arc
+
+        const rad = (node.angle * Math.PI) / 180;
+        node.x = centerPos.x + Math.cos(rad) * baseRadius;
+        node.y = centerPos.y + Math.sin(rad) * baseRadius;
+        node.radius = (node.arcTier === 1) ? 14 : (node.arcTier === 2 ? 12 : 10);
       });
     }
 
-    // Default select main item
-    selectItem('c1');
+    function isNodeVisible(node) {
+      if (currentFilter === 'all') return true;
+      return node.category === currentFilter;
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw Arc Tracks (Pink & Gray)
+      ctx.save();
+      const tiers = [380, 280, 180];
+      tiers.forEach((r, idx) => {
+        ctx.beginPath();
+        ctx.arc(centerPos.x, centerPos.y, r, Math.PI, 2 * Math.PI);
+        ctx.strokeStyle = (idx === 0) ? 'rgba(236, 72, 153, 0.25)' : 'rgba(71, 85, 105, 0.3)';
+        ctx.lineWidth = (idx === 0) ? 2 : 1.5;
+        if (idx === 0) ctx.setLineDash([6, 6]); else ctx.setLineDash([]);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      const activeNode = selectedNode || hoveredNode;
+
+      // Draw Light Beams to Active Node (Freddie Mercury style light rays!)
+      if (activeNode && isNodeVisible(activeNode)) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(centerPos.x, centerPos.y - 120);
+        ctx.lineTo(activeNode.x, activeNode.y);
+        ctx.lineWidth = 3;
+        const beamGrad = ctx.createLinearGradient(centerPos.x, centerPos.y - 120, activeNode.x, activeNode.y);
+        beamGrad.addColorStop(0, 'rgba(236, 72, 153, 0.9)');
+        beamGrad.addColorStop(1, 'rgba(244, 114, 182, 0.2)');
+        ctx.strokeStyle = beamGrad;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Draw Nodes
+      radialNodesData.forEach(node => {
+        if (!isNodeVisible(node)) return;
+
+        const isSelected = selectedNode && selectedNode.id === node.id;
+        const isHovered = hoveredNode && hoveredNode.id === node.id;
+        const isHighlight = isSelected || isHovered;
+
+        ctx.save();
+
+        // Node Light Halo
+        if (isHighlight) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius + 10, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.4)';
+          ctx.fill();
+        }
+
+        // Node Circle
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = isHighlight ? '#ec4899' : (node.arcTier === 1 ? '#f472b6' : '#94a3b8');
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = isHighlight ? '#ffffff' : '#0f172a';
+        ctx.stroke();
+
+        // Node Text
+        ctx.font = `${isHighlight ? 'bold' : 'normal'} 11px sans-serif`;
+        ctx.fillStyle = isHighlight ? '#ffffff' : '#cbd5e1';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(node.label, node.x, node.y - node.radius - 12);
+
+        ctx.restore();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    // --- Events ---
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mX = e.clientX - rect.left;
+      const mY = e.clientY - rect.top;
+
+      let found = null;
+      for (let node of radialNodesData) {
+        if (!isNodeVisible(node)) continue;
+        const dx = mX - node.x;
+        const dy = mY - node.y;
+        if (dx * dx + dy * dy <= (node.radius + 8) * (node.radius + 8)) {
+          found = node;
+          break;
+        }
+      }
+
+      if (found !== hoveredNode) {
+        hoveredNode = found;
+        if (found) showTooltip(found, e.clientX, e.clientY);
+        else hideTooltip();
+      } else if (found) {
+        positionTooltip(e.clientX, e.clientY);
+      }
+    });
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mX = e.clientX - rect.left;
+      const mY = e.clientY - rect.top;
+
+      for (let node of radialNodesData) {
+        if (!isNodeVisible(node)) continue;
+        const dx = mX - node.x;
+        const dy = mY - node.y;
+        if (dx * dx + dy * dy <= (node.radius + 8) * (node.radius + 8)) {
+          selectNode(node);
+          break;
+        }
+      }
+    });
+
+    function selectNode(node) {
+      selectedNode = node;
+      document.getElementById('insp-tag').innerText = (node.arcTier === 1 ? '실무 경력 15년+' : (node.arcTier === 2 ? '학력 및 KCI 연구' : '강의 및 수상'));
+      document.getElementById('insp-title').innerText = node.label;
+      document.getElementById('insp-period').innerText = node.period;
+      document.getElementById('insp-role').innerText = node.role;
+      document.getElementById('insp-desc').innerText = node.desc;
+      document.getElementById('insp-impact').innerHTML = node.impact;
+
+      document.getElementById('insp-skills').innerHTML = node.skills.map(s => `
+        <span class="px-2.5 py-1 bg-pink-950/60 text-pink-300 rounded border border-pink-800/80">${s}</span>
+      `).join('');
+    }
+
+    const tooltip = document.getElementById('tooltip');
+    function showTooltip(node, x, y) {
+      document.getElementById('tt-title').innerText = node.label;
+      document.getElementById('tt-tag').innerText = node.period;
+      document.getElementById('tt-desc').innerText = node.role;
+      positionTooltip(x, y);
+      tooltip.classList.remove('hidden');
+    }
+
+    function positionTooltip(x, y) {
+      tooltip.style.left = `${x + 15}px`;
+      tooltip.style.top = `${y + 15}px`;
+    }
+
+    function hideTooltip() { tooltip.classList.add('hidden'); }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('#btn-all, #btn-career, #btn-research, #btn-teaching').forEach(b => {
+        b.className = 'w-full text-left px-4 py-3 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
+      });
+      const activeBtn = document.getElementById(`btn-${filter}`);
+      if (activeBtn) {
+        activeBtn.className = 'w-full text-left px-4 py-3 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = canvas.clientWidth;
+      height = canvas.height = canvas.clientHeight;
+      calculateRadialCoords();
+    });
+
+    calculateRadialCoords();
+    selectNode(radialNodesData[0]);
+    render();
   </script>
 </body>
 </html>
