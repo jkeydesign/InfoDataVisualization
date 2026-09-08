@@ -22,12 +22,7 @@
       border-radius: 3px;
     }
     .glow-pink-bg {
-      box-shadow: 0 0 45px rgba(236, 72, 153, 0.3);
-    }
-    .btn-active {
-      background-color: #ec4899 !important;
-      color: #0f172a !important;
-      font-weight: 800 !important;
+      box-shadow: 0 0 50px rgba(236, 72, 153, 0.35);
     }
   </style>
 </head>
@@ -40,15 +35,15 @@
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
         <span>포털 메인</span>
       </a>
-      <div class="w-8 h-8 rounded-xl bg-pink-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-md">
-        EY
+      <div class="w-9 h-9 rounded-xl bg-pink-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-md">
+        KEY
       </div>
       <div>
         <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
-          <span>강은영 (Eun-Young Kang) - 다중 방사형 아크(Multi-Tier Radial Arc) 시계열</span>
-          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">5-Tier Radial System</span>
+          <span>강은영 (KEY) - 단계별 방사형 아크(Graded Radial Arc) 시계열</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">5-Tier Color Spectrum</span>
         </h1>
-        <p class="text-[11px] text-slate-400">카테고리별 5중 방사형 아크 궤도 2000~2026 통합 연구·전시·실무 시각화</p>
+        <p class="text-[11px] text-slate-400">단계별 색상 5중 방사형 아크 궤도 2000~2026 통합 연구·전시·실무 시각화</p>
       </div>
     </div>
 
@@ -64,60 +59,60 @@
     </div>
   </header>
 
-  <!-- Main 3-Section Radial Body -->
+  <!-- Main Body -->
   <div class="flex-1 flex overflow-hidden relative">
 
-    <!-- LEFT SIDEBAR: Multi-Arc Tier Toggles -->
+    <!-- LEFT SIDEBAR: Tier Color Filters -->
     <aside class="w-80 bg-slate-950 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0 z-20">
       
       <div class="space-y-5">
         <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">방사형 아크 궤도 선택 (5-Tiers)</h2>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">단계별 궤도 색상 지표</h2>
           <div class="space-y-2 text-xs">
             
             <button onclick="setTierFilter('all')" id="btn-all" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
-              <span>💖 전체 5중 방사형 아크</span>
+              <span>💖 전체 5중 단계별 아크</span>
               <span class="text-[10px] font-mono text-pink-400">ALL</span>
             </button>
 
             <button onclick="setTierFilter('career')" id="btn-career" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
-                <span>🏢 궤도 1: 기업 실무 (15년+)</span>
+                <span class="w-3 h-3 rounded-full bg-[#ec4899] shadow-xs"></span>
+                <span>🏢 Tier 1: 기업 실무 (Hot Pink)</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-500">Tier 1</span>
+              <span class="text-[10px] font-mono text-pink-400">15년+</span>
             </button>
 
             <button onclick="setTierFilter('research')" id="btn-research" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-pink-400"></span>
-                <span>🎓 궤도 2: 학력 & KCI 논문</span>
+                <span class="w-3 h-3 rounded-full bg-[#f43f5e] shadow-xs"></span>
+                <span>🎓 Tier 2: 학력 & KCI (Rose Pink)</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-500">Tier 2</span>
+              <span class="text-[10px] font-mono text-rose-400">논문 5편</span>
             </button>
 
             <button onclick="setTierFilter('exhibit')" id="btn-exhibit" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-pink-300"></span>
-                <span>🎨 궤도 3: 국제 전시 (10건)</span>
+                <span class="w-3 h-3 rounded-full bg-[#fb7185] shadow-xs"></span>
+                <span>🎨 Tier 3: 국제 전시 (Coral Pink)</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-500">Tier 3</span>
+              <span class="text-[10px] font-mono text-rose-300">10건</span>
             </button>
 
             <button onclick="setTierFilter('judge')" id="btn-judge" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-                <span>⚖️ 궤도 4: 심사위원 위촉</span>
+                <span class="w-3 h-3 rounded-full bg-[#64748b] shadow-xs"></span>
+                <span>⚖️ Tier 4: 심사위원 (Slate Gray)</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-500">Tier 4</span>
+              <span class="text-[10px] font-mono text-slate-400">3회</span>
             </button>
 
             <button onclick="setTierFilter('awards')" id="btn-awards" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
-                <span>🏆 궤도 5: 수상 & 자격증</span>
+                <span class="w-3 h-3 rounded-full bg-[#cbd5e1] shadow-xs"></span>
+                <span>🏆 Tier 5: 수상 & 자격 (Cool Gray)</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-500">Tier 5</span>
+              <span class="text-[10px] font-mono text-slate-300">9건</span>
             </button>
 
           </div>
@@ -125,10 +120,10 @@
 
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
           <h3 class="font-bold text-pink-400 flex items-center space-x-1.5">
-            <span>💡 방사형 마우스 반응 안내</span>
+            <span>💡 색상 단계 및 조명 빔 가이드</span>
           </h3>
           <p class="text-slate-300 leading-relaxed text-[11.5px]">
-            동심원 방사형 아크 상의 <b>핑크/그레이 노드에 마우스를 올리거나 클릭</b>하면, 중심 엠블럼에서 해당 노드로 조명 광선이 뻗어 나가며 세부 데이터가 표시됩니다.
+            궤도별로 <b>핫핑크 ➔ 로즈 ➔ 코랄 ➔ 슬레이트 ➔ 쿨그레이</b> 색상이 단계적으로 구분됩니다. 마우스 호버 시 조명 광선이 연결됩니다.
           </p>
         </div>
       </div>
@@ -139,22 +134,22 @@
 
     </aside>
 
-    <!-- CENTER CANVAS: Multi-Tier Radial Arc Viewport -->
+    <!-- CENTER CANVAS: Radial Arc Viewport -->
     <main class="flex-1 relative bg-slate-950 flex flex-col justify-end items-center overflow-hidden">
       
       <!-- Interactive Radial Canvas -->
       <canvas id="radialCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
 
-      <!-- Center Radial Emblem -->
+      <!-- Center Radial Emblem (Updated to KEY Monogram) -->
       <div class="relative z-10 flex flex-col items-center mb-10 pointer-events-none">
         <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-600 via-pink-500 to-slate-800 p-1 glow-pink-bg shadow-2xl flex items-center justify-center">
-          <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center border border-pink-500/40">
-            <span class="text-2xl font-black text-white tracking-tighter">EY</span>
-            <span class="text-[8.5px] text-pink-400 font-mono">PORTFOLIO</span>
+          <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center border border-pink-500/50">
+            <span class="text-2xl font-black text-white tracking-tight">KEY</span>
+            <span class="text-[8.5px] text-pink-400 font-mono tracking-widest">PORTFOLIO</span>
           </div>
         </div>
         <div class="mt-2 bg-slate-950/90 border border-pink-500/50 px-4 py-1 rounded-full text-xs font-bold text-pink-300 backdrop-blur shadow-xl">
-          강은영 (Eun-Young Kang)
+          강은영 (KEY)
         </div>
       </div>
 
@@ -182,7 +177,7 @@
       <div class="bg-pink-950/40 border border-pink-900/60 p-4 rounded-2xl space-y-2 text-xs">
         <h4 class="font-bold text-pink-400 uppercase tracking-wider text-[11px]">증빙 데이터 및 핵심 성과</h4>
         <div id="insp-status" class="text-slate-200 text-[11.5px] leading-relaxed font-medium">
-          • 브랜딩 최종안 내부 지지율 90% 이상 획득<br>
+          • 브랜딩 최종안 내부 지지율 90% 이상 획택<br>
           • 지자체 관광 활성화 통합 디자인 가이드 구축
         </div>
       </div>
@@ -205,16 +200,24 @@
   </div>
 
   <script>
-    // Full Dataset with 5 Radial Arc Tiers
+    // Color Palette per Arc Tier (Graded Color Spectrum)
+    const TIER_COLORS = {
+      1: { main: '#ec4899', light: '#f472b6', name: 'Hot Pink (실무)' },
+      2: { main: '#f43f5e', light: '#fb7185', name: 'Rose Pink (학술/KCI)' },
+      3: { main: '#fb7185', light: '#fca5a5', name: 'Coral Pink (국제전시)' },
+      4: { main: '#64748b', light: '#94a3b8', name: 'Slate Gray (심사위원)' },
+      5: { main: '#cbd5e1', light: '#f1f5f9', name: 'Cool Gray (수상/자격)' }
+    };
+
     const radialNodesData = [
-      // Tier 1: Industry Career (Innermost Arc - Radius 170)
+      // Tier 1: Industry Career (Innermost - Radius 170) -> #ec4899 (Hot Pink)
       { id: 'c1', label: '제이키디자인연구소 (실장 7년)', category: 'career', arcTier: 1, angle: -155, date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
       { id: 'c2', label: '고트레 (팀장 1년)', category: 'career', arcTier: 1, angle: -125, date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
       { id: 'c3', label: '상상공장 (과장 1년)', category: 'career', arcTier: 1, angle: -95, date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
       { id: 'c4', label: '이호 (팀장/대리 2년)', category: 'career', arcTier: 1, angle: -65, date: '2015.07 ~ 2017.04', org: '이호', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', status: 'COSTCO 입점 파트너사 패키지 관리' },
       { id: 'c5', label: 'CBS 기독교방송 (3년)', category: 'career', arcTier: 1, angle: -35, date: '2005.03 ~ 2008.03', org: 'CBS방송', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', status: '방송 그래픽 타이틀 연출' },
 
-      // Tier 2: Education & KCI Papers (Radius 240)
+      // Tier 2: Education & KCI Papers (Radius 240) -> #f43f5e (Rose Pink)
       { id: 'd1', label: '홍익대 박사 수료 (GPA 4.17)', category: 'research', arcTier: 2, angle: -160, date: '2020.02 ~ 2023.08', org: '홍익대학교 대학원', desc: '인공지능과 디자인, 생성형 AI 환경에서 디자이너 판단 과정 학술 연구.', status: '박사 수료증명서 증빙 완료' },
       { id: 'd2', label: '홍익대 석사 졸업 (GPA 4.28)', category: 'research', arcTier: 2, angle: -140, date: '2015.02 ~ 2017.02', org: '홍익대학교 대학원', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 연구.', status: '석사학위기 PDF 증빙 완료' },
       { id: 'p1', label: '📄 KCI 2020: 편의점 도시락 라벨', category: 'research', arcTier: 2, angle: -115, date: '2020.11.18', org: '한국디지털정책학회 (KCI)', desc: '프리미엄·일반 편의점 도시락 라벨디자인 구매의도 연구 (t=14.921***).', status: 'KCI 등재 논문 PDF 증빙' },
@@ -222,7 +225,7 @@
       { id: 'p3', label: '📄 KCI 2025: Post-Humanism AI', category: 'research', arcTier: 2, angle: -65, date: '2025.03.24', org: 'IJACT (KCI 등재)', desc: '포스트휴머니즘 시대의 인공지능과 디자이너 역할 변화 고찰.', status: 'IJCC 2025 Best Paper Award' },
       { id: 'p4', label: '📄 KCI 2026: AI 디자이너 판단', category: 'research', arcTier: 2, angle: -40, date: '2026.03.26', org: '한국브랜드디자인학회 (KCI)', desc: 'AI 로고 생성 환경 감정-인지 상호작용 디자인판단 연구.', status: 'KCI 등재 논문 PDF 증빙' },
 
-      // Tier 3: International Exhibitions (Radius 310)
+      // Tier 3: International Exhibitions (Radius 310) -> #fb7185 (Coral Pink)
       { id: 'e1', label: '🎨 오사카 한글 포스터전 (일본)', category: 'exhibit', arcTier: 3, angle: -165, date: '2020.10.05', org: '일본 미리내 갤러리 / VIDAK', desc: 'HANGEUL Typography Poster Exhibition Osaka 작품 "Ah" 출품.', status: '참가증 및 도록 사진 4건' },
       { id: 'e2', label: '🎨 DDP D-SPACE 국제초대전', category: 'exhibit', arcTier: 3, angle: -145, date: '2022.12.03', org: 'DDP 동대문디자인플라자 / VIDAK', desc: 'VIDAK 2022 D-SPACE 국제초대전 작품 "일상 Daily Design Life" 출품.', status: '출품증 및 도록 10건' },
       { id: 'e3', label: '🎨 광주디자인비엔날레 초대전', category: 'exhibit', arcTier: 3, angle: -120, date: '2023.09.07', org: '광주디자인진흥원 / 총연합회', desc: '2023 광주디자인비엔날레 국제포스터 초대전시회 출품.', status: '출품증 및 도록 파일 44건' },
@@ -231,16 +234,16 @@
       { id: 'e6', label: '🎨 대만 가오슝 국제전시', category: 'exhibit', arcTier: 3, angle: -55, date: '2026.02.06', org: '가오슝 문화디자인개발협회', desc: '2026 Year of Horse Creative Exhibition 작품 "We’re the Dark Horse" 출품.', status: '참가증 및 도록 파일 12건' },
       { id: 'e7', label: '🎨 VISIBLE BEAUTY 국제전시 (대만)', category: 'exhibit', arcTier: 3, angle: -30, date: '2026.06.06', org: '대만 시각디자인협회', desc: 'VISIBLE BEAUTY 국제초청전 작품 "Unsightliness" 출품.', status: '참가증 및 전시장 사진 11건' },
 
-      // Tier 4: Judges & Appointments (Radius 380)
+      // Tier 4: Judges & Appointments (Radius 380) -> #64748b (Slate Gray)
       { id: 'j1', label: '⚖️ 제57회 대한민국디자인전람회 심사위원', category: 'judge', arcTier: 4, angle: -150, date: '2022.07.07', org: '산업통상자원부 / KIDP', desc: '대한민국디자인전람회 1차·2차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
       { id: 'j2', label: '⚖️ 우수디자인(GD) 상품선정 심사위원', category: 'judge', arcTier: 4, angle: -105, date: '2023.08.25', org: '한국디자인진흥원 (KIDP)', desc: '우수디자인(GD) 상품선정 2차·3차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
       { id: 'j3', label: '⚖️ 수원시 공공브랜드 위원회 위원', category: 'judge', arcTier: 4, angle: -60, date: '2024.06.13', org: '수원시청', desc: '수원시 상징물 및 공공브랜드 위원회 위원 위촉 (2024~2026).', status: '위촉장 PDF 및 공문 5건' },
 
-      // Tier 5: Awards & Certifications (Outermost Arc - Radius 450)
+      // Tier 5: Awards & Certifications (Radius 450) -> #cbd5e1 (Cool Gray)
       { id: 'a1', label: '🏆 IJCC 2025 Best Paper Award (최우수 논문상)', category: 'awards', arcTier: 5, angle: -160, date: '2025.02.15', org: 'IJCC & ICAI 2025 국제컨퍼런스', desc: 'On Artificial Intelligence and Designers in Post-Humanism 연구로 최우수 논문상 수상.', status: '상장 이미지 2건 증빙' },
       { id: 'a2', label: '🥇 2022 서울디자인컨설턴트 우수상', category: 'awards', arcTier: 5, angle: -135, date: '2022.11.29', org: '(재)서울디자인재단', desc: '관악구 은천동 희망마을 축제 브랜드 디자인 컨설팅 우수상.', status: '상장 증빙 완료' },
       { id: 'a3', label: '🏆 임산물 로고패키지 은상', category: 'awards', arcTier: 5, angle: -110, date: '2016.09.05', org: '한국임업진흥원', desc: '감와인 패키지 디자인 공모전 은상 수상.', status: '상장 및 파일 5건' },
-      { id: 'a4', label: '🏆 건일제약 수기 공모전 최우수상', category: 'awards', catName: '수상', arcTier: 5, angle: -85, date: '2010.10.10', org: '㈜건일제약', desc: '전국 단위 수필 공모전 최우수상.', status: '상장 증빙 완료' },
+      { id: 'a4', label: '🏆 건일제약 수기 공모전 최우수상', category: 'awards', arcTier: 5, angle: -85, date: '2010.10.10', org: '㈜건일제약', desc: '전국 단위 수필 공모전 최우수상.', status: '상장 증빙 완료' },
       { id: 'a5', label: '📜 컬러리스트 / 시각디자인 / GTQ 1급 자격증', category: 'awards', arcTier: 5, angle: -50, date: '2010 ~ 2021', org: '산업통상자원부 / KPC', desc: '컬러리스트산업기사, 시각디자인산업기사, GTQ 포토샵 1급 국가자격 취득.', status: '자격확인서 증빙 완료' }
     ];
 
@@ -260,16 +263,16 @@
 
       radialNodesData.forEach(node => {
         let baseRadius = 170;
-        if (node.arcTier === 1) baseRadius = 170; // Tier 1
-        if (node.arcTier === 2) baseRadius = 240; // Tier 2
-        if (node.arcTier === 3) baseRadius = 310; // Tier 3
-        if (node.arcTier === 4) baseRadius = 380; // Tier 4
-        if (node.arcTier === 5) baseRadius = 450; // Tier 5
+        if (node.arcTier === 1) baseRadius = 170;
+        if (node.arcTier === 2) baseRadius = 240;
+        if (node.arcTier === 3) baseRadius = 310;
+        if (node.arcTier === 4) baseRadius = 380;
+        if (node.arcTier === 5) baseRadius = 450;
 
         const rad = (node.angle * Math.PI) / 180;
         node.x = centerPos.x + Math.cos(rad) * baseRadius;
         node.y = centerPos.y + Math.sin(rad) * baseRadius;
-        node.radius = 12 - (node.arcTier * 1);
+        node.radius = 12 - (node.arcTier * 0.8);
       });
     }
 
@@ -281,22 +284,22 @@
     function render() {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw 5 Multi-Tier Concentric Arc Tracks
+      // Draw 5 Multi-Tier Concentric Arc Tracks with Graded Colors
       ctx.save();
       const tiersRadius = [450, 380, 310, 240, 170];
-      const tierColors = [
-        'rgba(148, 163, 184, 0.2)',
-        'rgba(148, 163, 184, 0.25)',
-        'rgba(244, 114, 182, 0.25)',
-        'rgba(244, 114, 182, 0.3)',
-        'rgba(236, 72, 153, 0.4)'
+      const tierLineColors = [
+        'rgba(203, 213, 225, 0.35)', // Tier 5: Cool Gray
+        'rgba(100, 116, 139, 0.4)',  // Tier 4: Slate Gray
+        'rgba(251, 113, 133, 0.4)',  // Tier 3: Coral Pink
+        'rgba(244, 63, 94, 0.5)',   // Tier 2: Rose Pink
+        'rgba(236, 72, 153, 0.6)'    // Tier 1: Hot Pink
       ];
 
       tiersRadius.forEach((r, idx) => {
         ctx.beginPath();
         ctx.arc(centerPos.x, centerPos.y, r, Math.PI, 2 * Math.PI);
-        ctx.strokeStyle = tierColors[idx];
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = tierLineColors[idx];
+        ctx.lineWidth = 1.8;
         if (idx === 4) ctx.setLineDash([5, 5]); else ctx.setLineDash([]);
         ctx.stroke();
       });
@@ -304,8 +307,10 @@
 
       const activeNode = selectedNode || hoveredNode;
 
-      // Draw Pink Light Beams
+      // Draw Graded Light Beams
       if (activeNode && isNodeVisible(activeNode)) {
+        const tierColor = TIER_COLORS[activeNode.arcTier].main;
+
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(centerPos.x, centerPos.y - 40);
@@ -313,19 +318,20 @@
         ctx.lineWidth = 3;
         const beamGrad = ctx.createLinearGradient(centerPos.x, centerPos.y - 40, activeNode.x, activeNode.y);
         beamGrad.addColorStop(0, 'rgba(236, 72, 153, 0.9)');
-        beamGrad.addColorStop(1, 'rgba(244, 114, 182, 0.2)');
+        beamGrad.addColorStop(1, tierColor);
         ctx.strokeStyle = beamGrad;
         ctx.stroke();
         ctx.restore();
       }
 
-      // Draw Nodes
+      // Draw Nodes with Graded Color Tiers
       radialNodesData.forEach(node => {
         if (!isNodeVisible(node)) return;
 
         const isSelected = selectedNode && selectedNode.id === node.id;
         const isHovered = hoveredNode && hoveredNode.id === node.id;
         const isHighlight = isSelected || isHovered;
+        const tierColor = TIER_COLORS[node.arcTier];
 
         ctx.save();
 
@@ -338,10 +344,10 @@
 
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isHighlight ? '#ec4899' : (node.arcTier <= 2 ? '#f472b6' : '#94a3b8');
+        ctx.fillStyle = isHighlight ? '#ffffff' : tierColor.main;
         ctx.fill();
         ctx.lineWidth = 2;
-        ctx.strokeStyle = isHighlight ? '#ffffff' : '#0f172a';
+        ctx.strokeStyle = isHighlight ? '#ec4899' : '#0f172a';
         ctx.stroke();
 
         ctx.font = `${isHighlight ? 'bold' : 'normal'} 11px sans-serif`;
@@ -356,7 +362,7 @@
       requestAnimationFrame(render);
     }
 
-    // --- Interaction Handlers ---
+    // --- Interactions ---
     canvas.addEventListener('mousemove', e => {
       const rect = canvas.getBoundingClientRect();
       const mX = e.clientX - rect.left;
@@ -398,7 +404,8 @@
 
     function selectNode(node) {
       selectedNode = node;
-      document.getElementById('insp-tag').innerText = `Tier ${node.arcTier} - ${node.category.toUpperCase()}`;
+      const tierColor = TIER_COLORS[node.arcTier];
+      document.getElementById('insp-tag').innerText = `Tier ${node.arcTier} - ${tierColor.name}`;
       document.getElementById('insp-title').innerText = node.label;
       document.getElementById('insp-date').innerText = node.date;
       document.getElementById('insp-org').innerText = node.org;
