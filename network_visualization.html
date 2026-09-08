@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>편의점 도시락 라벨 디자인 연구 - 네트워크 데이터 시각화 대시보드</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body {
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.03);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(160, 160, 175, 0.3);
+      border-radius: 3px;
+    }
+    .node-tooltip {
+      pointer-events: none;
+      transition: opacity 0.12s ease-in-out;
+    }
+    .preset-active {
+      background-color: #4f46e5 !important;
+      color: #ffffff !important;
+      border-color: #4f46e5 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 h-screen w-screen flex flex-col overflow-hidden antialiased">
+
+  <!-- 1. Top Navbar Header -->
+  <header class="h-14 bg-slate-950 border-b border-slate-800 px-5 flex items-center justify-between shrink-0 z-20 shadow-md">
+    <div class="flex items-center space-x-3">
+      <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold text-base shadow-sm">
+        N
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
+          <span>편의점 도시락 라벨 디자인 연구 네트워크 대시보드</span>
+          <span class="text-[10px] bg-indigo-900/80 text-indigo-300 border border-indigo-700 px-2 py-0.5 rounded-full font-mono">SPSS 21 T-Test</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">강은영·김승인 (2020) 논문 데이터 기반 노드-링크 대화형 시각화 도구</p>
+      </div>
+    </div>
+
+    <!-- Center View Preset Switchers -->
+    <div class="hidden md:flex items-center space-x-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs">
+      <button onclick="setPreset('all')" id="btn-all" class="preset-btn preset-active px-3 py-1.5 rounded-lg font-medium transition text-slate-300 hover:text-white">전체 네트워크</button>
+      <button onclick="setPreset('visual')" id="btn-visual" class="preset-btn px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">구매요소 ↔ 시각요소</button>
+      <button onclick="setPreset('expression')" id="btn-expression" class="preset-btn px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">구매요소 ↔ 차별화 표현</button>
+      <button onclick="setPreset('demographics')" id="btn-demographics" class="preset-btn px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white">소비자 특성</button>
+    </div>
+
+    <!-- Right Quick Actions -->
+    <div class="flex items-center space-x-2 text-xs">
+      <button onclick="resetView()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg transition flex items-center space-x-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        <span>위치 초기화</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. Main 3-Column Dashboard Body -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT PANEL: Stats Summary & Legend & Node List -->
+    <aside class="w-72 bg-slate-950 border-r border-slate-800 flex flex-col shrink-0 z-10">
+      
+      <!-- KPI Summary Cards -->
+      <div class="p-4 border-b border-slate-800 space-y-2.5">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">논문 데이터 핵심 요약</h2>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-center">
+            <div class="text-[10px] text-slate-400">설문 유효 응답</div>
+            <div class="text-base font-extrabold text-indigo-400 mt-0.5">224명</div>
+          </div>
+          <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 text-center">
+            <div class="text-[10px] text-slate-400">시각차이 t-value</div>
+            <div class="text-base font-extrabold text-emerald-400 mt-0.5">14.921***</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend Panel -->
+      <div class="p-4 border-b border-slate-800 space-y-2">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">범례 (Category)</h2>
+        <div class="space-y-1.5 text-xs">
+          <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+              <span class="text-slate-200">연구 주제 / 도시락</span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono">3개</span>
+          </div>
+          <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+              <span class="text-slate-200">구매 고려요소</span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono">4개</span>
+          </div>
+          <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+              <span class="text-slate-200">라벨 시각요소</span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono">5개</span>
+          </div>
+          <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+              <span class="text-slate-200">차별화 표현요소</span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono">5개</span>
+          </div>
+          <div class="flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800">
+            <div class="flex items-center space-x-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+              <span class="text-slate-200">소비자 인구통계</span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono">3개</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Node Search & Explorer -->
+      <div class="p-4 flex-1 flex flex-col min-h-0">
+        <div class="mb-2">
+          <input type="text" id="nodeSearch" oninput="filterNodesList()" placeholder="요인 노드 검색..." 
+                 class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+        </div>
+        <div id="nodeListContainer" class="flex-1 overflow-y-auto custom-scroll space-y-1 pr-1 text-xs">
+          <!-- Dynamic node list items -->
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- CENTER PANEL: Graph Canvas Viewport -->
+    <main class="flex-1 relative bg-slate-900 overflow-hidden flex flex-col">
+      
+      <!-- Canvas Controls Floating Bar -->
+      <div class="absolute bottom-4 right-4 z-10 bg-slate-950/90 backdrop-blur border border-slate-800 p-1.5 rounded-xl flex items-center space-x-1 text-slate-300 shadow-xl">
+        <button onclick="zoomIn()" class="p-1.5 hover:bg-slate-800 rounded-lg transition" title="확대">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        </button>
+        <button onclick="zoomOut()" class="p-1.5 hover:bg-slate-800 rounded-lg transition" title="축소">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+        </button>
+        <span class="h-4 border-r border-slate-800 mx-1"></span>
+        <button onclick="resetView()" class="p-1.5 hover:bg-slate-800 rounded-lg transition text-xs font-mono" title="초기화">100%</button>
+      </div>
+
+      <!-- Canvas Guidance banner -->
+      <div class="absolute top-4 left-4 z-10 pointer-events-none bg-slate-950/80 backdrop-blur border border-slate-800/80 px-3.5 py-2 rounded-xl text-xs text-slate-300 space-y-0.5 shadow-lg">
+        <div class="font-semibold text-indigo-400 flex items-center space-x-1">
+          <span>🎯 마우스 조작 안내</span>
+        </div>
+        <div class="text-[11px] text-slate-400">
+          • <b>드래그</b>: 노드 이동 | • <b>휠 스크롤</b>: Zoom In/Out | • <b>클릭</b>: 노드 관계성 탐색
+        </div>
+      </div>
+
+      <!-- Main Interactive Canvas -->
+      <canvas id="networkCanvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+    </main>
+
+    <!-- RIGHT PANEL: Selected Node Detail Inspector -->
+    <aside id="detailPanel" class="w-80 bg-slate-950 border-l border-slate-800 flex flex-col shrink-0 z-10 shadow-xl">
+      <div class="h-12 border-b border-slate-800 px-4 flex items-center justify-between bg-slate-900/50">
+        <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center space-x-1.5">
+          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+          <span>노드 세부 분석 (Inspector)</span>
+        </h2>
+        <button onclick="clearSelection()" class="text-[11px] text-slate-500 hover:text-slate-300">선택 해제</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scroll p-4 space-y-4 text-xs">
+        
+        <!-- Empty State -->
+        <div id="panel-empty" class="text-center py-16 text-slate-500 space-y-2">
+          <svg class="w-10 h-10 mx-auto text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+          <p class="leading-relaxed">네트워크 캔버스에서 노드를 클릭하면<br>논문의 통계 수치와 세부 관계성이 표시됩니다.</p>
+        </div>
+
+        <!-- Selected State -->
+        <div id="panel-content" class="hidden space-y-4">
+          
+          <!-- Node Header -->
+          <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl space-y-1">
+            <div id="panel-tag" class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold text-white"></div>
+            <h3 id="panel-title" class="text-base font-extrabold text-white"></h3>
+            <p id="panel-sub" class="text-[11px] text-slate-400"></p>
+          </div>
+
+          <!-- Empirical Data Stats -->
+          <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl space-y-2">
+            <h4 class="font-bold text-slate-300 text-[11px] uppercase tracking-wider">논문 실증 데이터 (Metrics)</h4>
+            <div id="panel-metrics" class="text-indigo-300 font-medium text-xs leading-relaxed bg-slate-950 p-2.5 rounded-lg border border-slate-800/80"></div>
+          </div>
+
+          <!-- Academic Insight -->
+          <div class="bg-indigo-950/40 border border-indigo-900/50 p-3 rounded-xl space-y-1 text-indigo-200">
+            <h4 class="font-bold text-indigo-400 text-[11px] flex items-center space-x-1">
+              <span>💡 논문 연구 결과 인사이트</span>
+            </h4>
+            <p id="panel-insight" class="text-[11.5px] leading-relaxed text-slate-300"></p>
+          </div>
+
+          <!-- Connected Nodes Relationships -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-slate-300 text-[11px] uppercase tracking-wider">연결된 요인 관계</h4>
+              <span id="panel-conn-count" class="text-[10px] text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800"></span>
+            </div>
+            <div id="panel-connections" class="space-y-1.5 max-h-56 overflow-y-auto custom-scroll pr-1"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Hover Tooltip -->
+  <div id="tooltip" class="node-tooltip fixed hidden z-50 bg-slate-950 border border-slate-700 p-3 rounded-xl shadow-2xl text-xs max-w-xs pointer-events-none">
+    <div id="tt-title" class="font-bold text-sm text-white mb-1"></div>
+    <div id="tt-cat" class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold mb-1 text-white"></div>
+    <div id="tt-desc" class="text-slate-300 text-[11px] mt-1"></div>
+  </div>
+
+  <script>
+    // --- Data Definitions derived from paper ---
+    const CATEGORIES = {
+      core: { name: '연구 주제 / 도시락', color: '#a855f7', bgClass: 'bg-purple-600' },
+      purchasing: { name: '구매 고려요소', color: '#10b981', bgClass: 'bg-emerald-500' },
+      visual: { name: '라벨 시각요소', color: '#3b82f6', bgClass: 'bg-blue-500' },
+      expression: { name: '차별화 표현요소', color: '#f59e0b', bgClass: 'bg-amber-500' },
+      demographic: { name: '소비자 인구통계', color: '#f43f5e', bgClass: 'bg-rose-500' }
+    };
+
+    const nodesData = [
+      { id: 'n1', label: '편의점 도시락 라벨디자인', category: 'core', size: 38, metrics: '연구 대상 총체 (GS25, CU, 세븐일레븐)', insight: '라벨 디자인은 소비자에게 제품 정보와 시각적 이미지를 전달하여 구매 의도 결정에 60% 이상의 영향을 미침.' },
+      { id: 'n2', label: '프리미엄 도시락', category: 'core', size: 32, metrics: '시각평가 M=3.27 | 구매의도 M=2.68', insight: '일반 도시락 대비 차별화된 이미지로 인지되며 품질 및 메뉴구성 가치를 앞세워 가격 대비 높은 만족도를 형성함. (t=14.921, p<.001)' },
+      { id: 'n3', label: '일반 도시락', category: 'core', size: 22, metrics: '시각평가 M=2.26 | 구매의도 M=2.18', insight: '프리미엄 도시락에 비해 시각적 이미지 평가 및 구매의도가 상대적으로 낮음.' },
+
+      { id: 'n4', label: '품질 (Quality)', category: 'purchasing', size: 34, metrics: '구매요소 1위 (40.1%, 90명)', insight: '소비자들이 도시락 구매 시 가장 중요하게 고려하는 요소. 고급, 정돈, 신뢰감이 주요 시각화 포인트.' },
+      { id: 'n5', label: '메뉴구성 (Menu)', category: 'purchasing', size: 28, metrics: '구매요소 2위 (28.0%, 63명)', insight: '식재료와 조리법의 다양성을 상징하며 일러스트/사진 및 제품명 라벨 요소와 밀접하게 연동됨.' },
+      { id: 'n6', label: '가격 (Price)', category: 'purchasing', size: 22, metrics: '효용성 및 가성비 요인', insight: '가격 중심 소비자는 정돈된 레이아웃 라벨 구조를 선호하며 가성비/가심비 가치를 확인하고자 함.' },
+      { id: 'n7', label: '광고 (Advertising)', category: 'purchasing', size: 20, metrics: '마케팅 & 브랜드 소구', insight: '연예인/셰프 도시락 등 브랜드 이미지가 강하게 작용하는 요소.' },
+
+      { id: 'n8', label: '일러스트 / 사진', category: 'visual', size: 32, metrics: '가장 중요한 시각요소 1위 (38.3%, 86명)', insight: '품질(50명)과 메뉴구성(26명)을 직관적으로 전달하는 핵심 라벨 그래픽 요소.' },
+      { id: 'n9', label: '제품명 / 로고', category: 'visual', size: 28, metrics: '중요 시각요소 2위 (27.2%, 61명)', insight: '품질 및 메뉴 구성을 강조할 수 있는 캘리그라피 및 타이포그래피 요소.' },
+      { id: 'n10', label: '브랜드 (Brand)', category: 'visual', size: 22, metrics: '광고 요소와 유의미한 상관성', insight: '세븐일레븐, GS25, CU 브랜드 인지도 및 셰프/연예인 브랜드 파워 전달.' },
+      { id: 'n11', label: '레이아웃 (Layout)', category: 'visual', size: 22, metrics: '정보 배치 정돈성', insight: '가격 소구 소비자들에게 유효기간, 제조일자, 가격 등 필수 정보가 명확히 전달되도록 유도함.' },
+      { id: 'n12', label: '색채 (Color)', category: 'visual', size: 20, metrics: '고급스러운 이미지 연출', insight: '전반적인 제품 톤앤매너를 결정짓는 핵심 바탕 visual element.' },
+
+      { id: 'n13', label: '고급 (Luxury)', category: 'expression', size: 30, metrics: '프리미엄 차별화 표현 1위', insight: '품질(35명), 광고(25명), 가격(23명) 모든 소비 가치에서 가장 많이 언급된 최우선 표방 이미지.' },
+      { id: 'n14', label: '정돈 (Organized)', category: 'expression', size: 25, metrics: '차별화 표현 2위', insight: '품질(30명) 및 메뉴구성(16명)을 신뢰할 수 있게 만드는 깔끔한 정보 배치 감성.' },
+      { id: 'n15', label: '신뢰 (Trust)', category: 'expression', size: 24, metrics: '차별화 표현 3위', insight: '식재료의 안전성과 위생, 품질(24명)을 보증해주는 이미지.' },
+      { id: 'n16', label: '세련 (Refined)', category: 'expression', size: 20, metrics: '차별화 표현 4위', insight: '감각적인 트렌드 감성 전달.' },
+      { id: 'n17', label: '맛 (Taste)', category: 'expression', size: 18, metrics: '차별화 표현 5위', insight: '식욕을 돋우는 그래픽 및 일러스트 표현.' },
+
+      { id: 'n18', label: '30대 소비계층', category: 'demographic', size: 22, metrics: '최다 이용 연령대 (30.4%, 68명)', insight: '편의점 프리미엄 도시락의 주 구매 고객층.' },
+      { id: 'n19', label: '20대 & 40대 소비계층', category: 'demographic', size: 22, metrics: '각 29.5% (각 66명)', insight: '직장인 및 1인 가구가 다수 포함된 핵심 가심비 소비군.' },
+      { id: 'n20', label: '직장인 (Office Workers)', category: 'demographic', size: 25, metrics: '최다 직업군 (55.0%, 124명)', insight: '바쁜 일상 속 효율적이고 품질 높은 식사를 요구하는 프리미엄 시장 타깃.' }
+    ];
+
+    const linksData = [
+      { source: 'n1', target: 'n2', weight: 4, label: 't=14.921 (p<.001) 차별화 확인' },
+      { source: 'n1', target: 'n3', weight: 2, label: '일반 라벨 대조군' },
+      { source: 'n2', target: 'n4', weight: 4, label: '품질 가치 중심 소구' },
+      { source: 'n2', target: 'n5', weight: 4, label: '메뉴구성 차별화' },
+      { source: 'n2', target: 'n13', weight: 4, label: '고급화 이미지 선도' },
+
+      { source: 'n4', target: 'n8', weight: 5, label: '품질 ➔ 일러스트/사진 (50명)' },
+      { source: 'n4', target: 'n9', weight: 4, label: '품질 ➔ 제품명/로고 (31명)' },
+      { source: 'n5', target: 'n8', weight: 4, label: '메뉴 ➔ 일러스트/사진 (26명)' },
+      { source: 'n5', target: 'n9', weight: 4, label: '메뉴 ➔ 제품명/로고 (23명)' },
+      { source: 'n7', target: 'n10', weight: 4, label: '광고 ➔ 브랜드 (17명)' },
+      { source: 'n6', target: 'n11', weight: 4, label: '가격 ➔ 레이아웃 (20명)' },
+      { source: 'n1', target: 'n12', weight: 2, label: '색채 전반 영향' },
+
+      { source: 'n4', target: 'n13', weight: 5, label: '품질 ➔ 고급 표현 (35명)' },
+      { source: 'n4', target: 'n14', weight: 4, label: '품질 ➔ 정돈 표현 (30명)' },
+      { source: 'n4', target: 'n15', weight: 4, label: '품질 ➔ 신뢰 표현 (24명)' },
+      { source: 'n5', target: 'n13', weight: 3, label: '메뉴 ➔ 고급 표현 (19명)' },
+      { source: 'n5', target: 'n14', weight: 3, label: '메뉴 ➔ 정돈 표현 (16명)' },
+      { source: 'n7', target: 'n13', weight: 4, label: '광고 ➔ 고급 표현 (25명)' },
+      { source: 'n6', target: 'n13', weight: 4, label: '가격 ➔ 고급 표현 (23명)' },
+
+      { source: 'n20', target: 'n2', weight: 3, label: '주 이용 타깃 (55.0%)' },
+      { source: 'n18', target: 'n4', weight: 3, label: '30대 주 가치 (30.4%)' },
+      { source: 'n19', target: 'n5', weight: 2, label: '20/40대 메뉴 관심' }
+    ];
+
+    // --- Simulation Core ---
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = canvas.clientWidth;
+    let height = canvas.height = canvas.clientHeight;
+
+    let nodes = [];
+    let links = [];
+
+    let transform = { x: width / 2, y: height / 2, k: 1 };
+    let isDragging = false;
+    let dragNode = null;
+    let hoveredNode = null;
+    let selectedNode = null;
+    let currentPreset = 'all';
+
+    let mousePos = { x: 0, y: 0 };
+    let dragStart = { x: 0, y: 0 };
+
+    function initGraph() {
+      const radius = Math.min(width, height) * 0.28;
+      nodes = nodesData.map((d, i) => {
+        const angle = (i / nodesData.length) * 2 * Math.PI;
+        return {
+          ...d,
+          x: Math.cos(angle) * radius + (Math.random() - 0.5) * 40,
+          y: Math.sin(angle) * radius + (Math.random() - 0.5) * 40,
+          vx: 0,
+          vy: 0
+        };
+      });
+
+      links = linksData.map(l => {
+        const sourceNode = nodes.find(n => n.id === l.source);
+        const targetNode = nodes.find(n => n.id === l.target);
+        return { ...l, source: sourceNode, target: targetNode };
+      });
+
+      renderNodeList();
+    }
+
+    function updatePhysics() {
+      const repulsionStrength = 1600;
+      const springLength = 135;
+      const springStrength = 0.035;
+      const centerDamping = 0.012;
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const n1 = nodes[i];
+          const n2 = nodes[j];
+          let dx = n2.x - n1.x;
+          let dy = n2.y - n1.y;
+          let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+          if (dist < 320) {
+            let force = (repulsionStrength / (dist * dist));
+            let fx = (dx / dist) * force;
+            let fy = (dy / dist) * force;
+
+            n1.vx -= fx;
+            n1.vy -= fy;
+            n2.vx += fx;
+            n2.vy += fy;
+          }
+        }
+      }
+
+      links.forEach(link => {
+        if (!isNodeVisible(link.source) || !isNodeVisible(link.target)) return;
+
+        let dx = link.target.x - link.source.x;
+        let dy = link.target.y - link.source.y;
+        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        let force = (dist - springLength) * springStrength;
+
+        let fx = (dx / dist) * force;
+        let fy = (dy / dist) * force;
+
+        link.source.vx += fx;
+        link.source.vy += fy;
+        link.target.vx -= fx;
+        link.target.vy -= fy;
+      });
+
+      nodes.forEach(node => {
+        if (node === dragNode) return;
+
+        node.vx -= node.x * centerDamping;
+        node.vy -= node.y * centerDamping;
+
+        node.vx *= 0.83;
+        node.vy *= 0.83;
+
+        node.x += node.vx;
+        node.y += node.vy;
+      });
+    }
+
+    function isNodeVisible(node) {
+      if (currentPreset === 'all') return true;
+      if (currentPreset === 'visual') {
+        return ['core', 'purchasing', 'visual'].includes(node.category);
+      }
+      if (currentPreset === 'expression') {
+        return ['core', 'purchasing', 'expression'].includes(node.category);
+      }
+      if (currentPreset === 'demographics') {
+        return ['core', 'purchasing', 'demographic'].includes(node.category);
+      }
+      return true;
+    }
+
+    function render() {
+      ctx.save();
+      ctx.clearRect(0, 0, width, height);
+
+      // Background subtle grid
+      drawGrid();
+
+      ctx.translate(transform.x, transform.y);
+      ctx.scale(transform.k, transform.k);
+
+      const activeNode = selectedNode || hoveredNode;
+      let connectedNodeIds = new Set();
+      if (activeNode) {
+        connectedNodeIds.add(activeNode.id);
+        links.forEach(l => {
+          if (l.source.id === activeNode.id) connectedNodeIds.add(l.target.id);
+          if (l.target.id === activeNode.id) connectedNodeIds.add(l.source.id);
+        });
+      }
+
+      // Draw Edges
+      links.forEach(link => {
+        if (!isNodeVisible(link.source) || !isNodeVisible(link.target)) return;
+
+        const isHighlighted = activeNode && (link.source.id === activeNode.id || link.target.id === activeNode.id);
+        const isDimmed = activeNode && !isHighlighted;
+
+        ctx.beginPath();
+        ctx.moveTo(link.source.x, link.source.y);
+        ctx.lineTo(link.target.x, link.target.y);
+        ctx.lineWidth = isHighlighted ? (link.weight * 1.5) / transform.k : (link.weight * 0.7) / transform.k;
+        ctx.strokeStyle = isHighlighted ? '#818cf8' : (isDimmed ? 'rgba(51, 65, 85, 0.2)' : 'rgba(71, 85, 105, 0.4)');
+        ctx.stroke();
+
+        if (isHighlighted) {
+          const midX = (link.source.x + link.target.x) / 2;
+          const midY = (link.source.y + link.target.y) / 2;
+          ctx.font = `${Math.max(10, 11 / transform.k)}px sans-serif`;
+          ctx.fillStyle = '#a5b4fc';
+          ctx.textAlign = 'center';
+          ctx.fillText(link.label, midX, midY - 5);
+        }
+      });
+
+      // Draw Nodes
+      nodes.forEach(node => {
+        if (!isNodeVisible(node)) return;
+
+        const isSelected = selectedNode && selectedNode.id === node.id;
+        const isHovered = hoveredNode && hoveredNode.id === node.id;
+        const isConnected = connectedNodeIds.has(node.id);
+        const isDimmed = activeNode && !isConnected;
+
+        const catColor = CATEGORIES[node.category].color;
+        const nodeRadius = (node.size / Math.sqrt(transform.k)) * 0.85;
+
+        ctx.save();
+        ctx.globalAlpha = isDimmed ? 0.18 : 1.0;
+
+        if (isSelected || isHovered) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, nodeRadius + 10, 0, Math.PI * 2);
+          ctx.fillStyle = isSelected ? 'rgba(99, 102, 241, 0.35)' : 'rgba(129, 140, 248, 0.25)';
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = catColor;
+        ctx.fill();
+        ctx.lineWidth = 2 / transform.k;
+        ctx.strokeStyle = isSelected ? '#ffffff' : 'rgba(15, 23, 42, 0.8)';
+        ctx.stroke();
+
+        ctx.font = `${isSelected ? 'bold' : 'normal'} ${Math.max(11, 12.5 / transform.k)}px sans-serif`;
+        ctx.fillStyle = isDimmed ? '#475569' : '#f8fafc';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(node.label, node.x, node.y + nodeRadius + 14 / transform.k);
+
+        ctx.restore();
+      });
+
+      ctx.restore();
+
+      updatePhysics();
+      requestAnimationFrame(render);
+    }
+
+    function drawGrid() {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(30, 41, 59, 0.4)';
+      ctx.lineWidth = 1;
+      const gridSize = 40;
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // --- Helpers ---
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      return {
+        x: (clientX - rect.left - transform.x) / transform.k,
+        y: (clientY - rect.top - transform.y) / transform.k
+      };
+    }
+
+    function findNodeAt(coords) {
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        const node = nodes[i];
+        if (!isNodeVisible(node)) continue;
+        const dx = coords.x - node.x;
+        const dy = coords.y - node.y;
+        const radius = (node.size + 8) / Math.sqrt(transform.k);
+        if (dx * dx + dy * dy <= radius * radius) return node;
+      }
+      return null;
+    }
+
+    // --- Interactions ---
+    canvas.addEventListener('mousedown', e => {
+      const coords = getCanvasCoords(e);
+      const node = findNodeAt(coords);
+
+      if (node) {
+        isDragging = true;
+        dragNode = node;
+        selectNode(node);
+      } else {
+        isDragging = true;
+        dragStart = { x: e.clientX - transform.x, y: e.clientY - transform.y };
+      }
+    });
+
+    canvas.addEventListener('mousemove', e => {
+      const coords = getCanvasCoords(e);
+
+      if (isDragging) {
+        if (dragNode) {
+          dragNode.x = coords.x;
+          dragNode.y = coords.y;
+          dragNode.vx = 0; dragNode.vy = 0;
+        } else {
+          transform.x = e.clientX - dragStart.x;
+          transform.y = e.clientY - dragStart.y;
+        }
+      } else {
+        const node = findNodeAt(coords);
+        if (node !== hoveredNode) {
+          hoveredNode = node;
+          showTooltip(node, e.clientX, e.clientY);
+        } else if (node) {
+          positionTooltip(e.clientX, e.clientY);
+        }
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      dragNode = null;
+    });
+
+    canvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      const mouseX = e.clientX - canvas.getBoundingClientRect().left;
+      const mouseY = e.clientY - canvas.getBoundingClientRect().top;
+
+      const newScale = Math.max(0.4, Math.min(3.5, transform.k * zoomFactor));
+      transform.x = mouseX - (mouseX - transform.x) * (newScale / transform.k);
+      transform.y = mouseY - (mouseY - transform.y) * (newScale / transform.k);
+      transform.k = newScale;
+    });
+
+    function zoomIn() { transform.k = Math.min(3.5, transform.k * 1.2); }
+    function zoomOut() { transform.k = Math.max(0.4, transform.k / 1.2); }
+    function resetView() { transform = { x: width / 2, y: height / 2, k: 1 }; }
+
+    // --- UI Controls & Left Node List ---
+    function renderNodeList(filterQuery = '') {
+      const container = document.getElementById('nodeListContainer');
+      const filtered = nodes.filter(n => isNodeVisible(n) && n.label.toLowerCase().includes(filterQuery.toLowerCase()));
+
+      container.innerHTML = filtered.map(node => `
+        <div onclick="selectNodeById('${node.id}')" 
+             class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-600 cursor-pointer transition flex items-center justify-between group">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${CATEGORIES[node.category].color}"></span>
+            <span class="text-slate-200 group-hover:text-white font-medium text-[11.5px]">${node.label}</span>
+          </div>
+          <span class="text-[9px] text-slate-500 font-mono">r:${node.size}</span>
+        </div>
+      `).join('');
+    }
+
+    function filterNodesList() {
+      const q = document.getElementById('nodeSearch').value;
+      renderNodeList(q);
+    }
+
+    const tooltip = document.getElementById('tooltip');
+    function showTooltip(node, x, y) {
+      if (!node) { tooltip.classList.add('hidden'); return; }
+      document.getElementById('tt-title').innerText = node.label;
+      const cat = CATEGORIES[node.category];
+      const catTag = document.getElementById('tt-cat');
+      catTag.innerText = cat.name;
+      catTag.className = `inline-block px-2 py-0.5 rounded text-[10px] font-semibold mb-1 text-white ${cat.bgClass}`;
+      document.getElementById('tt-desc').innerText = node.metrics;
+      positionTooltip(x, y);
+      tooltip.classList.remove('hidden');
+    }
+
+    function positionTooltip(x, y) {
+      tooltip.style.left = `${x + 15}px`;
+      tooltip.style.top = `${y + 15}px`;
+    }
+
+    function selectNode(node) {
+      selectedNode = node;
+      document.getElementById('panel-empty').classList.add('hidden');
+      document.getElementById('panel-content').classList.remove('hidden');
+
+      const cat = CATEGORIES[node.category];
+      const tag = document.getElementById('panel-tag');
+      tag.innerText = cat.name;
+      tag.className = `inline-block px-2 py-0.5 rounded text-[10px] font-semibold text-white mb-1 ${cat.bgClass}`;
+
+      document.getElementById('panel-title').innerText = node.label;
+      document.getElementById('panel-sub').innerText = `Node ID: ${node.id} | 연결수 ${getNeighbors(node).length}개`;
+      document.getElementById('panel-metrics').innerText = node.metrics;
+      document.getElementById('panel-insight').innerText = node.insight;
+
+      const neighbors = getNeighbors(node);
+      document.getElementById('panel-conn-count').innerText = `${neighbors.length}개`;
+      document.getElementById('panel-connections').innerHTML = neighbors.map(n => `
+        <div onclick="selectNodeById('${n.node.id}')" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-indigo-500 cursor-pointer transition flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full" style="background-color:${CATEGORIES[n.node.category].color}"></span>
+            <span class="text-slate-200 font-medium text-[11px]">${n.node.label}</span>
+          </div>
+          <span class="text-[9.5px] text-slate-400 font-mono">${n.label}</span>
+        </div>
+      `).join('');
+    }
+
+    function selectNodeById(id) {
+      const node = nodes.find(n => n.id === id);
+      if (node) selectNode(node);
+    }
+
+    function getNeighbors(node) {
+      const res = [];
+      links.forEach(l => {
+        if (l.source.id === node.id) res.push({ node: l.target, label: l.label });
+        if (l.target.id === node.id) res.push({ node: l.source, label: l.label });
+      });
+      return res;
+    }
+
+    function clearSelection() {
+      selectedNode = null;
+      document.getElementById('panel-content').classList.add('hidden');
+      document.getElementById('panel-empty').classList.remove('hidden');
+    }
+
+    function setPreset(preset) {
+      currentPreset = preset;
+      document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('preset-active'));
+      const activeBtn = document.getElementById(`btn-${preset}`);
+      if (activeBtn) activeBtn.classList.add('preset-active');
+      renderNodeList();
+    }
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = canvas.clientWidth;
+      height = canvas.height = canvas.clientHeight;
+      transform.x = width / 2;
+      transform.y = height / 2;
+    });
+
+    initGraph();
+    render();
+  </script>
+</body>
+</html>
