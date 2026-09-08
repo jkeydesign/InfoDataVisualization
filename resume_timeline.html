@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>강은영 (KEY) - 연도 표시 방사형 아크 시계열</title>
+  <title>강은영 (KEY) - 2000~2026 (27개 연도별 방사형 궤도 시계열)</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     body {
@@ -40,20 +40,20 @@
       </div>
       <div>
         <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
-          <span>강은영 (KEY) - 연도 표시 5중 방사형 아크 시계열</span>
-          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">Interactive Year Timeline</span>
+          <span>강은영 (KEY) - 2000~2026 (27개 연도별 궤도 시계열)</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">27-Arc Year Spiral</span>
         </h1>
-        <p class="text-[11px] text-slate-400">마우스 호버 시 정확한 연도(Year)와 세부 연구·전시 성과 표시</p>
+        <p class="text-[11px] text-slate-400">2000년부터 2026년까지 27개 연도 궤도 & 1월~12월 계절적 시계열</p>
       </div>
     </div>
 
     <!-- Quick Stats -->
     <div class="flex items-center space-x-4 text-xs font-mono">
+      <span class="text-slate-400">궤도 수: <b class="text-pink-400">27개 (2000~2026)</b></span>
+      <span class="text-slate-600">|</span>
       <span class="text-slate-400">KCI 등재: <b class="text-pink-400">4편</b></span>
       <span class="text-slate-600">|</span>
       <span class="text-slate-400">국제전시: <b class="text-pink-400">10건</b></span>
-      <span class="text-slate-600">|</span>
-      <span class="text-slate-400">심사위원: <b class="text-pink-400">3회</b></span>
       <span class="text-slate-600">|</span>
       <span class="text-slate-400">실무: <b class="text-pink-400">15년+</b></span>
     </div>
@@ -67,56 +67,57 @@
       
       <div class="space-y-5">
         <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">단계별 궤도 색상 지표</h2>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">분야별 노드 색상 지표</h2>
           <div class="space-y-2 text-xs">
-            <button onclick="setTierFilter('all')" id="btn-all" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
-              <span>💖 전체 5중 단계별 아크</span>
+            <button onclick="setCategoryFilter('all')" id="btn-all" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
+              <span>💖 전체 27개 연도 궤도 보기</span>
               <span class="text-[10px] font-mono text-pink-400">ALL</span>
             </button>
-            <button onclick="setTierFilter('career')" id="btn-career" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('career')" id="btn-career" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-[#ec4899] shadow-xs"></span>
-                <span>🏢 Tier 1: 기업 실무 (Hot Pink)</span>
+                <span>🏢 기업 실무 (Hot Pink)</span>
               </div>
               <span class="text-[10px] font-mono text-pink-400">15년+</span>
             </button>
-            <button onclick="setTierFilter('research')" id="btn-research" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('research')" id="btn-research" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-[#f43f5e] shadow-xs"></span>
-                <span>🎓 Tier 2: 학력 & KCI (Rose Pink)</span>
+                <span>🎓 학력 & KCI 논문 (Rose Pink)</span>
               </div>
-              <span class="text-[10px] font-mono text-rose-400">논문 5편</span>
+              <span class="text-[10px] font-mono text-rose-400">6건</span>
             </button>
-            <button onclick="setTierFilter('exhibit')" id="btn-exhibit" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('exhibit')" id="btn-exhibit" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-[#fb7185] shadow-xs"></span>
-                <span>🎨 Tier 3: 국제 전시 (Coral Pink)</span>
+                <span>🎨 국제 전시 (Coral Pink)</span>
               </div>
               <span class="text-[10px] font-mono text-rose-300">10건</span>
             </button>
-            <button onclick="setTierFilter('judge')" id="btn-judge" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('judge')" id="btn-judge" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-[#64748b] shadow-xs"></span>
-                <span>⚖️ Tier 4: 심사위원 (Slate Gray)</span>
+                <span>⚖️ 심사위원 위촉 (Slate Gray)</span>
               </div>
               <span class="text-[10px] font-mono text-slate-400">3회</span>
             </button>
-            <button onclick="setTierFilter('awards')" id="btn-awards" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('awards')" id="btn-awards" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-[#cbd5e1] shadow-xs"></span>
-                <span>🏆 Tier 5: 수상 & 자격 (Cool Gray)</span>
+                <span>🏆 수상 & 자격증 (Cool Gray)</span>
               </div>
-              <span class="text-[10px] font-mono text-slate-300">9건</span>
+              <span class="text-[10px] font-mono text-slate-300">5건</span>
             </button>
           </div>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
           <h3 class="font-bold text-pink-400 flex items-center space-x-1.5">
-            <span>📅 연도(Year) 확인 안내</span>
+            <span>🌐 27개 연도 궤도 안내</span>
           </h3>
           <p class="text-slate-300 leading-relaxed text-[11.5px]">
-            노드에 <b>마우스를 올리거나 클릭하시면 노드 위와 툴팁에 수행 연도(Year)</b>가 명확히 팝업 표시됩니다.
+            <b>반지름(안➔밖)</b>: 2000년 ~ 2026년 (총 27개 동심원 반원 궤도)<br>
+            <b>각도(왼➔오)</b>: 1월 ~ 12월 (시간 흐름 애니메이션)
           </p>
         </div>
       </div>
@@ -132,9 +133,9 @@
       <!-- Interactive Radial Canvas -->
       <canvas id="radialCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
 
-      <!-- Center Dynamic Info Hub (Replaces static KEY circle & beam target) -->
+      <!-- Center Dynamic Info Hub -->
       <div class="relative z-10 flex flex-col items-center mb-6 pointer-events-auto transition-all duration-300">
-        <div id="center-hub-card" class="w-[440px] bg-slate-950/95 border-2 border-pink-500/80 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-center space-y-2 glow-pink-bg">
+        <div id="center-hub-card" class="w-[460px] bg-slate-950/95 border-2 border-pink-500/80 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-center space-y-2 glow-pink-bg">
           <!-- Year & Date Pill -->
           <div class="flex items-center justify-center space-x-2">
             <span id="hub-year" class="bg-pink-500 text-slate-950 font-black px-3 py-1 rounded-full text-xs font-mono tracking-wide shadow-md">
@@ -204,7 +205,7 @@
 
   </div>
 
-  <!-- Hover Tooltip with Prominent Year Label -->
+  <!-- Hover Tooltip -->
   <div id="tooltip" class="fixed hidden z-50 bg-slate-950 border border-pink-500 p-3 rounded-xl shadow-2xl text-xs max-w-xs pointer-events-none space-y-1">
     <div class="flex items-center justify-between space-x-2">
       <span id="tt-year" class="px-2 py-0.5 rounded text-[11px] font-extrabold text-slate-950 bg-pink-400 font-mono shadow-sm"></span>
@@ -215,50 +216,51 @@
   </div>
 
   <script>
-    const TIER_COLORS = {
-      1: { main: '#ec4899', light: '#f472b6', name: 'Hot Pink (실무)' },
-      2: { main: '#f43f5e', light: '#fb7185', name: 'Rose Pink (학술/KCI)' },
-      3: { main: '#fb7185', light: '#fca5a5', name: 'Coral Pink (국제전시)' },
-      4: { main: '#64748b', light: '#94a3b8', name: 'Slate Gray (심사위원)' },
-      5: { main: '#cbd5e1', light: '#f1f5f9', name: 'Cool Gray (수상/자격)' }
+    const CATEGORY_COLORS = {
+      career: { main: '#ec4899', light: '#f472b6', name: 'Hot Pink (기업 실무)' },
+      research: { main: '#f43f5e', light: '#fb7185', name: 'Rose Pink (학력/KCI)' },
+      exhibit: { main: '#fb7185', light: '#fca5a5', name: 'Coral Pink (국제 전시)' },
+      judge: { main: '#64748b', light: '#94a3b8', name: 'Slate Gray (심사위원)' },
+      awards: { main: '#cbd5e1', light: '#f1f5f9', name: 'Cool Gray (수상/자격)' }
     };
 
+    // Node Data mapped to exact Year (2000~2026) and Month (1~12)
     const radialNodesData = [
-      // Tier 1: Industry Career (Radius 170)
-      { id: 'c1', yearLabel: '2018년~2024년', label: '제이키디자인연구소 (실장 7년)', category: 'career', arcTier: 1, angle: -155, date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
-      { id: 'c2', yearLabel: '2021년~2022년', label: '고트레 (팀장 1년)', category: 'career', arcTier: 1, angle: -125, date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
-      { id: 'c3', yearLabel: '2025년', label: '상상공장 (과장 1년)', category: 'career', arcTier: 1, angle: -95, date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
-      { id: 'c4', yearLabel: '2015년~2017년', label: '이호 (팀장/대리 2년)', category: 'career', arcTier: 1, angle: -65, date: '2015.07 ~ 2017.04', org: '이호', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', status: 'COSTCO 입점 파트너사 패키지 관리' },
-      { id: 'c5', yearLabel: '2005년~2008년', label: 'CBS 기독교방송 (3년)', category: 'career', arcTier: 1, angle: -35, date: '2005.03 ~ 2008.03', org: 'CBS방송', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', status: '방송 그래픽 타이틀 연출' },
+      // Industry Career
+      { id: 'c5', year: 2005, month: 3, yearLabel: '2005년~2008년', label: 'CBS 기독교방송 (3년)', category: 'career', arcTier: 1, date: '2005.03 ~ 2008.03', org: 'CBS방송', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', status: '방송 그래픽 타이틀 연출' },
+      { id: 'c4', year: 2015, month: 7, yearLabel: '2015년~2017년', label: '이호 (팀장/대리 2년)', category: 'career', arcTier: 1, date: '2015.07 ~ 2017.04', org: '이호', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', status: 'COSTCO 입점 파트너사 패키지 관리' },
+      { id: 'c1', year: 2018, month: 1, yearLabel: '2018년~2024년', label: '제이키디자인연구소 (실장 7년)', category: 'career', arcTier: 1, date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
+      { id: 'c2', year: 2021, month: 6, yearLabel: '2021년~2022년', label: '고트레 (팀장 1년)', category: 'career', arcTier: 1, date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
+      { id: 'c3', year: 2025, month: 1, yearLabel: '2025년', label: '상상공장 (과장 1년)', category: 'career', arcTier: 1, date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
 
-      // Tier 2: Education & KCI Papers (Radius 240)
-      { id: 'd1', yearLabel: '2023년 수료', label: '홍익대 박사 수료 (GPA 4.17)', category: 'research', arcTier: 2, angle: -160, date: '2020.02 ~ 2023.08', org: '홍익대학교 대학원', desc: '인공지능과 디자인, 생성형 AI 환경에서 디자이너 판단 과정 학술 연구.', status: '박사 수료증명서 증빙 완료' },
-      { id: 'd2', yearLabel: '2017년 졸업', label: '홍익대 석사 졸업 (GPA 4.28)', category: 'research', arcTier: 2, angle: -140, date: '2015.02 ~ 2017.02', org: '홍익대학교 대학원', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 연구.', status: '석사학위기 PDF 증빙 완료' },
-      { id: 'p1', yearLabel: '2020년 11월', label: '📄 KCI 2020: 편의점 도시락 라벨', category: 'research', arcTier: 2, angle: -115, date: '2020.11.18', org: '한국디지털정책학회 (KCI)', desc: '프리미엄·일반 편의점 도시락 라벨디자인 구매의도 연구 (t=14.921***).', status: 'KCI 등재 논문 PDF 증빙' },
-      { id: 'p2', yearLabel: '2024년 12월', label: '📄 KCI 2024: AI 로고 연구', category: 'research', arcTier: 2, angle: -90, date: '2024.12.04', org: 'IJACT (KCI 등재)', desc: '인공지능 로고 제작 웹서비스 활용 로고디자인 연구.', status: 'KCI 등재 논문 PDF 증빙' },
-      { id: 'p3', yearLabel: '2025년 03월', label: '📄 KCI 2025: Post-Humanism AI', category: 'research', arcTier: 2, angle: -65, date: '2025.03.24', org: 'IJACT (KCI 등재)', desc: '포스트휴머니즘 시대의 인공지능과 디자이너 역할 변화 고찰.', status: 'IJCC 2025 Best Paper Award' },
-      { id: 'p4', yearLabel: '2026년 03월', label: '📄 KCI 2026: AI 디자이너 판단', category: 'research', arcTier: 2, angle: -40, date: '2026.03.26', org: '한국브랜드디자인학회 (KCI)', desc: 'AI 로고 생성 환경 감정-인지 상호작용 디자인판단 연구.', status: 'KCI 등재 논문 PDF 증빙' },
+      // Education & KCI Papers
+      { id: 'd2', year: 2017, month: 2, yearLabel: '2017년 졸업', label: '홍익대 석사 졸업 (GPA 4.28)', category: 'research', arcTier: 2, date: '2015.02 ~ 2017.02', org: '홍익대학교 대학원', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 연구.', status: '석사학위기 PDF 증빙 완료' },
+      { id: 'p1', year: 2020, month: 11, yearLabel: '2020년 11월', label: '📄 KCI 2020: 편의점 도시락 라벨', category: 'research', arcTier: 2, date: '2020.11.18', org: '한국디지털정책학회 (KCI)', desc: '프리미엄·일반 편의점 도시락 라벨디자인 구매의도 연구 (t=14.921***).', status: 'KCI 등재 논문 PDF 증빙' },
+      { id: 'd1', year: 2023, month: 8, yearLabel: '2023년 수료', label: '홍익대 박사 수료 (GPA 4.17)', category: 'research', arcTier: 2, date: '2020.02 ~ 2023.08', org: '홍익대학교 대학원', desc: '인공지능과 디자인, 생성형 AI 환경에서 디자이너 판단 과정 학술 연구.', status: '박사 수료증명서 증빙 완료' },
+      { id: 'p2', year: 2024, month: 12, yearLabel: '2024년 12월', label: '📄 KCI 2024: AI 로고 연구', category: 'research', arcTier: 2, date: '2024.12.04', org: 'IJACT (KCI 등재)', desc: '인공지능 로고 제작 웹서비스 활용 로고디자인 연구.', status: 'KCI 등재 논문 PDF 증빙' },
+      { id: 'p3', year: 2025, month: 3, yearLabel: '2025년 03월', label: '📄 KCI 2025: Post-Humanism AI', category: 'research', arcTier: 2, date: '2025.03.24', org: 'IJACT (KCI 등재)', desc: '포스트휴머니즘 시대의 인공지능과 디자이너 역할 변화 고찰.', status: 'IJCC 2025 Best Paper Award' },
+      { id: 'p4', year: 2026, month: 3, yearLabel: '2026년 03월', label: '📄 KCI 2026: AI 디자이너 판단', category: 'research', arcTier: 2, date: '2026.03.26', org: '한국브랜드디자인학회 (KCI)', desc: 'AI 로고 생성 환경 감정-인지 상호작용 디자인판단 연구.', status: 'KCI 등재 논문 PDF 증빙' },
 
-      // Tier 3: International Exhibitions (Radius 310)
-      { id: 'e1', yearLabel: '2020년 10월', label: '🎨 오사카 한글 포스터전 (일본)', category: 'exhibit', arcTier: 3, angle: -165, date: '2020.10.05', org: '일본 미리내 갤러리 / VIDAK', desc: 'HANGEUL Typography Poster Exhibition Osaka 작품 "Ah" 출품.', status: '참가증 및 도록 사진 4건' },
-      { id: 'e2', yearLabel: '2022년 12월', label: '🎨 DDP D-SPACE 국제초대전', category: 'exhibit', arcTier: 3, angle: -145, date: '2022.12.03', org: 'DDP 동대문디자인플라자 / VIDAK', desc: 'VIDAK 2022 D-SPACE 국제초대전 작품 "일상 Daily Design Life" 출품.', status: '출품증 및 도록 10건' },
-      { id: 'e3', yearLabel: '2023년 09월', label: '🎨 광주디자인비엔날레 초대전', category: 'exhibit', arcTier: 3, angle: -120, date: '2023.09.07', org: '광주디자인진흥원 / 총연합회', desc: '2023 광주디자인비엔날레 국제포스터 초대전시회 출품.', status: '출품증 및 도록 파일 44건' },
-      { id: 'e4', yearLabel: '2025년 02월', label: '🎨 오키나와 K-Identity 초대전 (일본)', category: 'exhibit', arcTier: 3, angle: -95, date: '2025.02.11', org: '오키나와 류큐대학 / VIDAK', desc: '2025 VIDAK K_Identity 국제초대전 Okinawa 출품.', status: '출품증명서 및 도록 23건' },
-      { id: 'e5', yearLabel: '2025년 07월', label: '🎨 VIDAK 815 광복 교류전', category: 'exhibit', arcTier: 3, angle: -75, date: '2025.07.11', org: 'VIDAK', desc: '815 광복 국제교류전 포스터 출품.', status: '출품 증빙 4건' },
-      { id: 'e6', yearLabel: '2026년 02월', label: '🎨 대만 가오슝 국제전시', category: 'exhibit', arcTier: 3, angle: -55, date: '2026.02.06', org: '가오슝 문화디자인개발협회', desc: '2026 Year of Horse Creative Exhibition 작품 "We’re the Dark Horse" 출품.', status: '참가증 및 도록 파일 12건' },
-      { id: 'e7', yearLabel: '2026년 06월', label: '🎨 VISIBLE BEAUTY 국제전시 (대만)', category: 'exhibit', arcTier: 3, angle: -30, date: '2026.06.06', org: '대만 시각디자인협회', desc: 'VISIBLE BEAUTY 국제초청전 작품 "Unsightliness" 출품.', status: '참가증 및 전시장 사진 11건' },
+      // International Exhibitions
+      { id: 'e1', year: 2020, month: 10, yearLabel: '2020년 10월', label: '🎨 오사카 한글 포스터전 (일본)', category: 'exhibit', arcTier: 3, date: '2020.10.05', org: '일본 미리내 갤러리 / VIDAK', desc: 'HANGEUL Typography Poster Exhibition Osaka 작품 "Ah" 출품.', status: '참가증 및 도록 사진 4건' },
+      { id: 'e2', year: 2022, month: 12, yearLabel: '2022년 12월', label: '🎨 DDP D-SPACE 국제초대전', category: 'exhibit', arcTier: 3, date: '2022.12.03', org: 'DDP 동대문디자인플라자 / VIDAK', desc: 'VIDAK 2022 D-SPACE 국제초대전 작품 "일상 Daily Design Life" 출품.', status: '출품증 및 도록 10건' },
+      { id: 'e3', year: 2023, month: 9, yearLabel: '2023년 09월', label: '🎨 광주디자인비엔날레 초대전', category: 'exhibit', arcTier: 3, date: '2023.09.07', org: '광주디자인진흥원 / 총연합회', desc: '2023 광주디자인비엔날레 국제포스터 초대전시회 출품.', status: '출품증 및 도록 파일 44건' },
+      { id: 'e4', year: 2025, month: 2, yearLabel: '2025년 02월', label: '🎨 오키나와 K-Identity 초대전 (일본)', category: 'exhibit', arcTier: 3, date: '2025.02.11', org: '오키나와 류큐대학 / VIDAK', desc: '2025 VIDAK K_Identity 국제초대전 Okinawa 출품.', status: '출품증명서 및 도록 23건' },
+      { id: 'e5', year: 2025, month: 7, yearLabel: '2025년 07월', label: '🎨 VIDAK 815 광복 교류전', category: 'exhibit', arcTier: 3, date: '2025.07.11', org: 'VIDAK', desc: '815 광복 국제교류전 포스터 출품.', status: '출품 증빙 4건' },
+      { id: 'e6', year: 2026, month: 2, yearLabel: '2026년 02월', label: '🎨 대만 가오슝 국제전시', category: 'exhibit', arcTier: 3, date: '2026.02.06', org: '가오슝 문화디자인개발협회', desc: '2026 Year of Horse Creative Exhibition 작품 "We’re the Dark Horse" 출품.', status: '참가증 및 도록 파일 12건' },
+      { id: 'e7', year: 2026, month: 6, yearLabel: '2026년 06월', label: '🎨 VISIBLE BEAUTY 국제전시 (대만)', category: 'exhibit', arcTier: 3, date: '2026.06.06', org: '대만 시각디자인협회', desc: 'VISIBLE BEAUTY 국제초청전 작품 "Unsightliness" 출품.', status: '참가증 및 전시장 사진 11건' },
 
-      // Tier 4: Judges (Radius 380)
-      { id: 'j1', yearLabel: '2022년 07월', label: '⚖️ 제57회 대한민국디자인전람회 심사위원', category: 'judge', arcTier: 4, angle: -150, date: '2022.07.07', org: '산업통상자원부 / KIDP', desc: '대한민국디자인전람회 1차·2차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
-      { id: 'j2', yearLabel: '2023년 08월', label: '⚖️ 우수디자인(GD) 상품선정 심사위원', category: 'judge', arcTier: 4, angle: -105, date: '2023.08.25', org: '한국디자인진흥원 (KIDP)', desc: '우수디자인(GD) 상품선정 2차·3차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
-      { id: 'j3', yearLabel: '2024년 06월', label: '⚖️ 수원시 공공브랜드 위원회 위원', category: 'judge', arcTier: 4, angle: -60, date: '2024.06.13', org: '수원시청', desc: '수원시 상징물 및 공공브랜드 위원회 위원 위촉 (2024~2026).', status: '위촉장 PDF 및 공문 5건' },
+      // Judges
+      { id: 'j1', year: 2022, month: 7, yearLabel: '2022년 07월', label: '⚖️ 제57회 대한민국디자인전람회 심사위원', category: 'judge', arcTier: 4, date: '2022.07.07', org: '산업통상자원부 / KIDP', desc: '대한민국디자인전람회 1차·2차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
+      { id: 'j2', year: 2023, month: 8, yearLabel: '2023년 08월', label: '⚖️ 우수디자인(GD) 상품선정 심사위원', category: 'judge', arcTier: 4, date: '2023.08.25', org: '한국디자인진흥원 (KIDP)', desc: '우수디자인(GD) 상품선정 2차·3차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
+      { id: 'j3', year: 2024, month: 6, yearLabel: '2024년 06월', label: '⚖️ 수원시 공공브랜드 위원회 위원', category: 'judge', arcTier: 4, date: '2024.06.13', org: '수원시청', desc: '수원시 상징물 및 공공브랜드 위원회 위원 위촉 (2024~2026).', status: '위촉장 PDF 및 공문 5건' },
 
-      // Tier 5: Awards & Certs (Radius 450)
-      { id: 'a1', yearLabel: '2025년 02월', label: '🏆 IJCC 2025 Best Paper Award (최우수 논문상)', category: 'awards', arcTier: 5, angle: -160, date: '2025.02.15', org: 'IJCC & ICAI 2025 국제컨퍼런스', desc: 'On Artificial Intelligence and Designers in Post-Humanism 연구로 최우수 논문상 수상.', status: '상장 이미지 2건 증빙' },
-      { id: 'a2', yearLabel: '2022년 11월', label: '🥇 2022 서울디자인컨설턴트 우수상', category: 'awards', arcTier: 5, angle: -135, date: '2022.11.29', org: '(재)서울디자인재단', desc: '관악구 은천동 희망마을 축제 브랜드 디자인 컨설팅 우수상.', status: '상장 증빙 완료' },
-      { id: 'a3', yearLabel: '2016년 09월', label: '🏆 임산물 로고패키지 은상', category: 'awards', arcTier: 5, angle: -110, date: '2016.09.05', org: '한국임업진흥원', desc: '감와인 패키지 디자인 공모전 은상 수상.', status: '상장 및 파일 5건' },
-      { id: 'a4', yearLabel: '2010년 10월', label: '🏆 건일제약 수기 공모전 최우수상', category: 'awards', arcTier: 5, angle: -85, date: '2010.10.10', org: '㈜건일제약', desc: '전국 단위 수필 공모전 최우수상.', status: '상장 증빙 완료' },
-      { id: 'a5', yearLabel: '2010년~2021년', label: '📜 컬러리스트 / 시각디자인 / GTQ 1급 자격증', category: 'awards', arcTier: 5, angle: -50, date: '2010 ~ 2021', org: '산업통상자원부 / KPC', desc: '컬러리스트산업기사, 시각디자인산업기사, GTQ 포토샵 1급 국가자격 취득.', status: '자격확인서 증빙 완료' }
+      // Awards & Certifications
+      { id: 'a4', year: 2010, month: 10, yearLabel: '2010년 10월', label: '🏆 건일제약 수기 공모전 최우수상', category: 'awards', arcTier: 5, date: '2010.10.10', org: '㈜건일제약', desc: '전국 단위 수필 공모전 최우수상.', status: '상장 증빙 완료' },
+      { id: 'a5', year: 2012, month: 5, yearLabel: '2010년~2021년', label: '📜 컬러리스트 / 시각디자인 / GTQ 1급 자격증', category: 'awards', arcTier: 5, date: '2010 ~ 2021', org: '산업통상자원부 / KPC', desc: '컬러리스트산업기사, 시각디자인산업기사, GTQ 포토샵 1급 국가자격 취득.', status: '자격확인서 증빙 완료' },
+      { id: 'a3', year: 2016, month: 9, yearLabel: '2016년 09월', label: '🏆 임산물 로고패키지 은상', category: 'awards', arcTier: 5, date: '2016.09.05', org: '한국임업진흥원', desc: '감와인 패키지 디자인 공모전 은상 수상.', status: '상장 및 파일 5건' },
+      { id: 'a2', year: 2022, month: 11, yearLabel: '2022년 11월', label: '🥇 2022 서울디자인컨설턴트 우수상', category: 'awards', arcTier: 5, date: '2022.11.29', org: '(재)서울디자인재단', desc: '관악구 은천동 희망마을 축제 브랜드 디자인 컨설팅 우수상.', status: '상장 증빙 완료' },
+      { id: 'a1', year: 2025, month: 2, yearLabel: '2025년 02월', label: '🏆 IJCC 2025 Best Paper Award (최우수 논문상)', category: 'awards', arcTier: 5, date: '2025.02.15', org: 'IJCC & ICAI 2025 국제컨퍼런스', desc: 'On Artificial Intelligence and Designers in Post-Humanism 연구로 최우수 논문상 수상.', status: '상장 이미지 2건 증빙' }
     ];
 
     const canvas = document.getElementById('radialCanvas');
@@ -267,140 +269,184 @@
     let width = canvas.width = canvas.clientWidth;
     let height = canvas.height = canvas.clientHeight;
 
-    let centerPos = { x: width / 2, y: height * 0.76 };
+    const START_YEAR = 2000;
+    const END_YEAR = 2026;
+    const TOTAL_YEARS = END_YEAR - START_YEAR + 1; // 27 Years (2000 ~ 2026)
+
+    let centerPos = { x: width / 2, y: height * 0.78 };
+    let R_MIN = 110;
+    let R_MAX = 480;
+    let radiusStep = (R_MAX - R_MIN) / (TOTAL_YEARS - 1);
+
     let hoveredNode = null;
     let selectedNode = null;
-    let currentTierFilter = 'all';
+    let currentCategoryFilter = 'all';
 
     function calculateRadialCoords() {
-      centerPos = { x: width / 2, y: height * 0.76 };
+      width = canvas.width = canvas.clientWidth;
+      height = canvas.height = canvas.clientHeight;
+      centerPos = { x: width / 2, y: height * 0.78 };
+
+      R_MIN = 100;
+      R_MAX = Math.min(width * 0.45, height * 0.72);
+      radiusStep = (R_MAX - R_MIN) / (TOTAL_YEARS - 1);
 
       radialNodesData.forEach(node => {
-        let baseRadius = 170;
-        if (node.arcTier === 1) baseRadius = 170;
-        if (node.arcTier === 2) baseRadius = 240;
-        if (node.arcTier === 3) baseRadius = 310;
-        if (node.arcTier === 4) baseRadius = 380;
-        if (node.arcTier === 5) baseRadius = 450;
+        const yearIdx = Math.max(0, Math.min(TOTAL_YEARS - 1, node.year - START_YEAR));
+        const r = R_MIN + yearIdx * radiusStep;
+        
+        // Month angle: -180 deg (1월, left) to 0 deg (12월, right)
+        const monthNorm = (node.month - 1) / 11;
+        const angleDeg = -180 + monthNorm * 180;
+        const angleRad = (angleDeg * Math.PI) / 180;
 
-        const rad = (node.angle * Math.PI) / 180;
-        node.x = centerPos.x + Math.cos(rad) * baseRadius;
-        node.y = centerPos.y + Math.sin(rad) * baseRadius;
-        node.radius = 12 - (node.arcTier * 0.8);
+        node.x = centerPos.x + Math.cos(angleRad) * r;
+        node.y = centerPos.y + Math.sin(angleRad) * r;
+        node.radius = 7;
       });
     }
 
     function isNodeVisible(node) {
-      if (currentTierFilter === 'all') return true;
-      return node.category === currentTierFilter;
+      if (currentCategoryFilter === 'all') return true;
+      return node.category === currentCategoryFilter;
     }
 
     function render() {
       ctx.clearRect(0, 0, width, height);
-
       const timestamp = performance.now() * 0.001; // Current timestamp in seconds
 
-      // Draw 5 Concentric Arc Tracks with Left-to-Right Time Flow Glow Animations
+      // 1. Draw 27 Concentric Year Arcs (2000년 ~ 2026년)
       ctx.save();
-      const tiersRadius = [450, 380, 310, 240, 170];
-      const tierLineColors = [
-        'rgba(203, 213, 225, 0.35)',
-        'rgba(100, 116, 139, 0.4)',
-        'rgba(251, 113, 133, 0.4)',
-        'rgba(244, 63, 94, 0.5)',
-        'rgba(236, 72, 153, 0.6)'
-      ];
+      for (let i = 0; i < TOTAL_YEARS; i++) {
+        const currentYear = START_YEAR + i;
+        const r = R_MIN + i * radiusStep;
+        const isMajorYear = (currentYear % 5 === 0) || (currentYear === END_YEAR);
 
-      tiersRadius.forEach((r, idx) => {
-        // 1. Base Static Arc Line Track
+        // Arc Track Line
         ctx.beginPath();
         ctx.arc(centerPos.x, centerPos.y, r, Math.PI, 2 * Math.PI);
-        ctx.strokeStyle = tierLineColors[idx];
-        ctx.lineWidth = 1.8;
-        if (idx === 4) ctx.setLineDash([5, 5]); else ctx.setLineDash([]);
+        if (isMajorYear) {
+          ctx.strokeStyle = 'rgba(244, 114, 182, 0.45)';
+          ctx.lineWidth = 1.4;
+        } else {
+          ctx.strokeStyle = 'rgba(100, 116, 139, 0.22)';
+          ctx.lineWidth = 0.8;
+        }
         ctx.stroke();
-        ctx.setLineDash([]);
 
-        // 2. Time Flow Light Beam Sweeping Left -> Right (Math.PI to 2*Math.PI)
-        const flowSpeed = 0.25 + (idx * 0.04);
-        const flowProgress = (timestamp * flowSpeed + idx * 0.22) % 1.0;
+        // Major Year Labels on Left (-180°) and Right (0°) Ends
+        if (isMajorYear) {
+          ctx.font = 'bold 9px font-mono';
+          ctx.fillStyle = '#f472b6';
+
+          // Left Label (1월 Side)
+          ctx.textAlign = 'right';
+          ctx.fillText(`${currentYear}년`, centerPos.x - r - 6, centerPos.y + 3);
+
+          // Right Label (12월 Side)
+          ctx.textAlign = 'left';
+          ctx.fillText(`${currentYear}년`, centerPos.x + r + 6, centerPos.y + 3);
+        }
+
+        // 2. Animated Time-Flow Light Particles (Left to Right along each of 27 Arcs)
+        const flowSpeed = 0.18 + (i % 6) * 0.025;
+        const flowProgress = (timestamp * flowSpeed + i * 0.12) % 1.0;
         const headAngle = Math.PI + flowProgress * Math.PI; // -180° to 0°
-        const tailLength = 0.35; // radians
+        const tailLength = 0.28; // radians
         const tailStart = Math.max(Math.PI, headAngle - tailLength);
 
-        // Glowing Comet Arc Segment
+        // Light Comet Arc Tail
         ctx.beginPath();
         ctx.arc(centerPos.x, centerPos.y, r, tailStart, headAngle);
-        ctx.strokeStyle = 'rgba(236, 72, 153, 0.75)';
-        ctx.lineWidth = 3.5;
-        ctx.shadowColor = '#ec4899';
-        ctx.shadowBlur = 12;
+        ctx.strokeStyle = 'rgba(236, 72, 153, 0.65)';
+        ctx.lineWidth = isMajorYear ? 2.5 : 1.8;
         ctx.stroke();
-        ctx.shadowBlur = 0;
 
-        // Glowing Comet Head Particle
+        // Light Comet Head Particle
         const headX = centerPos.x + Math.cos(headAngle) * r;
         const headY = centerPos.y + Math.sin(headAngle) * r;
         ctx.beginPath();
-        ctx.arc(headX, headY, 3.5, 0, Math.PI * 2);
+        ctx.arc(headX, headY, isMajorYear ? 2.8 : 2.0, 0, Math.PI * 2);
         ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = '#f472b6';
-        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 10;
         ctx.fill();
         ctx.shadowBlur = 0;
+      }
+      ctx.restore();
+
+      // Month Markers along top outer perimeter
+      ctx.save();
+      ctx.font = 'bold 10px sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'center';
+
+      const monthTicks = [
+        { label: '1월 (Left)', angle: -180 },
+        { label: '3월', angle: -147 },
+        { label: '6월 (Top)', angle: -90 },
+        { label: '9월', angle: -33 },
+        { label: '12월 (Right)', angle: 0 }
+      ];
+
+      monthTicks.forEach(tick => {
+        const rad = (tick.angle * Math.PI) / 180;
+        const tx = centerPos.x + Math.cos(rad) * (R_MAX + 22);
+        const ty = centerPos.y + Math.sin(rad) * (R_MAX + 22);
+        ctx.fillText(tick.label, tx, ty);
       });
       ctx.restore();
 
-      // Draw Nodes & Action Pulse Motion (Beam Line Removed per User Directive)
+      // 3. Draw Nodes & Action Wave Ripples
       radialNodesData.forEach(node => {
         if (!isNodeVisible(node)) return;
 
         const isSelected = selectedNode && selectedNode.id === node.id;
         const isHovered = hoveredNode && hoveredNode.id === node.id;
         const isHighlight = isSelected || isHovered;
-        const tierColor = TIER_COLORS[node.arcTier];
+        const colorConfig = CATEGORY_COLORS[node.category];
 
         ctx.save();
 
-        // Node Action Wave Motion on Hover/Select (Animated Pulsing Ripple)
+        // Node Action Wave Ripple on Hover / Select
         if (isHighlight) {
-          const pulsePhase = (timestamp * 5) % (Math.PI * 2);
-          const pulseRadius = node.radius + 7 + Math.sin(pulsePhase) * 3.5;
+          const pulsePhase = (timestamp * 6) % (Math.PI * 2);
+          const pulseRadius = node.radius + 6 + Math.sin(pulsePhase) * 3;
 
-          // Outer Wave Ring
+          // Outer Ripple Wave Ring
           ctx.beginPath();
-          ctx.arc(node.x, node.y, pulseRadius + 5, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(236, 72, 153, 0.5)';
+          ctx.arc(node.x, node.y, pulseRadius + 4, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(236, 72, 153, 0.6)';
           ctx.lineWidth = 1.5;
           ctx.stroke();
 
-          // Inner Glowing Fill
+          // Inner Pulsing Glow
           ctx.beginPath();
           ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(236, 72, 153, 0.35)';
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.4)';
           ctx.fill();
         }
 
         // Solid Node Dot
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isHighlight ? '#ffffff' : tierColor.main;
+        ctx.fillStyle = isHighlight ? '#ffffff' : colorConfig.main;
         ctx.fill();
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.8;
         ctx.strokeStyle = isHighlight ? '#ec4899' : '#0f172a';
         ctx.stroke();
 
         // Node Title Text
-        ctx.font = `${isHighlight ? 'bold' : 'normal'} 11px sans-serif`;
+        ctx.font = `${isHighlight ? 'bold' : 'normal'} 10.5px sans-serif`;
         ctx.fillStyle = isHighlight ? '#ffffff' : '#cbd5e1';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(node.label, node.x, node.y - node.radius - 12);
+        ctx.fillText(node.label, node.x, node.y - node.radius - 10);
 
-        // Prominent YEAR Pill Tag on Canvas Node
-        ctx.font = 'bold 9.5px font-mono';
+        // Year & Month Tag on Node
+        ctx.font = 'bold 9px font-mono';
         ctx.fillStyle = isHighlight ? '#ec4899' : '#f472b6';
-        ctx.fillText(`[${node.yearLabel}]`, node.x, node.y + node.radius + 10);
+        ctx.fillText(`[${node.year}년 ${node.month}월]`, node.x, node.y + node.radius + 9);
 
         ctx.restore();
       });
@@ -411,19 +457,19 @@
     // Dynamic Center Hub Update Function
     function updateCenterHub(node) {
       if (!node) {
-        document.getElementById('hub-year').innerText = '📅 2000년 ~ 2026년';
+        document.getElementById('hub-year').innerText = '📅 2000년 ~ 2026년 (27개 궤도)';
         document.getElementById('hub-date').innerText = '전수 검증 완료';
-        document.getElementById('hub-title').innerText = 'KEY PORTFOLIO TIMELINE';
+        document.getElementById('hub-title').innerText = 'KEY PORTFOLIO 27-YEAR TIMELINE';
         document.getElementById('hub-desc').innerText = '마우스로 각 노드를 가리키거나 클릭하시면 수행 연도와 날짜, 세부 이력이 이곳 중앙에 표시됩니다.';
-        document.getElementById('hub-tag').innerText = '✨ 마우스 호버 / 클릭 실시간 연동';
+        document.getElementById('hub-tag').innerText = '✨ 27개 연도 동심원 궤도 & 실시간 연동';
         return;
       }
-      const tierColor = TIER_COLORS[node.arcTier];
-      document.getElementById('hub-year').innerText = `📅 ${node.yearLabel}`;
+      const colorConfig = CATEGORY_COLORS[node.category];
+      document.getElementById('hub-year').innerText = `📅 ${node.year}년 ${node.month}월 (${node.yearLabel})`;
       document.getElementById('hub-date').innerText = node.date;
       document.getElementById('hub-title').innerText = node.label;
       document.getElementById('hub-desc').innerText = `${node.org} · ${node.desc}`;
-      document.getElementById('hub-tag').innerText = `Tier ${node.arcTier} · ${tierColor.name}`;
+      document.getElementById('hub-tag').innerText = `${colorConfig.name}`;
     }
 
     // --- Interactions ---
@@ -470,10 +516,10 @@
     function selectNode(node) {
       selectedNode = node;
       updateCenterHub(node);
-      const tierColor = TIER_COLORS[node.arcTier];
-      document.getElementById('insp-tag').innerText = `Tier ${node.arcTier} - ${tierColor.name}`;
+      const colorConfig = CATEGORY_COLORS[node.category];
+      document.getElementById('insp-tag').innerText = colorConfig.name;
       document.getElementById('insp-title').innerText = node.label;
-      document.getElementById('insp-date').innerText = `📅 ${node.yearLabel} (${node.date})`;
+      document.getElementById('insp-date').innerText = `📅 ${node.year}년 ${node.month}월 (${node.date})`;
       document.getElementById('insp-org').innerText = node.org;
       document.getElementById('insp-desc').innerText = node.desc;
       document.getElementById('insp-status').innerHTML = `• ${node.status}`;
@@ -482,7 +528,7 @@
 
     const tooltip = document.getElementById('tooltip');
     function showTooltip(node, x, y) {
-      document.getElementById('tt-year').innerText = `📅 ${node.yearLabel}`;
+      document.getElementById('tt-year').innerText = `📅 ${node.year}년 ${node.month}월`;
       document.getElementById('tt-tag').innerText = node.date;
       document.getElementById('tt-title').innerText = node.label;
       document.getElementById('tt-desc').innerText = node.org;
@@ -497,8 +543,8 @@
 
     function hideTooltip() { tooltip.classList.add('hidden'); }
 
-    function setTierFilter(filter) {
-      currentTierFilter = filter;
+    function setCategoryFilter(filter) {
+      currentCategoryFilter = filter;
       document.querySelectorAll('#btn-all, #btn-career, #btn-research, #btn-exhibit, #btn-judge, #btn-awards').forEach(b => {
         b.className = 'w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
       });
@@ -509,8 +555,6 @@
     }
 
     window.addEventListener('resize', () => {
-      width = canvas.width = canvas.clientWidth;
-      height = canvas.height = canvas.clientHeight;
       calculateRadialCoords();
     });
 
