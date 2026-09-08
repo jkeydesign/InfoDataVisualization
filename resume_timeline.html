@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>강은영 (Eun-Young Kang) - 수직 방사형 인포그래픽 타임라인</title>
+  <title>강은영 (Eun-Young Kang) - 다중 방사형 아크 시계열 인포그래픽</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     body {
@@ -11,22 +11,18 @@
       user-select: none;
     }
     .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
     }
     .custom-scroll::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(0, 0, 0, 0.05);
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(236, 72, 153, 0.5);
+      background: rgba(236, 72, 153, 0.4);
       border-radius: 3px;
     }
-    .timeline-node {
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .timeline-node:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 25px rgba(236, 72, 153, 0.8);
+    .glow-pink-bg {
+      box-shadow: 0 0 45px rgba(236, 72, 153, 0.3);
     }
     .btn-active {
       background-color: #ec4899 !important;
@@ -35,10 +31,10 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
+<body class="bg-slate-950 text-slate-100 h-screen w-screen flex flex-col overflow-hidden antialiased">
 
   <!-- Header Navigation -->
-  <header class="h-16 bg-slate-950/95 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 sticky top-0 z-40 backdrop-blur">
+  <header class="h-16 bg-slate-950/90 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 z-30 backdrop-blur">
     <div class="flex items-center space-x-3">
       <a href="index.html" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-pink-400 transition bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl mr-2">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -49,66 +45,117 @@
       </div>
       <div>
         <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
-          <span>강은영 (Eun-Young Kang) - 수직 시계열 타임라인 인포그래픽</span>
-          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">Pink & Gray Vertical Timeline</span>
+          <span>강은영 (Eun-Young Kang) - 다중 방사형 아크(Multi-Tier Radial Arc) 시계열</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">5-Tier Radial System</span>
         </h1>
-        <p class="text-[11px] text-slate-400">연구·전시·실무·수상·자격증 통합 시계열 분석 (2000년 ~ 2026년)</p>
+        <p class="text-[11px] text-slate-400">카테고리별 5중 방사형 아크 궤도 2000~2026 통합 연구·전시·실무 시각화</p>
       </div>
     </div>
 
     <!-- Quick Stats -->
     <div class="flex items-center space-x-4 text-xs font-mono">
-      <span class="text-slate-400">KCI 등재논문: <b class="text-pink-400">4편</b></span>
+      <span class="text-slate-400">KCI 등재: <b class="text-pink-400">4편</b></span>
       <span class="text-slate-600">|</span>
-      <span class="text-slate-400">국제전시: <b class="text-pink-400">10회</b></span>
+      <span class="text-slate-400">국제전시: <b class="text-pink-400">10건</b></span>
       <span class="text-slate-600">|</span>
       <span class="text-slate-400">심사위원: <b class="text-pink-400">3회</b></span>
       <span class="text-slate-600">|</span>
-      <span class="text-slate-400">실무경력: <b class="text-pink-400">15년+</b></span>
+      <span class="text-slate-400">실무: <b class="text-pink-400">15년+</b></span>
     </div>
   </header>
 
-  <!-- Sub-Header Filter Bar -->
-  <div class="bg-slate-900 border-b border-slate-800 px-6 py-2.5 flex items-center justify-between shrink-0 sticky top-16 z-30">
-    <div class="flex items-center space-x-2 text-xs">
-      <button onclick="setFilter('all')" id="btn-all" class="px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 transition font-medium btn-active">
-        ✨ 전체 통합 시계열
-      </button>
-      <button onclick="setFilter('research')" id="btn-research" class="px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:text-white transition font-medium">
-        🎓 학술 & KCI 논문 (7건)
-      </button>
-      <button onclick="setFilter('exhibit')" id="btn-exhibit" class="px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:text-white transition font-medium">
-        🎨 국제 전시 & 출품 (10건)
-      </button>
-      <button onclick="setFilter('awards')" id="btn-awards" class="px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:text-white transition font-medium">
-        🏆 수상 & 자격증 (9건)
-      </button>
-      <button onclick="setFilter('judge')" id="btn-judge" class="px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:text-white transition font-medium">
-        ⚖️ 심사 & 위촉 (3건)
-      </button>
-      <button onclick="setFilter('career')" id="btn-career" class="px-3.5 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:text-white transition font-medium">
-        🏢 기업 실무 경력 (15년+)
-      </button>
-    </div>
-    <span class="text-[11px] text-slate-400 font-mono">D:\○바로바로서류\2.전시 연구 실적 데이터 검증완료</span>
-  </div>
+  <!-- Main 3-Section Radial Body -->
+  <div class="flex-1 flex overflow-hidden relative">
 
-  <!-- Main Body: Vertical Timeline Content -->
-  <div class="flex-1 flex overflow-hidden">
-    
-    <!-- LEFT & CENTER: Vertical Timeline Canvas View -->
-    <main class="flex-1 overflow-y-auto custom-scroll p-8 bg-slate-950 relative">
+    <!-- LEFT SIDEBAR: Multi-Arc Tier Toggles -->
+    <aside class="w-80 bg-slate-950 border-r border-slate-800 p-6 flex flex-col justify-between shrink-0 z-20">
       
-      <div class="max-w-5xl mx-auto relative min-h-full py-10">
-        
-        <!-- Center Vertical Spine Line (Pink & Gray Axis) -->
-        <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-500 via-slate-700 to-pink-500 transform -translate-x-1/2 rounded-full"></div>
+      <div class="space-y-5">
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">방사형 아크 궤도 선택 (5-Tiers)</h2>
+          <div class="space-y-2 text-xs">
+            
+            <button onclick="setTierFilter('all')" id="btn-all" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
+              <span>💖 전체 5중 방사형 아크</span>
+              <span class="text-[10px] font-mono text-pink-400">ALL</span>
+            </button>
 
-        <!-- Vertical Timeline Items Container -->
-        <div id="timeline-container" class="space-y-12 relative">
-          <!-- Dynamic Timeline Items rendered by JS -->
+            <button onclick="setTierFilter('career')" id="btn-career" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span>
+                <span>🏢 궤도 1: 기업 실무 (15년+)</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-500">Tier 1</span>
+            </button>
+
+            <button onclick="setTierFilter('research')" id="btn-research" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-400"></span>
+                <span>🎓 궤도 2: 학력 & KCI 논문</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-500">Tier 2</span>
+            </button>
+
+            <button onclick="setTierFilter('exhibit')" id="btn-exhibit" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-300"></span>
+                <span>🎨 궤도 3: 국제 전시 (10건)</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-500">Tier 3</span>
+            </button>
+
+            <button onclick="setTierFilter('judge')" id="btn-judge" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <span>⚖️ 궤도 4: 심사위원 위촉</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-500">Tier 4</span>
+            </button>
+
+            <button onclick="setTierFilter('awards')" id="btn-awards" class="w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                <span>🏆 궤도 5: 수상 & 자격증</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-500">Tier 5</span>
+            </button>
+
+          </div>
         </div>
 
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
+          <h3 class="font-bold text-pink-400 flex items-center space-x-1.5">
+            <span>💡 방사형 마우스 반응 안내</span>
+          </h3>
+          <p class="text-slate-300 leading-relaxed text-[11.5px]">
+            동심원 방사형 아크 상의 <b>핑크/그레이 노드에 마우스를 올리거나 클릭</b>하면, 중심 엠블럼에서 해당 노드로 조명 광선이 뻗어 나가며 세부 데이터가 표시됩니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-slate-500 font-mono">
+        D:\○바로바로서류\2.전시 연구 실적 전수 검증
+      </div>
+
+    </aside>
+
+    <!-- CENTER CANVAS: Multi-Tier Radial Arc Viewport -->
+    <main class="flex-1 relative bg-slate-950 flex flex-col justify-end items-center overflow-hidden">
+      
+      <!-- Interactive Radial Canvas -->
+      <canvas id="radialCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
+
+      <!-- Center Radial Emblem -->
+      <div class="relative z-10 flex flex-col items-center mb-10 pointer-events-none">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-600 via-pink-500 to-slate-800 p-1 glow-pink-bg shadow-2xl flex items-center justify-center">
+          <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center border border-pink-500/40">
+            <span class="text-2xl font-black text-white tracking-tighter">EY</span>
+            <span class="text-[8.5px] text-pink-400 font-mono">PORTFOLIO</span>
+          </div>
+        </div>
+        <div class="mt-2 bg-slate-950/90 border border-pink-500/50 px-4 py-1 rounded-full text-xs font-bold text-pink-300 backdrop-blur shadow-xl">
+          강은영 (Eun-Young Kang)
+        </div>
       </div>
 
     </main>
@@ -117,34 +164,31 @@
     <aside id="inspector" class="w-96 bg-slate-950 border-l border-slate-800 p-6 flex flex-col shrink-0 space-y-6 z-20 overflow-y-auto custom-scroll">
       
       <div class="border-b border-slate-800 pb-4">
-        <span id="insp-category" class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 uppercase mb-2">
-          SELECT ITEM
-        </span>
-        <h3 id="insp-title" class="text-xl font-black text-white leading-tight">연구·전시·실무 항목 선택</h3>
-        <p id="insp-date" class="text-xs text-pink-400 font-mono mt-1 font-semibold">타임라인 노드를 클릭하세요</p>
+        <div id="insp-tag" class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 uppercase mb-2">
+          SELECT NODE
+        </div>
+        <h3 id="insp-title" class="text-xl font-black text-white leading-tight">제이키디자인연구소</h3>
+        <p id="insp-date" class="text-xs text-pink-400 font-mono mt-1 font-semibold">2018.01 ~ 2024.12 (7년 근무)</p>
       </div>
 
-      <!-- Detail Description -->
       <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
-        <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">주최 / 게재지 / 시행기관</h4>
-        <div id="insp-org" class="text-pink-300 font-bold">한국디지털정책학회 / 홍익대 / 산업통상자원부</div>
+        <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">주최 / 게재지 / 수행업무</h4>
+        <div id="insp-org" class="text-pink-300 font-bold">제이키디자인연구소 / 임원 실장</div>
         <p id="insp-desc" class="text-slate-300 leading-relaxed text-[11.5px] pt-1">
-          타임라인 노드를 마우스 호버 및 클릭하시면 증빙 데이터와 내용 요약이 표시됩니다.
+          남원시 관광 B.I 및 커뮤니케이션 디자인 프로젝트(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.
         </p>
       </div>
 
-      <!-- Verification Status -->
-      <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
-        <h4 class="font-bold text-pink-400 uppercase tracking-wider text-[11px]">증빙 데이터 및 상태</h4>
+      <div class="bg-pink-950/40 border border-pink-900/60 p-4 rounded-2xl space-y-2 text-xs">
+        <h4 class="font-bold text-pink-400 uppercase tracking-wider text-[11px]">증빙 데이터 및 핵심 성과</h4>
         <div id="insp-status" class="text-slate-200 text-[11.5px] leading-relaxed font-medium">
-          • 증빙 폴더 점검 완료<br>
-          • 이력서 및 실증 서류 매핑
+          • 브랜딩 최종안 내부 지지율 90% 이상 획득<br>
+          • 지자체 관광 활성화 통합 디자인 가이드 구축
         </div>
       </div>
 
-      <!-- File Path Info -->
       <div class="space-y-2">
-        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">원본 파일 및 경로</h4>
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">원본 파일 및 증빙 경로</h4>
         <div id="insp-path" class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-[10.5px] font-mono text-slate-400 break-all leading-tight">
           D:/○바로바로서류/2.전시 연구 실적
         </div>
@@ -154,142 +198,251 @@
 
   </div>
 
+  <div id="tooltip" class="fixed hidden z-50 bg-slate-950 border border-pink-500/80 p-3 rounded-xl shadow-2xl text-xs max-w-xs pointer-events-none">
+    <div id="tt-title" class="font-bold text-sm text-white mb-1"></div>
+    <div id="tt-tag" class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold mb-1 text-pink-300 bg-pink-950 border border-pink-800"></div>
+    <div id="tt-desc" class="text-slate-300 text-[11px] mt-1 font-mono"></div>
+  </div>
+
   <script>
-    // Merged & Deduplicated Dataset from D:\○바로바로서류\2.전시 연구 실적
-    const timelineData = [
-      // 2000 - 2005
-      { id: 'item-2000', year: '2000~2002', date: '2000.03 ~ 2002.02', category: 'career', catName: '학력/실무', title: '여주대학교 산업디자인 (전문학사)', org: '여주대학교 / 교육부', desc: '산업디자인 전공, 교원자격증(2급) 취득 (2002.02).', status: '학위 및 자격증 증빙 완료', isLargeCircle: true },
-      { id: 'item-2001', year: '2001', date: '2001.11 ~ 2002.12', category: 'career', catName: '기업실무', title: '영동커뮤니케이션 마케팅 홍보 디자인', org: '영동커뮤니케이션', desc: '프로모션 광고 그래픽 디자인, 마트 행사 배너 및 매대 소비자리서치 기반 마케팅 콘텐츠 기획.', status: '이력서 증빙', isLargeCircle: false },
-      { id: 'item-2003', year: '2003~2004', date: '2003.01 ~ 2004.12', category: 'career', catName: '기업실무', title: '인디비전 그래픽 디자인 (방송 3사)', org: 'EBS / TBS / MBC', desc: 'EBS 수능방송 2D 타이틀, TBS 교통방송, MBC "연예대상", "추석왕가수전" 방송 그래픽 연출.', status: '이력서 증빙', isLargeCircle: false },
-      { id: 'item-2005', year: '2005~2008', date: '2005.03 ~ 2008.03', category: 'career', catName: '기업실무', title: 'CBS 기독교방송 방송디자인실 사원', org: 'CBS 기독교방송', desc: '뉴스·교양 프로그램 타이틀 모션 및 그래픽 디자인 ("새롭게 하소서", "성서학당").', status: '이력서 증빙', isLargeCircle: false },
-      { id: 'item-2009', year: '2009', date: '2009.07.20', category: 'awards', catName: '수료/연수', title: '병원컨설팅 코디네이터 수료증', org: '병원컨설팅 교육기관', desc: '병원 마케팅 및 서비스 이미지 의료서비스 마케팅 업무 전략 분석 수료.', status: '증빙파일 1건 보유', isLargeCircle: false },
-      
-      // 2010 - 2015
-      { id: 'item-2010a', year: '2010', date: '2010.05.28', category: 'awards', catName: '자격증', title: '컬러리스트산업기사 자격증 취득', org: '산업통상자원부 / 한국산업인력공단', desc: '국가기술자격 컬러리스트산업기사 자격 취득 (면허번호: 10201022868K).', status: '자격증 사본 증빙 완료', isLargeCircle: true },
-      { id: 'item-2010b', year: '2010', date: '2010.10.10', category: 'awards', catName: '수상', title: '건일제약 나의 영웅 수필 공모전 최우수상', org: '㈜건일제약', desc: '전국 단위 수필 공모전 최우수상 수상.', status: '상장 증빙 완료', isLargeCircle: false },
-      { id: 'item-2011', year: '2011', date: '2011.06.10', category: 'awards', catName: '자격증', title: '시각디자인산업기사 자격증 취득', org: '산업통상자원부 / 한국산업인력공단', desc: '국가기술자격 시각디자인산업기사 자격 취득 (면허번호: 11201013303E).', status: '자격증 사본 증빙 완료', isLargeCircle: false },
-      { id: 'item-2013', year: '2013', date: '2013.05.31', category: 'awards', catName: '자격증', title: '사무자동화산업기사 자격증 취득', org: '과학기술정보통신부 / 한국산업인력공단', desc: '국가기술자격 사무자동화산업기사 자격 취득 (면허번호: 13201071946F).', status: '자격증 사본 증빙 완료', isLargeCircle: false },
-      { id: 'item-2014', year: '2014', date: '2014.03 ~ 2015.02', category: 'career', catName: '기업실무', title: 'CJ 온게임넷 예능/정보 그래픽 연출', org: 'CJ 온게임넷', desc: '예능 및 정보 프로그램 그래픽 콘텐츠 디자인 및 연출 ("하트비트", "양뿔이 간다").', status: '이력서 증빙', isLargeCircle: false },
+    // Full Dataset with 5 Radial Arc Tiers
+    const radialNodesData = [
+      // Tier 1: Industry Career (Innermost Arc - Radius 170)
+      { id: 'c1', label: '제이키디자인연구소 (실장 7년)', category: 'career', arcTier: 1, angle: -155, date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
+      { id: 'c2', label: '고트레 (팀장 1년)', category: 'career', arcTier: 1, angle: -125, date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
+      { id: 'c3', label: '상상공장 (과장 1년)', category: 'career', arcTier: 1, angle: -95, date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
+      { id: 'c4', label: '이호 (팀장/대리 2년)', category: 'career', arcTier: 1, angle: -65, date: '2015.07 ~ 2017.04', org: '이호', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', status: 'COSTCO 입점 파트너사 패키지 관리' },
+      { id: 'c5', label: 'CBS 기독교방송 (3년)', category: 'career', arcTier: 1, angle: -35, date: '2005.03 ~ 2008.03', org: 'CBS방송', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', status: '방송 그래픽 타이틀 연출' },
 
-      // 2015 - 2018
-      { id: 'item-2015', year: '2015~2017', date: '2015.02 ~ 2017.02', category: 'research', catName: '학력/석사', title: '홍익대학교 대학원 시각디자인 미술학석사 (GPA 4.28)', org: '홍익대학교 일반대학원', desc: '석사 평점 4.28/4.5 우수 졸업. 식품 브랜딩 및 포장 정보 디자인 집중 연구.', status: '석사학위기 증빙 완료', isLargeCircle: true },
-      { id: 'item-2016a', year: '2016', date: '2016.09.05', category: 'awards', catName: '수상', title: '한국임업진흥원 임산물 로고패키지 디자인 은상', org: '한국임업진흥원', desc: '감와인 패키지 디자인 공모전 은상 수상.', status: '상장 및 디자인 파일 5건 증빙', isLargeCircle: false },
-      { id: 'item-2017a', year: '2017', date: '2017.02.22', category: 'research', catName: 'KCI/논문', title: '📄 석사학위논문: OEM 표기사항 불일치가 브랜드 신뢰도에 미치는 영향', org: '홍익대학교 대학원', desc: '냉동 볶음밥 OEM 제품의 판매업체와 제조업체 불일치 인식이 브랜드 신뢰도와 구매의도에 미치는 실증 영향 분석.', status: '논문 원문 PDF 및 파일 6건 증빙', isLargeCircle: true },
-      { id: 'item-2017b', year: '2017', date: '2017.06.22', category: 'exhibit', catName: '전시/수료', title: '3D 프린팅 모델링 마스터 전시 참가', org: '홍익대학교 디자인혁신센터', desc: '3D 프린터를 활용한 제품 디자인 제작 작품 전시 및 수료.', status: '전시참가증 증빙 완료', isLargeCircle: false },
-      { id: 'item-2018a', year: '2018', date: '2018.01 ~ 2024.12', category: 'career', catName: '기업실무', title: '제이키디자인연구소 마케팅 디자인 임원 (7년)', org: '제이키디자인연구소', desc: '남원시 관광 BI(지금여행), 북촌마을 에티켓, 강릉관광개발공사 CI BX 총괄.', status: '7년 근무 실적 증빙', isLargeCircle: true },
+      // Tier 2: Education & KCI Papers (Radius 240)
+      { id: 'd1', label: '홍익대 박사 수료 (GPA 4.17)', category: 'research', arcTier: 2, angle: -160, date: '2020.02 ~ 2023.08', org: '홍익대학교 대학원', desc: '인공지능과 디자인, 생성형 AI 환경에서 디자이너 판단 과정 학술 연구.', status: '박사 수료증명서 증빙 완료' },
+      { id: 'd2', label: '홍익대 석사 졸업 (GPA 4.28)', category: 'research', arcTier: 2, angle: -140, date: '2015.02 ~ 2017.02', org: '홍익대학교 대학원', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 연구.', status: '석사학위기 PDF 증빙 완료' },
+      { id: 'p1', label: '📄 KCI 2020: 편의점 도시락 라벨', category: 'research', arcTier: 2, angle: -115, date: '2020.11.18', org: '한국디지털정책학회 (KCI)', desc: '프리미엄·일반 편의점 도시락 라벨디자인 구매의도 연구 (t=14.921***).', status: 'KCI 등재 논문 PDF 증빙' },
+      { id: 'p2', label: '📄 KCI 2024: AI 로고 연구', category: 'research', arcTier: 2, angle: -90, date: '2024.12.04', org: 'IJACT (KCI 등재)', desc: '인공지능 로고 제작 웹서비스 활용 로고디자인 연구.', status: 'KCI 등재 논문 PDF 증빙' },
+      { id: 'p3', label: '📄 KCI 2025: Post-Humanism AI', category: 'research', arcTier: 2, angle: -65, date: '2025.03.24', org: 'IJACT (KCI 등재)', desc: '포스트휴머니즘 시대의 인공지능과 디자이너 역할 변화 고찰.', status: 'IJCC 2025 Best Paper Award' },
+      { id: 'p4', label: '📄 KCI 2026: AI 디자이너 판단', category: 'research', arcTier: 2, angle: -40, date: '2026.03.26', org: '한국브랜드디자인학회 (KCI)', desc: 'AI 로고 생성 환경 감정-인지 상호작용 디자인판단 연구.', status: 'KCI 등재 논문 PDF 증빙' },
 
-      // 2019 - 2022
-      { id: 'item-2019a', year: '2019', date: '2019.02.28', category: 'research', catName: '연구자료', title: '시민접점 DDP 활성화 연구', org: 'DDP / 공공디자인연구', desc: '사용자 인식 및 시민 참여를 위한 리서치 기반 공공디자인 운영 방향 및 전략 제시.', status: '연구 보고서 PDF 증빙', isLargeCircle: false },
-      { id: 'item-2020a', year: '2020', date: '2020.02 ~ 2023.08', category: 'research', catName: '학력/박사', title: '홍익대학교 대학원 시각디자인 박사 수료 (GPA 4.17)', org: '홍익대학교 일반대학원', desc: '박사 평점 4.17/4.5 우수 수료. 인공지능과 디자인, 브랜드 시각 커뮤니케이션 심화 연구.', status: '박사 수료증명서 증빙', isLargeCircle: true },
-      { id: 'item-2020b', year: '2020', date: '2020.10.05', category: 'exhibit', catName: '국제전시', title: '🎨 HANGEUL Typography Poster Exhibition Osaka (일본 미리내)', org: '한국시각정보디자인협회 (VIDAK)', desc: '일본 오사카 미리내 갤러리 한글 타이포그래피 포스터 국제 전시회에 작품 "Ah" 출품.', status: '참가증 및 도록 사진 4건 증빙', isLargeCircle: false },
-      { id: 'item-2020c', year: '2020', date: '2020.11.28', category: 'research', catName: 'KCI 등재논문', title: '📄 KCI 등재: 편의점 도시락 라벨디자인 이미지 요소와 구매의도 연구', org: '한국디지털정책학회 (KCI)', desc: '프리미엄·일반 편의점 도시락 라벨 시각요소의 구매의도 영향을 SPSS T-검정(t=14.921***)으로 분석.', status: 'KCI 등재 논문 PDF 증빙 완료', isLargeCircle: true },
+      // Tier 3: International Exhibitions (Radius 310)
+      { id: 'e1', label: '🎨 오사카 한글 포스터전 (일본)', category: 'exhibit', arcTier: 3, angle: -165, date: '2020.10.05', org: '일본 미리내 갤러리 / VIDAK', desc: 'HANGEUL Typography Poster Exhibition Osaka 작품 "Ah" 출품.', status: '참가증 및 도록 사진 4건' },
+      { id: 'e2', label: '🎨 DDP D-SPACE 국제초대전', category: 'exhibit', arcTier: 3, angle: -145, date: '2022.12.03', org: 'DDP 동대문디자인플라자 / VIDAK', desc: 'VIDAK 2022 D-SPACE 국제초대전 작품 "일상 Daily Design Life" 출품.', status: '출품증 및 도록 10건' },
+      { id: 'e3', label: '🎨 광주디자인비엔날레 초대전', category: 'exhibit', arcTier: 3, angle: -120, date: '2023.09.07', org: '광주디자인진흥원 / 총연합회', desc: '2023 광주디자인비엔날레 국제포스터 초대전시회 출품.', status: '출품증 및 도록 파일 44건' },
+      { id: 'e4', label: '🎨 오키나와 K-Identity 초대전 (일본)', category: 'exhibit', arcTier: 3, angle: -95, date: '2025.02.11', org: '오키나와 류큐대학 / VIDAK', desc: '2025 VIDAK K_Identity 국제초대전 Okinawa 출품.', status: '출품증명서 및 도록 23건' },
+      { id: 'e5', label: '🎨 VIDAK 815 광복 교류전', category: 'exhibit', arcTier: 3, angle: -75, date: '2025.07.11', org: 'VIDAK', desc: '815 광복 국제교류전 포스터 출품.', status: '출품 증빙 4건' },
+      { id: 'e6', label: '🎨 대만 가오슝 국제전시', category: 'exhibit', arcTier: 3, angle: -55, date: '2026.02.06', org: '가오슝 문화디자인개발협회', desc: '2026 Year of Horse Creative Exhibition 작품 "We’re the Dark Horse" 출품.', status: '참가증 및 도록 파일 12건' },
+      { id: 'e7', label: '🎨 VISIBLE BEAUTY 국제전시 (대만)', category: 'exhibit', arcTier: 3, angle: -30, date: '2026.06.06', org: '대만 시각디자인협회', desc: 'VISIBLE BEAUTY 국제초청전 작품 "Unsightliness" 출품.', status: '참가증 및 전시장 사진 11건' },
 
-      // 2021 - 2024
-      { id: 'item-2021a', year: '2021', date: '2021.05.14', category: 'awards', catName: '자격증', title: 'GTQ 포토샵 1급 자격증 취득', org: '한국생산성본부 (KPC)', desc: 'GTQ 그래픽기술자격 1급 취득 (등록번호: GA1012110438324).', status: '자격확인서 증빙 완료', isLargeCircle: false },
-      { id: 'item-2022a', year: '2022', date: '2022.07.07', category: 'judge', catName: '심사위원', title: '⚖️ 제57회 대한민국디자인전람회 심사위원 위촉', org: '산업통상자원부 / 한국디자인진흥원', desc: '대한민국디자인전람회 1차·2차 심사위원으로 위촉되어 심사 수행.', status: '이력서 및 기관 공식 위촉', isLargeCircle: true },
-      { id: 'item-2022b', year: '2022', date: '2022.11.29', category: 'awards', catName: '수상', title: '🥇 2022 서울디자인컨설턴트 사업 우수상 수상', org: '(재)서울디자인재단', desc: '관악구 은천동 희망마을 축제 브랜드 디자인 컨설팅 보고 및 우수상 수상.', status: '상장 증빙 완료', isLargeCircle: true },
-      { id: 'item-2022c', year: '2022', date: '2022.12.03', category: 'exhibit', catName: '국제전시', title: '🎨 VIDAK 2022 D-SPACE 국제초대전 (DDP)', org: '한국시각정보디자인협회 (DDP)', desc: 'DDP 동대문디자인플라자 겨울 국제초대전에 작품 "일상 Daily Design Life" 출품.', status: '출품증 및 도록 PDF 10건 증빙', isLargeCircle: false },
-      { id: 'item-2023a', year: '2023', date: '2023.08.25', category: 'judge', catName: '심사위원', title: '⚖️ 우수디자인(GD) 상품선정 심사위원 위촉', org: '한국디자인진흥원 (KIDP)', desc: '우수디자인(GD) 상품선정 2차 현물 심사 및 3차 상격 심사위원 위촉.', status: '이력서 및 기관 공식 위촉', isLargeCircle: false },
-      { id: 'item-2023b', year: '2023', date: '2023.09.07', category: 'exhibit', catName: '국제전시', title: '🎨 2023 광주디자인비엔날레 국제포스터 초대전시회', org: '광주디자인진흥원 / (사)한국디자인단체총연합회', desc: '광주디자인비엔날레 포스터 초대전에 작품 출품 및 도록 수록.', status: '출품증 및 도록 파일 44건 증빙', isLargeCircle: true },
+      // Tier 4: Judges & Appointments (Radius 380)
+      { id: 'j1', label: '⚖️ 제57회 대한민국디자인전람회 심사위원', category: 'judge', arcTier: 4, angle: -150, date: '2022.07.07', org: '산업통상자원부 / KIDP', desc: '대한민국디자인전람회 1차·2차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
+      { id: 'j2', label: '⚖️ 우수디자인(GD) 상품선정 심사위원', category: 'judge', arcTier: 4, angle: -105, date: '2023.08.25', org: '한국디자인진흥원 (KIDP)', desc: '우수디자인(GD) 상품선정 2차·3차 심사위원 위촉.', status: '공식 위촉 및 이력서 기재' },
+      { id: 'j3', label: '⚖️ 수원시 공공브랜드 위원회 위원', category: 'judge', arcTier: 4, angle: -60, date: '2024.06.13', org: '수원시청', desc: '수원시 상징물 및 공공브랜드 위원회 위원 위촉 (2024~2026).', status: '위촉장 PDF 및 공문 5건' },
 
-      // 2024 - 2026
-      { id: 'item-2024a', year: '2024', date: '2024.06.13', category: 'judge', catName: '심사위원', title: '⚖️ 수원시 상징물 및 공공브랜드 위원회 위원 위촉', org: '수원시청', desc: '수원시 상징물 및 공공브랜드 디자인 심사위위원 위촉 (2024~2026).', status: '위촉장 PDF 및 공문 5건 증빙', isLargeCircle: false },
-      { id: 'item-2024b', year: '2024', date: '2024.12.30', category: 'research', catName: 'KCI 등재논문', title: '📄 KCI 등재: AI 로고 메이커 웹서비스 활용 로고디자인 연구', org: 'IJACT (한국컴퓨터정보학회 KCI)', desc: 'AI 로고 메이커와 전문 디자이너의 아이디어 발상 유형을 비교하고 협업 프로세스 제시.', status: 'KCI 논문 PDF 및 파일 3건 증빙', isLargeCircle: true },
-      { id: 'item-2025a', year: '2025', date: '2025.02.11', category: 'exhibit', catName: '국제전시', title: '🎨 2025 VIDAK K_Identity 국제초대전 Okinawa (일본)', org: '한국시각정보디자인협회 / 오키나와 류큐대학', desc: '일본 오키나와 류큐대학 전시관에 작품 출품.', status: '출품증명서 및 도록 23건 증빙', isLargeCircle: false },
-      { id: 'item-2025b', year: '2025', date: '2025.02.15', category: 'awards', catName: '수상', title: '🏆 IJCC ICAI 2025 Best Paper Award (최우수 논문상)', org: 'IJCC & ICAI 2025 국제컨퍼런스', desc: 'On Artificial Intelligence and Designers in the Post-Humanism Era 연구로 최우수 논문상 수상.', status: '상장 이미지 2건 증빙 완료', isLargeCircle: true },
-      { id: 'item-2025c', year: '2025', date: '2025.03.24', category: 'research', catName: 'KCI 등재논문', title: '📄 KCI 등재: On Artificial Intelligence and Designers in the Post-Humanism Era', org: 'IJACT (KCI 등재지)', desc: '포스트휴머니즘 시대의 인공지능과 디자이너 역할 변화 고찰.', status: 'KCI 논문 PDF 증빙 완료', isLargeCircle: false },
-      { id: 'item-2026a', year: '2026', date: '2026.02.06', category: 'exhibit', catName: '국제전시', title: '🎨 2026 Year of Horse Creative Exhibition (대만 가오슝)', org: 'Kaohsiung Cultural & Design Development Association', desc: '대만 가오슝 특별전에 작품 "We’re the Dark Horse of 2026" 출품.', status: '참가증 및 도록 파일 12건 증빙', isLargeCircle: true },
-      { id: 'item-2026b', year: '2026', date: '2026.03.26', category: 'research', catName: 'KCI 등재논문', title: '📄 KCI 등재: AI 로고 생성 환경 감정-인지 상호작용 디자인판단 연구', org: '한국브랜드디자인학회 (KCI)', desc: 'Wix Logo Maker 실증 실험과 Think Aloud 프로토콜 분석으로 AI 시안 환경 디자이너 인지 판단 분석.', status: 'KCI 논문 PDF 증빙 완료', isLargeCircle: true },
-      { id: 'item-2026c', year: '2026', date: '2026.06.06', category: 'exhibit', catName: '국제전시', title: '🎨 VISIBLE BEAUTY 국제초청전 (대만)', org: 'The Graphic Design Association of Republic of China', desc: '대만 시각디자인협회 국제초청전에 작품 "Unsightliness" 출품.', status: '참가증 및 전시장 사진 11건 증빙', isLargeCircle: false }
+      // Tier 5: Awards & Certifications (Outermost Arc - Radius 450)
+      { id: 'a1', label: '🏆 IJCC 2025 Best Paper Award (최우수 논문상)', category: 'awards', arcTier: 5, angle: -160, date: '2025.02.15', org: 'IJCC & ICAI 2025 국제컨퍼런스', desc: 'On Artificial Intelligence and Designers in Post-Humanism 연구로 최우수 논문상 수상.', status: '상장 이미지 2건 증빙' },
+      { id: 'a2', label: '🥇 2022 서울디자인컨설턴트 우수상', category: 'awards', arcTier: 5, angle: -135, date: '2022.11.29', org: '(재)서울디자인재단', desc: '관악구 은천동 희망마을 축제 브랜드 디자인 컨설팅 우수상.', status: '상장 증빙 완료' },
+      { id: 'a3', label: '🏆 임산물 로고패키지 은상', category: 'awards', arcTier: 5, angle: -110, date: '2016.09.05', org: '한국임업진흥원', desc: '감와인 패키지 디자인 공모전 은상 수상.', status: '상장 및 파일 5건' },
+      { id: 'a4', label: '🏆 건일제약 수기 공모전 최우수상', category: 'awards', catName: '수상', arcTier: 5, angle: -85, date: '2010.10.10', org: '㈜건일제약', desc: '전국 단위 수필 공모전 최우수상.', status: '상장 증빙 완료' },
+      { id: 'a5', label: '📜 컬러리스트 / 시각디자인 / GTQ 1급 자격증', category: 'awards', arcTier: 5, angle: -50, date: '2010 ~ 2021', org: '산업통상자원부 / KPC', desc: '컬러리스트산업기사, 시각디자인산업기사, GTQ 포토샵 1급 국가자격 취득.', status: '자격확인서 증빙 완료' }
     ];
 
-    let currentFilter = 'all';
+    const canvas = document.getElementById('radialCanvas');
+    const ctx = canvas.getContext('2d');
 
-    function renderVerticalTimeline() {
-      const container = document.getElementById('timeline-container');
-      const filtered = timelineData.filter(d => {
-        if (currentFilter === 'all') return true;
-        if (currentFilter === 'research') return d.category === 'research';
-        if (currentFilter === 'exhibit') return d.category === 'exhibit';
-        if (currentFilter === 'awards') return d.category === 'awards';
-        if (currentFilter === 'judge') return d.category === 'judge';
-        if (currentFilter === 'career') return d.category === 'career';
-        return true;
+    let width = canvas.width = canvas.clientWidth;
+    let height = canvas.height = canvas.clientHeight;
+
+    let centerPos = { x: width / 2, y: height * 0.76 };
+    let hoveredNode = null;
+    let selectedNode = null;
+    let currentTierFilter = 'all';
+
+    function calculateRadialCoords() {
+      centerPos = { x: width / 2, y: height * 0.76 };
+
+      radialNodesData.forEach(node => {
+        let baseRadius = 170;
+        if (node.arcTier === 1) baseRadius = 170; // Tier 1
+        if (node.arcTier === 2) baseRadius = 240; // Tier 2
+        if (node.arcTier === 3) baseRadius = 310; // Tier 3
+        if (node.arcTier === 4) baseRadius = 380; // Tier 4
+        if (node.arcTier === 5) baseRadius = 450; // Tier 5
+
+        const rad = (node.angle * Math.PI) / 180;
+        node.x = centerPos.x + Math.cos(rad) * baseRadius;
+        node.y = centerPos.y + Math.sin(rad) * baseRadius;
+        node.radius = 12 - (node.arcTier * 1);
+      });
+    }
+
+    function isNodeVisible(node) {
+      if (currentTierFilter === 'all') return true;
+      return node.category === currentTierFilter;
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw 5 Multi-Tier Concentric Arc Tracks
+      ctx.save();
+      const tiersRadius = [450, 380, 310, 240, 170];
+      const tierColors = [
+        'rgba(148, 163, 184, 0.2)',
+        'rgba(148, 163, 184, 0.25)',
+        'rgba(244, 114, 182, 0.25)',
+        'rgba(244, 114, 182, 0.3)',
+        'rgba(236, 72, 153, 0.4)'
+      ];
+
+      tiersRadius.forEach((r, idx) => {
+        ctx.beginPath();
+        ctx.arc(centerPos.x, centerPos.y, r, Math.PI, 2 * Math.PI);
+        ctx.strokeStyle = tierColors[idx];
+        ctx.lineWidth = 1.5;
+        if (idx === 4) ctx.setLineDash([5, 5]); else ctx.setLineDash([]);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      const activeNode = selectedNode || hoveredNode;
+
+      // Draw Pink Light Beams
+      if (activeNode && isNodeVisible(activeNode)) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(centerPos.x, centerPos.y - 40);
+        ctx.lineTo(activeNode.x, activeNode.y);
+        ctx.lineWidth = 3;
+        const beamGrad = ctx.createLinearGradient(centerPos.x, centerPos.y - 40, activeNode.x, activeNode.y);
+        beamGrad.addColorStop(0, 'rgba(236, 72, 153, 0.9)');
+        beamGrad.addColorStop(1, 'rgba(244, 114, 182, 0.2)');
+        ctx.strokeStyle = beamGrad;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Draw Nodes
+      radialNodesData.forEach(node => {
+        if (!isNodeVisible(node)) return;
+
+        const isSelected = selectedNode && selectedNode.id === node.id;
+        const isHovered = hoveredNode && hoveredNode.id === node.id;
+        const isHighlight = isSelected || isHovered;
+
+        ctx.save();
+
+        if (isHighlight) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.radius + 9, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.45)';
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = isHighlight ? '#ec4899' : (node.arcTier <= 2 ? '#f472b6' : '#94a3b8');
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = isHighlight ? '#ffffff' : '#0f172a';
+        ctx.stroke();
+
+        ctx.font = `${isHighlight ? 'bold' : 'normal'} 11px sans-serif`;
+        ctx.fillStyle = isHighlight ? '#ffffff' : '#cbd5e1';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(node.label, node.x, node.y - node.radius - 11);
+
+        ctx.restore();
       });
 
-      container.innerHTML = filtered.map((item, idx) => {
-        const isLeft = idx % 2 === 0; // Zig-zag placement
-        const pinkCircle = item.isLargeCircle;
-
-        return `
-          <div id="${item.id}" onclick="selectTimelineItem('${item.id}')" 
-               class="relative flex items-center ${isLeft ? 'flex-row-reverse' : ''} group cursor-pointer">
-            
-            <!-- Left/Right Card Container -->
-            <div class="w-1/2 ${isLeft ? 'pr-10 text-right' : 'pl-10 text-left'} space-y-1">
-              <div class="inline-flex items-center space-x-2">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${pinkCircle ? 'bg-pink-950 text-pink-300 border border-pink-700' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
-                  ${item.catName}
-                </span>
-                <span class="text-xs font-mono font-extrabold text-pink-400">${item.year}</span>
-              </div>
-              <h3 class="text-base font-extrabold text-slate-100 group-hover:text-pink-400 transition leading-snug">
-                ${item.title}
-              </h3>
-              <p class="text-[11.5px] text-slate-400 line-clamp-2 leading-relaxed">
-                ${item.desc}
-              </p>
-              <div class="text-[10.5px] text-slate-500 font-mono pt-0.5">
-                📍 ${item.org}
-              </div>
-            </div>
-
-            <!-- Center Node Point on Spine Line -->
-            <div class="absolute left-1/2 transform -translate-x-1/2 z-10 flex items-center justify-center">
-              ${pinkCircle ? `
-                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-pink-600 to-pink-400 border-2 border-slate-950 flex items-center justify-center shadow-lg timeline-node">
-                  <div class="w-3.5 h-3.5 rounded-full bg-slate-950"></div>
-                </div>
-              ` : `
-                <div class="w-5 h-5 rounded-full bg-slate-900 border-2 border-pink-500 flex items-center justify-center timeline-node">
-                  <div class="w-2 h-2 rounded-full bg-pink-400"></div>
-                </div>
-              `}
-            </div>
-
-            <div class="w-1/2"></div>
-          </div>
-        `;
-      }).join('');
+      requestAnimationFrame(render);
     }
 
-    function selectTimelineItem(id) {
-      const data = timelineData.find(d => d.id === id);
-      if (!data) return;
+    // --- Interaction Handlers ---
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mX = e.clientX - rect.left;
+      const mY = e.clientY - rect.top;
 
-      document.getElementById('insp-category').innerText = data.catName;
-      document.getElementById('insp-title').innerText = data.title;
-      document.getElementById('insp-date').innerText = `${data.date} (${data.year})`;
-      document.getElementById('insp-org').innerText = data.org;
-      document.getElementById('insp-desc').innerText = data.desc;
-      document.getElementById('insp-status').innerHTML = `• ${data.status}`;
+      let found = null;
+      for (let node of radialNodesData) {
+        if (!isNodeVisible(node)) continue;
+        const dx = mX - node.x;
+        const dy = mY - node.y;
+        if (dx * dx + dy * dy <= (node.radius + 8) * (node.radius + 8)) {
+          found = node; break;
+        }
+      }
+
+      if (found !== hoveredNode) {
+        hoveredNode = found;
+        if (found) showTooltip(found, e.clientX, e.clientY);
+        else hideTooltip();
+      } else if (found) {
+        positionTooltip(e.clientX, e.clientY);
+      }
+    });
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mX = e.clientX - rect.left;
+      const mY = e.clientY - rect.top;
+
+      for (let node of radialNodesData) {
+        if (!isNodeVisible(node)) continue;
+        const dx = mX - node.x;
+        const dy = mY - node.y;
+        if (dx * dx + dy * dy <= (node.radius + 8) * (node.radius + 8)) {
+          selectNode(node); break;
+        }
+      }
+    });
+
+    function selectNode(node) {
+      selectedNode = node;
+      document.getElementById('insp-tag').innerText = `Tier ${node.arcTier} - ${node.category.toUpperCase()}`;
+      document.getElementById('insp-title').innerText = node.label;
+      document.getElementById('insp-date').innerText = node.date;
+      document.getElementById('insp-org').innerText = node.org;
+      document.getElementById('insp-desc').innerText = node.desc;
+      document.getElementById('insp-status').innerHTML = `• ${node.status}`;
       document.getElementById('insp-path').innerText = `D:/○바로바로서류/2.전시 연구 실적`;
-
-      // Highlight selected card
-      document.querySelectorAll('#timeline-container > div').forEach(el => el.classList.remove('opacity-100'));
     }
 
-    function setFilter(filter) {
-      currentFilter = filter;
-      document.querySelectorAll('.flex.items-center.space-x-2 button').forEach(b => b.classList.remove('btn-active'));
+    const tooltip = document.getElementById('tooltip');
+    function showTooltip(node, x, y) {
+      document.getElementById('tt-title').innerText = node.label;
+      document.getElementById('tt-tag').innerText = node.date;
+      document.getElementById('tt-desc').innerText = node.org;
+      positionTooltip(x, y);
+      tooltip.classList.remove('hidden');
+    }
+
+    function positionTooltip(x, y) {
+      tooltip.style.left = `${x + 15}px`;
+      tooltip.style.top = `${y + 15}px`;
+    }
+
+    function hideTooltip() { tooltip.classList.add('hidden'); }
+
+    function setTierFilter(filter) {
+      currentTierFilter = filter;
+      document.querySelectorAll('#btn-all, #btn-career, #btn-research, #btn-exhibit, #btn-judge, #btn-awards').forEach(b => {
+        b.className = 'w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
+      });
       const activeBtn = document.getElementById(`btn-${filter}`);
-      if (activeBtn) activeBtn.classList.add('btn-active');
-      renderVerticalTimeline();
+      if (activeBtn) {
+        activeBtn.className = 'w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
+      }
     }
 
-    // Init
-    renderVerticalTimeline();
-    selectTimelineItem(timelineData[0].id);
+    window.addEventListener('resize', () => {
+      width = canvas.width = canvas.clientWidth;
+      height = canvas.height = canvas.clientHeight;
+      calculateRadialCoords();
+    });
+
+    calculateRadialCoords();
+    selectNode(radialNodesData[0]);
+    render();
   </script>
 </body>
 </html>
