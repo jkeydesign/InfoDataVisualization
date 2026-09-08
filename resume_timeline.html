@@ -134,28 +134,23 @@
       <!-- Interactive Radial Canvas -->
       <canvas id="radialCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
 
-      <!-- Center Dynamic Info Hub (Design Concept: Oval Capsule / Pill Shape) -->
-      <div class="relative z-10 flex flex-col items-center mb-5 pointer-events-auto transition-all duration-300">
-        <div id="center-hub-card" class="w-[520px] bg-slate-950/95 border-2 border-pink-500/70 rounded-[100px] px-8 py-3.5 shadow-2xl backdrop-blur-md text-center space-y-1 glow-pink-bg flex flex-col items-center justify-center">
+      <!-- Center Dynamic Compact Oval Hub (Minimal, Non-Overlapping Pill Badge) -->
+      <div class="relative z-10 flex flex-col items-center mb-2.5 pointer-events-auto transition-all duration-300">
+        <div id="center-hub-card" class="w-[380px] bg-slate-950/95 border border-pink-500/80 rounded-full px-5 py-2 shadow-2xl backdrop-blur-md text-center space-y-1 glow-pink-bg flex flex-col items-center justify-center">
           
-          <!-- Single Non-Duplicative Date Tag -->
-          <div id="hub-date" class="bg-pink-950/90 border border-pink-800 text-pink-300 font-mono px-3.5 py-0.5 rounded-full text-[11px] font-bold">
-            📅 2018년 1월 ~ 2024년 12월 (2018.01 ~ 2024.12)
+          <!-- Date Pill -->
+          <div id="hub-date" class="bg-pink-950/90 border border-pink-800 text-pink-300 font-mono px-3 py-0.5 rounded-full text-[10.5px] font-bold">
+            📅 2018년 1월 ~ 2024년 12월
           </div>
 
           <!-- Title -->
-          <h3 id="hub-title" class="text-sm font-black text-white tracking-tight leading-snug">
+          <h3 id="hub-title" class="text-xs font-black text-white tracking-tight leading-tight truncate max-w-[340px]">
             제이키디자인연구소 (실장 7년)
           </h3>
 
-          <!-- Org & Description -->
-          <p id="hub-desc" class="text-[10.5px] text-slate-300 leading-normal max-w-md mx-auto font-sans truncate">
-            제이키디자인연구소 · 남원시 관광 B.I 및 커뮤니케이션 디자인 총괄
-          </p>
-
-          <!-- Category / Status Tag -->
+          <!-- Category Pill Tag -->
           <div class="pt-0.5">
-            <span id="hub-tag" class="text-pink-300 font-bold bg-pink-950/60 border border-pink-900 px-2.5 py-0.5 rounded-full font-mono text-[9.5px]">
+            <span id="hub-tag" class="text-pink-300 font-bold bg-pink-950/60 border border-pink-900 px-2.5 py-0.5 rounded-full font-mono text-[9px]">
               🏢 Tier 1 · Hot Pink (기업 실무)
             </span>
           </div>
@@ -275,10 +270,10 @@
     function calculateRadialCoords() {
       width = canvas.width = canvas.clientWidth;
       height = canvas.height = canvas.clientHeight;
-      centerPos = { x: width / 2, y: height * 0.78 };
+      centerPos = { x: width / 2, y: height * 0.74 };
 
-      R_MIN = 95;
-      R_MAX = Math.min(width * 0.44, height * 0.72);
+      R_MIN = 85;
+      R_MAX = Math.min(width * 0.44, height * 0.66);
       radiusStep = (R_MAX - R_MIN) / (TOTAL_YEARS - 1);
 
       radialNodesData.forEach(node => {
@@ -427,23 +422,19 @@
       requestAnimationFrame(render);
     }
 
-    // Dynamic Center Hub Update Function (Oval Pill Shape & Clean Non-Duplicative Text)
+    // Dynamic Center Hub Update Function (Compact Slim Oval Pill Badge)
     function updateCenterHub(node) {
       if (!node) {
         document.getElementById('hub-date').innerText = '📅 2000년 ~ 2026년 (27개 연도 궤도)';
         document.getElementById('hub-title').innerText = 'KEY PORTFOLIO TIMELINE';
-        document.getElementById('hub-desc').innerText = '마우스로 각 노드를 가리키거나 클릭하시면 세부 성과와 이력이 이곳에 표시됩니다.';
-        document.getElementById('hub-tag').innerText = '✨ 노드 마우스 오버 & 클릭 실시간 연동';
+        document.getElementById('hub-tag').innerText = '✨ 노드 마우스 오버 시 연도 및 제목 표시';
         return;
       }
       const colorConfig = CATEGORY_COLORS[node.category];
-
-      // Single Clean Date String (No duplication!)
       const displayDate = node.date ? `📅 ${node.year}년 ${node.month}월 (${node.date})` : `📅 ${node.year}년 ${node.month}월`;
       
       document.getElementById('hub-date').innerText = displayDate;
       document.getElementById('hub-title').innerText = node.label;
-      document.getElementById('hub-desc').innerText = `${node.org} · ${node.desc}`;
       document.getElementById('hub-tag').innerText = `${colorConfig.name}`;
     }
 
