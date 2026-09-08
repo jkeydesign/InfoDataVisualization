@@ -132,16 +132,35 @@
       <!-- Interactive Radial Canvas -->
       <canvas id="radialCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
 
-      <!-- Center Emblem (KEY) -->
-      <div class="relative z-10 flex flex-col items-center mb-10 pointer-events-none">
-        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-600 via-pink-500 to-slate-800 p-1 glow-pink-bg shadow-2xl flex items-center justify-center">
-          <div class="w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center border border-pink-500/50">
-            <span class="text-2xl font-black text-white tracking-tight">KEY</span>
-            <span class="text-[8.5px] text-pink-400 font-mono tracking-widest">PORTFOLIO</span>
+      <!-- Center Dynamic Info Hub (Replaces static KEY circle & beam target) -->
+      <div class="relative z-10 flex flex-col items-center mb-6 pointer-events-auto transition-all duration-300">
+        <div id="center-hub-card" class="w-[440px] bg-slate-950/95 border-2 border-pink-500/80 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-center space-y-2 glow-pink-bg">
+          <!-- Year & Date Pill -->
+          <div class="flex items-center justify-center space-x-2">
+            <span id="hub-year" class="bg-pink-500 text-slate-950 font-black px-3 py-1 rounded-full text-xs font-mono tracking-wide shadow-md">
+              📅 2018년 ~ 2024년
+            </span>
+            <span id="hub-date" class="bg-slate-900 border border-pink-500/40 text-pink-300 font-mono px-2.5 py-0.5 rounded-full text-[11px]">
+              2018.01 ~ 2024.12
+            </span>
           </div>
-        </div>
-        <div class="mt-2 bg-slate-950/90 border border-pink-500/50 px-4 py-1 rounded-full text-xs font-bold text-pink-300 backdrop-blur shadow-xl">
-          강은영 (KEY)
+
+          <!-- Title -->
+          <h3 id="hub-title" class="text-base font-black text-white tracking-tight leading-snug">
+            제이키디자인연구소 (실장 7년)
+          </h3>
+
+          <!-- Org & Description -->
+          <p id="hub-desc" class="text-[11.5px] text-slate-300 leading-relaxed max-w-md mx-auto font-sans">
+            남원시 관광 B.I 및 커뮤니케이션 디자인, 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.
+          </p>
+
+          <!-- Category / Status Tag -->
+          <div class="pt-0.5 flex items-center justify-center space-x-2 text-[10.5px]">
+            <span id="hub-tag" class="text-pink-300 font-bold bg-pink-950/80 border border-pink-800 px-2.5 py-0.5 rounded-full font-mono">
+              🏢 Tier 1 · Hot Pink (기업 실무)
+            </span>
+          </div>
         </div>
       </div>
 
@@ -279,7 +298,9 @@
     function render() {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw Arc Tracks
+      const timestamp = performance.now() * 0.001; // Current timestamp in seconds
+
+      // Draw 5 Concentric Arc Tracks with Left-to-Right Time Flow Glow Animations
       ctx.save();
       const tiersRadius = [450, 380, 310, 240, 170];
       const tierLineColors = [
@@ -291,35 +312,46 @@
       ];
 
       tiersRadius.forEach((r, idx) => {
+        // 1. Base Static Arc Line Track
         ctx.beginPath();
         ctx.arc(centerPos.x, centerPos.y, r, Math.PI, 2 * Math.PI);
         ctx.strokeStyle = tierLineColors[idx];
         ctx.lineWidth = 1.8;
         if (idx === 4) ctx.setLineDash([5, 5]); else ctx.setLineDash([]);
         ctx.stroke();
+        ctx.setLineDash([]);
+
+        // 2. Time Flow Light Beam Sweeping Left -> Right (Math.PI to 2*Math.PI)
+        const flowSpeed = 0.25 + (idx * 0.04);
+        const flowProgress = (timestamp * flowSpeed + idx * 0.22) % 1.0;
+        const headAngle = Math.PI + flowProgress * Math.PI; // -180° to 0°
+        const tailLength = 0.35; // radians
+        const tailStart = Math.max(Math.PI, headAngle - tailLength);
+
+        // Glowing Comet Arc Segment
+        ctx.beginPath();
+        ctx.arc(centerPos.x, centerPos.y, r, tailStart, headAngle);
+        ctx.strokeStyle = 'rgba(236, 72, 153, 0.75)';
+        ctx.lineWidth = 3.5;
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 12;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Glowing Comet Head Particle
+        const headX = centerPos.x + Math.cos(headAngle) * r;
+        const headY = centerPos.y + Math.sin(headAngle) * r;
+        ctx.beginPath();
+        ctx.arc(headX, headY, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#f472b6';
+        ctx.shadowBlur = 15;
+        ctx.fill();
+        ctx.shadowBlur = 0;
       });
       ctx.restore();
 
-      const activeNode = selectedNode || hoveredNode;
-
-      // Draw Graded Light Beams
-      if (activeNode && isNodeVisible(activeNode)) {
-        const tierColor = TIER_COLORS[activeNode.arcTier].main;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(centerPos.x, centerPos.y - 40);
-        ctx.lineTo(activeNode.x, activeNode.y);
-        ctx.lineWidth = 3;
-        const beamGrad = ctx.createLinearGradient(centerPos.x, centerPos.y - 40, activeNode.x, activeNode.y);
-        beamGrad.addColorStop(0, 'rgba(236, 72, 153, 0.9)');
-        beamGrad.addColorStop(1, tierColor);
-        ctx.strokeStyle = beamGrad;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // Draw Nodes & Year Labels on Canvas
+      // Draw Nodes & Action Pulse Motion (Beam Line Removed per User Directive)
       radialNodesData.forEach(node => {
         if (!isNodeVisible(node)) return;
 
@@ -330,13 +362,26 @@
 
         ctx.save();
 
+        // Node Action Wave Motion on Hover/Select (Animated Pulsing Ripple)
         if (isHighlight) {
+          const pulsePhase = (timestamp * 5) % (Math.PI * 2);
+          const pulseRadius = node.radius + 7 + Math.sin(pulsePhase) * 3.5;
+
+          // Outer Wave Ring
           ctx.beginPath();
-          ctx.arc(node.x, node.y, node.radius + 9, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(236, 72, 153, 0.45)';
+          ctx.arc(node.x, node.y, pulseRadius + 5, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(236, 72, 153, 0.5)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Inner Glowing Fill
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.35)';
           ctx.fill();
         }
 
+        // Solid Node Dot
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
         ctx.fillStyle = isHighlight ? '#ffffff' : tierColor.main;
@@ -352,7 +397,7 @@
         ctx.textBaseline = 'middle';
         ctx.fillText(node.label, node.x, node.y - node.radius - 12);
 
-        // Prominent YEAR Pill Tag on Canvas Node!
+        // Prominent YEAR Pill Tag on Canvas Node
         ctx.font = 'bold 9.5px font-mono';
         ctx.fillStyle = isHighlight ? '#ec4899' : '#f472b6';
         ctx.fillText(`[${node.yearLabel}]`, node.x, node.y + node.radius + 10);
@@ -361,6 +406,24 @@
       });
 
       requestAnimationFrame(render);
+    }
+
+    // Dynamic Center Hub Update Function
+    function updateCenterHub(node) {
+      if (!node) {
+        document.getElementById('hub-year').innerText = '📅 2000년 ~ 2026년';
+        document.getElementById('hub-date').innerText = '전수 검증 완료';
+        document.getElementById('hub-title').innerText = 'KEY PORTFOLIO TIMELINE';
+        document.getElementById('hub-desc').innerText = '마우스로 각 노드를 가리키거나 클릭하시면 수행 연도와 날짜, 세부 이력이 이곳 중앙에 표시됩니다.';
+        document.getElementById('hub-tag').innerText = '✨ 마우스 호버 / 클릭 실시간 연동';
+        return;
+      }
+      const tierColor = TIER_COLORS[node.arcTier];
+      document.getElementById('hub-year').innerText = `📅 ${node.yearLabel}`;
+      document.getElementById('hub-date').innerText = node.date;
+      document.getElementById('hub-title').innerText = node.label;
+      document.getElementById('hub-desc').innerText = `${node.org} · ${node.desc}`;
+      document.getElementById('hub-tag').innerText = `Tier ${node.arcTier} · ${tierColor.name}`;
     }
 
     // --- Interactions ---
@@ -374,13 +437,14 @@
         if (!isNodeVisible(node)) continue;
         const dx = mX - node.x;
         const dy = mY - node.y;
-        if (dx * dx + dy * dy <= (node.radius + 8) * (node.radius + 8)) {
+        if (dx * dx + dy * dy <= (node.radius + 10) * (node.radius + 10)) {
           found = node; break;
         }
       }
 
       if (found !== hoveredNode) {
         hoveredNode = found;
+        updateCenterHub(found || selectedNode);
         if (found) showTooltip(found, e.clientX, e.clientY);
         else hideTooltip();
       } else if (found) {
@@ -397,7 +461,7 @@
         if (!isNodeVisible(node)) continue;
         const dx = mX - node.x;
         const dy = mY - node.y;
-        if (dx * dx + dy * dy <= (node.radius + 8) * (node.radius + 8)) {
+        if (dx * dx + dy * dy <= (node.radius + 10) * (node.radius + 10)) {
           selectNode(node); break;
         }
       }
@@ -405,6 +469,7 @@
 
     function selectNode(node) {
       selectedNode = node;
+      updateCenterHub(node);
       const tierColor = TIER_COLORS[node.arcTier];
       document.getElementById('insp-tag').innerText = `Tier ${node.arcTier} - ${tierColor.name}`;
       document.getElementById('insp-title').innerText = node.label;
