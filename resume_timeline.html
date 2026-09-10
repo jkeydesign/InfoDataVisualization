@@ -63,52 +63,52 @@
   <div class="flex-1 flex overflow-hidden relative">
 
     <!-- LEFT SIDEBAR (Compact w-64 to maximize canvas area) -->
-    <aside class="w-64 bg-slate-950 border-r border-slate-800 p-4 flex flex-col justify-between shrink-0 z-20">
+    <aside class="w-64 bg-slate-950 border-r border-slate-800 p-4 flex flex-col justify-between shrink-0 z-20 overflow-y-auto custom-scroll">
       
-      <div class="space-y-4">
+      <div class="space-y-3.5">
         <div>
-          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">분야별 노드 색상 지표</h2>
-          <div class="space-y-1.5 text-xs">
-            <button onclick="setCategoryFilter('all')" id="btn-all" class="w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">분야별 노드 필터</h2>
+          <div class="space-y-1 text-xs">
+            <button onclick="setCategoryFilter('all')" id="btn-all" class="w-full text-left px-3 py-1.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
               <span>💖 전체 27개 연도 궤도</span>
               <span class="text-[10px] font-mono text-pink-400">ALL</span>
             </button>
-            <button onclick="setCategoryFilter('career')" id="btn-career" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
-              <div class="flex items-center space-x-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899] shadow-xs"></span>
-                <span>🏢 기업 실무 (Hot Pink)</span>
-              </div>
-              <span class="text-[10px] font-mono text-pink-400">15년+</span>
-            </button>
-            <button onclick="setCategoryFilter('teaching')" id="btn-teaching" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('teaching')" id="btn-teaching" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#d946ef] shadow-xs"></span>
                 <span>🏫 대학 강의 (Fuchsia)</span>
               </div>
               <span class="text-[10px] font-mono text-fuchsia-400">5개 대</span>
             </button>
-            <button onclick="setCategoryFilter('research')" id="btn-research" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('career')" id="btn-career" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899] shadow-xs"></span>
+                <span>🏢 기업 실무 (Hot Pink)</span>
+              </div>
+              <span class="text-[10px] font-mono text-pink-400">15년+</span>
+            </button>
+            <button onclick="setCategoryFilter('research')" id="btn-research" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#f43f5e] shadow-xs"></span>
                 <span>🎓 학력 & KCI (Rose)</span>
               </div>
               <span class="text-[10px] font-mono text-rose-400">6건</span>
             </button>
-            <button onclick="setCategoryFilter('exhibit')" id="btn-exhibit" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('exhibit')" id="btn-exhibit" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#fb7185] shadow-xs"></span>
                 <span>🎨 국제 전시 (Coral)</span>
               </div>
               <span class="text-[10px] font-mono text-rose-300">10건</span>
             </button>
-            <button onclick="setCategoryFilter('judge')" id="btn-judge" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('judge')" id="btn-judge" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#64748b] shadow-xs"></span>
                 <span>⚖️ 심사위원 (Slate)</span>
               </div>
               <span class="text-[10px] font-mono text-slate-400">3회</span>
             </button>
-            <button onclick="setCategoryFilter('awards')" id="btn-awards" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+            <button onclick="setCategoryFilter('awards')" id="btn-awards" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#cbd5e1] shadow-xs"></span>
                 <span>🏆 수상 & 자격 (Gray)</span>
@@ -118,14 +118,44 @@
           </div>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl space-y-1.5 text-xs">
-          <h3 class="font-bold text-pink-400 flex items-center space-x-1.5 text-[11px]">
-            <span>🌐 27개 연도 넓은 궤도</span>
+        <!-- University Tenure Light Tracker Quick Buttons -->
+        <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl space-y-1.5 text-xs">
+          <h3 class="text-[11px] font-bold text-fuchsia-400 uppercase tracking-wider flex items-center space-x-1">
+            <span>✨ 대학 재직기간 빛줄기 궤도</span>
           </h3>
-          <p class="text-slate-300 leading-relaxed text-[11px]">
+          <p class="text-[10px] text-slate-400 leading-tight">클릭 시 해당 재직 기간 반원에 빛이 지나갑니다.</p>
+          <div class="space-y-1 pt-0.5">
+            <button onclick="selectUniversity('t4')" id="univ-t4" class="w-full text-left px-2.5 py-1.5 rounded-xl border border-fuchsia-500 bg-fuchsia-950/40 text-fuchsia-300 font-bold transition flex items-center justify-between text-[10.5px]">
+              <span>청운대학교 (강사)</span>
+              <span class="text-[9.5px] font-mono text-fuchsia-400">2025~2026</span>
+            </button>
+            <button onclick="selectUniversity('t2')" id="univ-t2" class="w-full text-left px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-fuchsia-500 transition flex items-center justify-between text-[10.5px]">
+              <span>경복대학교 (겸임)</span>
+              <span class="text-[9.5px] font-mono text-fuchsia-400">2024~2026</span>
+            </button>
+            <button onclick="selectUniversity('t5')" id="univ-t5" class="w-full text-left px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-fuchsia-500 transition flex items-center justify-between text-[10.5px]">
+              <span>한국공학대 (겸임)</span>
+              <span class="text-[9.5px] font-mono text-fuchsia-400">2026~현재</span>
+            </button>
+            <button onclick="selectUniversity('t1')" id="univ-t1" class="w-full text-left px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-fuchsia-500 transition flex items-center justify-between text-[10.5px]">
+              <span>숭의여대 (강사)</span>
+              <span class="text-[9.5px] font-mono text-fuchsia-400">2022~2023</span>
+            </button>
+            <button onclick="selectUniversity('t3')" id="univ-t3" class="w-full text-left px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-fuchsia-500 transition flex items-center justify-between text-[10.5px]">
+              <span>충북대학교 (강사)</span>
+              <span class="text-[9.5px] font-mono text-fuchsia-400">2025~2026</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/60 border border-slate-800 p-2.5 rounded-xl space-y-1 text-xs">
+          <h3 class="font-bold text-pink-400 flex items-center space-x-1 text-[10.5px]">
+            <span>🌐 27개 연도 궤도 안내</span>
+          </h3>
+          <p class="text-slate-300 leading-relaxed text-[10px]">
             <b>반지름(안➔밖)</b>: 2000년 ~ 2026년<br>
             <b>각도(좌➔우)</b>: 1월 ~ 12월<br>
-            노드 호버 시 연도 궤도가 발광합니다.
+            노드 호버 시 재직기간 빛줄기가 반원을 따라 유영합니다.
           </p>
         </div>
       </div>
@@ -217,21 +247,21 @@
       awards: { main: '#cbd5e1', light: '#f1f5f9', name: 'Cool Gray (수상/자격)' }
     };
 
-    // Node Data mapped to exact Year (2000~2026) and Month (1~12)
+    // Node Data mapped to exact Year (2000~2026) and Month (1~12) with full Tenure Start/End metadata
     const radialNodesData = [
-      // Industry Career
-      { id: 'c5', year: 2005, month: 3, yearLabel: '2005.03~2008.03', label: 'CBS 기독교방송 (3년)', category: 'career', date: '2005.03 ~ 2008.03', org: 'CBS방송', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', status: '방송 그래픽 타이틀 연출' },
-      { id: 'c4', year: 2015, month: 7, yearLabel: '2015.07~2017.04', label: '이호 (팀장/대리 2년)', category: 'career', date: '2015.07 ~ 2017.04', org: '이호', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', status: 'COSTCO 입점 파트너사 패키지 관리' },
-      { id: 'c1', year: 2018, month: 1, yearLabel: '2018.01~2024.12', label: '제이키디자인연구소 (실장 7년)', category: 'career', date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
-      { id: 'c2', year: 2021, month: 6, yearLabel: '2021.06~2022.05', label: '고트레 (팀장 1년)', category: 'career', date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
-      { id: 'c3', year: 2025, month: 1, yearLabel: '2025.01~2025.12', label: '상상공장 (과장 1년)', category: 'career', date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
+      // Academic Teaching & Faculty Experience (5개 대학교 재직 기간 및 강의 경력)
+      { id: 't4', startYear: 2025, startMonth: 9, endYear: 2026, endMonth: 2, year: 2025, month: 9, yearLabel: '2025.09~2026.02', label: '🏫 청운대학교 디자인학부 강사 (2년)', category: 'teaching', date: '2025.09 ~ 2026.02', org: '청운대학교', desc: '디자인학부 콘텐츠디자인 및 시각디자인 실습 전공 강의.', status: '강의경력서 증빙 완료' },
+      { id: 't2', startYear: 2024, startMonth: 3, endYear: 2026, endMonth: 2, year: 2024, month: 3, yearLabel: '2024.03~현재', label: '🏫 경복대학교 시각디자인과 겸임교수 (3년)', category: 'teaching', date: '2024.03 ~ 2026.02', org: '경복대학교', desc: '디자인학부 시각디자인 전공 겸임교수, 브랜드디자인 및 패키지디자인 실습 강의.', status: '강의경력증명서 증빙 완료' },
+      { id: 't5', startYear: 2026, startMonth: 3, endYear: 2026, endMonth: 12, year: 2026, month: 3, yearLabel: '2026.03~현재', label: '🏫 한국공학대학교 겸임교수', category: 'teaching', date: '2026.03 ~ 현재', org: '한국공학대학교', desc: '국제미래학부 인포메이션 데이터 시각화 및 UX/UI 디자인 강의.', status: '겸임교수 임용 증빙' },
+      { id: 't1', startYear: 2022, startMonth: 3, endYear: 2023, endMonth: 12, year: 2022, month: 3, yearLabel: '2022.03~2023.12', label: '🏫 숭의여대 시각디자인과 강사 (2년)', category: 'teaching', date: '2022.03 ~ 2023.12', org: '숭의여자대학교', desc: '시각디자인과 타이포그래피, 브랜드디자인, 타이틀 그래픽 실습 전공 강의.', status: '교육경력증명서 증빙 완료' },
+      { id: 't3', startYear: 2025, startMonth: 3, endYear: 2026, endMonth: 2, year: 2025, month: 3, yearLabel: '2025.03~현재', label: '🏫 충북대학교 디자인학과 강사 (2년)', category: 'teaching', date: '2025.03 ~ 2026.02', org: '충북대학교', desc: '조형예술학부/디자인학과 브랜드디자인 전공 강의.', status: '경력과목증명서 증빙 완료' },
 
-      // Academic Teaching & Faculty Experience (대학 강의 및 겸임교수 경력)
-      { id: 't1', year: 2022, month: 3, yearLabel: '2022.03~2023.12', label: '🏫 숭의여대 시각디자인과 강사 (2년)', category: 'teaching', date: '2022.03 ~ 2023.12', org: '숭의여자대학교', desc: '시각디자인과 타이포그래피, 브랜드디자인, 타이틀 그래픽 실습 전공 강의.', status: '교육경력증명서 증빙 완료' },
-      { id: 't2', year: 2024, month: 3, yearLabel: '2024.03~현재', label: '🏫 경복대학교 시각디자인과 겸임교수 (3년)', category: 'teaching', date: '2024.03 ~ 2026.02', org: '경복대학교', desc: '디자인학부 시각디자인 전공 겸임교수, 브랜드디자인 및 패키지디자인 실습 강의.', status: '강의경력증명서 증빙 완료' },
-      { id: 't3', year: 2025, month: 3, yearLabel: '2025.03~현재', label: '🏫 충북대학교 디자인학과 강사 (2년)', category: 'teaching', date: '2025.03 ~ 2026.02', org: '충북대학교', desc: '조형예술학부/디자인학과 브랜드디자인 전공 강의.', status: '경력과목증명서 증빙 완료' },
-      { id: 't4', year: 2025, month: 9, yearLabel: '2025.09~현재', label: '🏫 청운대학교 디자인학부 강사 (2년)', category: 'teaching', date: '2025.09 ~ 2026.02', org: '청운대학교', desc: '디자인학부 콘텐츠디자인 및 시각디자인 실습 전공 강의.', status: '강의경력서 증빙 완료' },
-      { id: 't5', year: 2026, month: 3, yearLabel: '2026.03~현재', label: '🏫 한국공학대학교 겸임교수', category: 'teaching', date: '2026.03 ~ 현재', org: '한국공학대학교', desc: '국제미래학부 인포메이션 데이터 시각화 및 UX/UI 디자인 강의.', status: '겸임교수 임용 증빙' },
+      // Industry Career
+      { id: 'c1', startYear: 2018, startMonth: 1, endYear: 2024, endMonth: 12, year: 2018, month: 1, yearLabel: '2018.01~2024.12', label: '제이키디자인연구소 (실장 7년)', category: 'career', date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
+      { id: 'c2', startYear: 2021, startMonth: 6, endYear: 2022, endMonth: 5, year: 2021, month: 6, yearLabel: '2021.06~2022.05', label: '고트레 (팀장 1년)', category: 'career', date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
+      { id: 'c3', startYear: 2025, startMonth: 1, endYear: 2025, endMonth: 12, year: 2025, month: 1, yearLabel: '2025.01~2025.12', label: '상상공장 (과장 1년)', category: 'career', date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
+      { id: 'c4', startYear: 2015, startMonth: 7, endYear: 2017, endMonth: 4, year: 2015, month: 7, yearLabel: '2015.07~2017.04', label: '이호 (팀장/대리 2년)', category: 'career', date: '2015.07 ~ 2017.04', org: '이호', desc: '농심 덴마크햄, 신라명과, 풍국면 등 식품 패키지 브랜드 콘텐츠 디자인.', status: 'COSTCO 입점 파트너사 패키지 관리' },
+      { id: 'c5', startYear: 2005, startMonth: 3, endYear: 2008, endMonth: 3, year: 2005, month: 3, yearLabel: '2005.03~2008.03', label: 'CBS 기독교방송 (3년)', category: 'career', date: '2005.03 ~ 2008.03', org: 'CBS방송', desc: '뉴스 및 교양 프로그램 타이틀 모션 그래픽 ("새롭게 하소서", "성서학당").', status: '방송 그래픽 타이틀 연출' },
 
       // Education & KCI Papers
       { id: 'd2', year: 2017, month: 2, yearLabel: '2017.02', label: '홍익대 석사 졸업 (GPA 4.28)', category: 'research', date: '2015.02 ~ 2017.02', org: '홍익대학교 대학원', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 연구.', status: '석사학위기 PDF 증빙 완료' },
@@ -319,7 +349,7 @@
       const activeNode = hoveredNode || selectedNode;
       const activeYearRadius = activeNode ? activeNode.arcRadius : null;
 
-      // 1. Draw 27 Refined Concentric Year Arcs (Spacious & Breathable)
+      // 1. Draw 27 Refined Concentric Year Arcs (Spacious & Ambient)
       ctx.save();
       for (let i = 0; i < TOTAL_YEARS; i++) {
         const currentYear = START_YEAR + i;
@@ -364,7 +394,139 @@
       }
       ctx.restore();
 
-      // 2. Month Markers along Perimeter (1월 / 6월 / 12월)
+      // 2. Animated Tenure Arc Ribbon & Shooting Light Beam ("재직 기간 반원 발광 및 빛줄기 모션")
+      if (activeNode && activeNode.startYear && activeNode.endYear) {
+        ctx.save();
+
+        // 2-A. Draw full highlighted tenure ribbon across affected years
+        for (let y = activeNode.startYear; y <= activeNode.endYear; y++) {
+          const m1 = (y === activeNode.startYear) ? activeNode.startMonth : 1;
+          const m2 = (y === activeNode.endYear) ? activeNode.endMonth : 12;
+
+          const yearIdx = y - START_YEAR;
+          const r = R_MIN + yearIdx * radiusStep;
+
+          const rad1 = (-180 + ((m1 - 1) / 11) * 180) * Math.PI / 180;
+          const rad2 = (-180 + ((m2 - 1) / 11) * 180) * Math.PI / 180;
+
+          // Outer Glow Ribbon
+          ctx.beginPath();
+          ctx.arc(centerPos.x, centerPos.y, r, rad1, rad2);
+          ctx.strokeStyle = 'rgba(217, 70, 239, 0.45)';
+          ctx.lineWidth = 5.5;
+          ctx.shadowColor = '#d946ef';
+          ctx.shadowBlur = 18;
+          ctx.stroke();
+
+          // Bright Core Ribbon
+          ctx.beginPath();
+          ctx.arc(centerPos.x, centerPos.y, r, rad1, rad2);
+          ctx.strokeStyle = '#f472b6';
+          ctx.lineWidth = 2.4;
+          ctx.shadowBlur = 6;
+          ctx.stroke();
+
+          // Terminal endpoints on the arc
+          if (y === activeNode.startYear) {
+            const sx = centerPos.x + Math.cos(rad1) * r;
+            const sy = centerPos.y + Math.sin(rad1) * r;
+            ctx.beginPath();
+            ctx.arc(sx, sy, 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ec4899';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+          }
+          if (y === activeNode.endYear) {
+            const ex = centerPos.x + Math.cos(rad2) * r;
+            const ey = centerPos.y + Math.sin(rad2) * r;
+            ctx.beginPath();
+            ctx.arc(ex, ey, 3.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ec4899';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+          }
+        }
+
+        // 2-B. Animated Shooting Light Beam traveling along the tenure period ("빛이 지나가는 모션")
+        const totalMonths = (activeNode.endYear - activeNode.startYear) * 12 + (activeNode.endMonth - activeNode.startMonth);
+        const duration = Math.max(1, totalMonths);
+
+        // Smooth continuous time progress (takes ~2.2 seconds per loop)
+        const progressTime = (timestamp * 0.45) % 1.0;
+        const currentMonthOffset = progressTime * duration;
+
+        // Flowing trailing comet tail
+        const tailSteps = 16;
+        for (let step = 0; step < tailSteps; step++) {
+          const tailOffset = currentMonthOffset - (step * (duration / 25));
+          if (tailOffset < 0) continue;
+
+          const tailTotalM = (activeNode.startYear * 12 + (activeNode.startMonth - 1)) + tailOffset;
+          const tailYear = tailTotalM / 12;
+          const tailMonth = tailTotalM % 12;
+          const tailR = R_MIN + (tailYear - START_YEAR) * radiusStep;
+          const tailAngleRad = (-180 + (tailMonth / 11) * 180) * Math.PI / 180;
+
+          const tx = centerPos.x + Math.cos(tailAngleRad) * tailR;
+          const ty = centerPos.y + Math.sin(tailAngleRad) * tailR;
+
+          const fade = 1 - (step / tailSteps);
+          ctx.beginPath();
+          ctx.arc(tx, ty, Math.max(1.2, 6.5 * fade), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(236, 72, 153, ${fade * 0.85})`;
+          ctx.shadowColor = '#d946ef';
+          ctx.shadowBlur = 12 * fade;
+          ctx.fill();
+        }
+
+        // Leading Light Head (White-hot glowing comet nucleus)
+        const currentTotalM = (activeNode.startYear * 12 + (activeNode.startMonth - 1)) + currentMonthOffset;
+        const currentYearFrac = currentTotalM / 12;
+        const currentMonthFrac = currentTotalM % 12;
+        const currentR = R_MIN + (currentYearFrac - START_YEAR) * radiusStep;
+        const currentAngleRad = (-180 + (currentMonthFrac / 11) * 180) * Math.PI / 180;
+
+        const hx = centerPos.x + Math.cos(currentAngleRad) * currentR;
+        const hy = centerPos.y + Math.sin(currentAngleRad) * currentR;
+
+        // Radiant Outer Aura
+        ctx.beginPath();
+        ctx.arc(hx, hy, 16, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(236, 72, 153, 0.4)';
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 25;
+        ctx.fill();
+
+        // Inner glowing sphere
+        ctx.beginPath();
+        ctx.arc(hx, hy, 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#f472b6';
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+
+        // White core
+        ctx.beginPath();
+        ctx.arc(hx, hy, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        // Floating Date Tracker Pin above light head
+        const dispYear = Math.floor(currentYearFrac);
+        const dispMonth = Math.min(12, Math.floor(currentMonthFrac) + 1);
+        ctx.font = 'bold 10px font-mono';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#000000';
+        ctx.shadowBlur = 8;
+        ctx.fillText(`✨ ${dispYear}.${String(dispMonth).padStart(2, '0')}`, hx, hy - 14);
+
+        ctx.restore();
+      }
+
+      // 3. Month Markers along Perimeter (1월 / 6월 / 12월)
       ctx.save();
       ctx.font = 'bold 11px font-mono';
       ctx.fillStyle = '#f472b6';
@@ -385,7 +547,7 @@
       });
       ctx.restore();
 
-      // 3. Draw Nodes (Clean: Plain Date without Brackets [ ])
+      // 4. Draw Nodes (Clean: Plain Date without Brackets [ ])
       radialNodesData.forEach(node => {
         if (!isNodeVisible(node)) return;
 
@@ -454,6 +616,21 @@
       document.getElementById('hub-tag').innerText = `${colorConfig.name}`;
     }
 
+    // Quick University Tenure Selector
+    function selectUniversity(id) {
+      const node = radialNodesData.find(n => n.id === id);
+      if (node) {
+        selectNode(node);
+        document.querySelectorAll('[id^="univ-"]').forEach(b => {
+          b.className = 'w-full text-left px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-fuchsia-500 transition flex items-center justify-between text-[10.5px]';
+        });
+        const activeUnivBtn = document.getElementById(`univ-${id}`);
+        if (activeUnivBtn) {
+          activeUnivBtn.className = 'w-full text-left px-2.5 py-1.5 rounded-xl border border-fuchsia-500 bg-fuchsia-950/40 text-fuchsia-300 font-bold transition flex items-center justify-between text-[10.5px]';
+        }
+      }
+    }
+
     // --- Interactions ---
     canvas.addEventListener('mousemove', e => {
       const rect = canvas.getBoundingClientRect();
@@ -502,16 +679,27 @@
       document.getElementById('insp-desc').innerText = node.desc;
       document.getElementById('insp-status').innerHTML = `• ${node.status}`;
       document.getElementById('insp-path').innerText = `D:/○바로바로서류/2.전시 연구 실적`;
+
+      // Sync university sidebar buttons if it's a teaching node
+      if (node.category === 'teaching') {
+        document.querySelectorAll('[id^="univ-"]').forEach(b => {
+          b.className = 'w-full text-left px-2.5 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-fuchsia-500 transition flex items-center justify-between text-[10.5px]';
+        });
+        const activeUnivBtn = document.getElementById(`univ-${node.id}`);
+        if (activeUnivBtn) {
+          activeUnivBtn.className = 'w-full text-left px-2.5 py-1.5 rounded-xl border border-fuchsia-500 bg-fuchsia-950/40 text-fuchsia-300 font-bold transition flex items-center justify-between text-[10.5px]';
+        }
+      }
     }
 
     function setCategoryFilter(filter) {
       currentCategoryFilter = filter;
       document.querySelectorAll('#btn-all, #btn-career, #btn-teaching, #btn-research, #btn-exhibit, #btn-judge, #btn-awards').forEach(b => {
-        b.className = 'w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
+        b.className = 'w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
       });
       const activeBtn = document.getElementById(`btn-${filter}`);
       if (activeBtn) {
-        activeBtn.className = 'w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
+        activeBtn.className = 'w-full text-left px-3 py-1.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
       }
     }
 
@@ -520,7 +708,7 @@
     });
 
     calculateRadialCoords();
-    selectNode(radialNodesData[0]);
+    selectNode(radialNodesData[0]); // Default to Cheongwoon University (t4) to immediately showcase light beam
     render();
   </script>
 </body>
