@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강은영 (KEY) - 생애 거주지 이동 경로 & 3D 지리공간 시각화</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <!-- Leaflet CSS & JS for Raster Map Layering -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      user-select: none;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(236, 72, 153, 0.4);
+      border-radius: 3px;
+    }
+    .glow-pink {
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.35);
+    }
+    /* 3D Map Perspective Container */
+    #map-viewport {
+      perspective: 1200px;
+      transform-style: preserve-3d;
+    }
+    #map-wrapper {
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform-origin: center center;
+    }
+    .leaflet-container {
+      background: #020617 !important;
+    }
+    /* Hide Leaflet default controls for custom modern UI */
+    .leaflet-control-attribution {
+      background: rgba(15, 23, 42, 0.8) !important;
+      color: #64748b !important;
+      font-size: 9px !important;
+      border-radius: 6px;
+      margin: 8px !important;
+    }
+    .leaflet-control-zoom {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen w-screen flex flex-col overflow-hidden antialiased">
+
+  <!-- Header Navigation -->
+  <header class="h-16 bg-slate-950/90 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 z-30 backdrop-blur">
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-pink-400 transition bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl mr-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <span>포털 메인</span>
+      </a>
+      <div class="w-8 h-8 rounded-xl bg-pink-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-md">
+        KEY
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
+          <span>강은영 (KEY) - 생애 거주지 이동 경로 & 지리공간 시각화</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">Geospatial 3D</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">주민등록초본 전수 분석(1979~2024): 벡터(Point/Line/Polygon) & 래스터(Satellite/Dark) 3D 공간 시각화</p>
+      </div>
+    </div>
+
+    <!-- Quick Stats Summary -->
+    <div class="flex items-center space-x-3 text-xs font-mono">
+      <span class="text-slate-400">총 이동: <b class="text-pink-400">23회 전입</b></span>
+      <span class="text-slate-600">|</span>
+      <span class="text-slate-400">최장 거주: <b class="text-pink-400">군포 10.7년 / 양재 6년</b></span>
+      <span class="text-slate-600">|</span>
+      <span class="text-slate-400">생애 누적: <b class="text-pink-400">45년</b></span>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT SIDEBAR: Life Era Filter & Concept -->
+    <aside class="w-72 bg-slate-950 border-r border-slate-800 p-4 flex flex-col justify-between shrink-0 z-20 overflow-y-auto custom-scroll">
+      <div class="space-y-4">
+        
+        <!-- Life Era Selector -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">생애 8대 거주 권역</h2>
+            <span class="text-[10px] font-mono text-pink-400">1979~2024</span>
+          </div>
+          <div class="space-y-1.5 text-xs">
+            <button onclick="filterEra('all')" id="era-all" class="w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
+              <span>💖 전체 생애 이동 궤적 (23곳)</span>
+              <span class="text-[10px] font-mono text-pink-400">ALL</span>
+            </button>
+            <button onclick="filterEra('seongnam')" id="era-seongnam" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899]"></span>
+                <span>👶 1. 성남 유년기 (1979~1988)</span>
+              </div>
+              <span class="text-[10px] font-mono text-pink-400">9년</span>
+            </button>
+            <button onclick="filterEra('songpa_east')" id="era-songpa_east" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#f43f5e]"></span>
+                <span>🎒 2. 송파·강동 청소년기 (1988~1993)</span>
+              </div>
+              <span class="text-[10px] font-mono text-rose-400">5년</span>
+            </button>
+            <button onclick="filterEra('daechi')" id="era-daechi" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#fb7185]"></span>
+                <span>🎨 3. 강남 대치동 학창기 (1993~2000)</span>
+              </div>
+              <span class="text-[10px] font-mono text-rose-300">7년</span>
+            </button>
+            <button onclick="filterEra('sanbon')" id="era-sanbon" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#a855f7]"></span>
+                <span>💼 4. 군포 산본 청년기 (2000~2010)</span>
+              </div>
+              <span class="text-[10px] font-mono text-purple-400">10.7년</span>
+            </button>
+            <button onclick="filterEra('bongcheon')" id="era-bongcheon" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#38bdf8]"></span>
+                <span>🎓 5. 관악 봉천 독립/석박사 (2010~2015)</span>
+              </div>
+              <span class="text-[10px] font-mono text-sky-400">5년</span>
+            </button>
+            <button onclick="filterEra('jamsil')" id="era-jamsil" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+                <span>🏢 6. 송파 방이·석촌기 (2015~2017)</span>
+              </div>
+              <span class="text-[10px] font-mono text-emerald-400">2년</span>
+            </button>
+            <button onclick="filterEra('yangjae')" id="era-yangjae" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span>
+                <span>🌟 7. 서초 양재 실무/박사 (2017~2023)</span>
+              </div>
+              <span class="text-[10px] font-mono text-amber-400">6년</span>
+            </button>
+            <button onclick="filterEra('uijeongbu')" id="era-uijeongbu" class="w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#06b6d4]"></span>
+                <span>🏫 8. 의정부 고산 현재 (2023~현재)</span>
+              </div>
+              <span class="text-[10px] font-mono text-cyan-400">현재</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- GIS Vector vs Raster Academic Concept Card -->
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl space-y-2 text-xs">
+          <h3 class="font-bold text-pink-400 flex items-center space-x-1.5 text-[11px]">
+            <span>💡 지리공간 데이터 시각화 개념</span>
+          </h3>
+          <div class="space-y-1.5 text-[10.5px] text-slate-300 leading-relaxed">
+            <p><b>• 벡터 (Vector)</b>: 점(거주지 좌표), 선(3D 포물선 이동선), 면(생활권 폴리곤)의 정확한 기하학적 요소 시각화.</p>
+            <p><b>• 래스터 (Raster)</b>: 위성 항공 사진(Satellite Tiles) 및 다크 타일 맵, 연속 공간 체류 밀도 히트맵.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-[10px] text-slate-500 font-mono pt-3 border-t border-slate-800/80">
+        출처: D:\...\2024 주민등록 초본.pdf (정부24 발급)
+      </div>
+    </aside>
+
+    <!-- CENTER MAP & 3D CANVAS VIEWPORT -->
+    <main class="flex-1 relative bg-slate-950 flex flex-col overflow-hidden" id="map-viewport">
+      
+      <!-- Top Layer & Camera Controls Bar -->
+      <div class="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+        
+        <!-- Left: Raster & Vector Layer Controls -->
+        <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-800 backdrop-blur px-3 py-1.5 rounded-2xl shadow-xl pointer-events-auto">
+          <span class="text-[11px] font-bold text-slate-400 font-mono mr-1">래스터 맵:</span>
+          <button onclick="setRasterBasemap('dark')" id="base-dark" class="px-2.5 py-1 rounded-xl text-[11px] font-bold transition bg-pink-600 text-white shadow">
+            🌃 다크 래스터
+          </button>
+          <button onclick="setRasterBasemap('satellite')" id="base-satellite" class="px-2.5 py-1 rounded-xl text-[11px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+            🛰️ 위성 래스터
+          </button>
+          <button onclick="setRasterBasemap('light')" id="base-light" class="px-2.5 py-1 rounded-xl text-[11px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+            🗺️ 라이트
+          </button>
+          
+          <span class="w-px h-3.5 bg-slate-700 mx-1"></span>
+
+          <span class="text-[11px] font-bold text-slate-400 font-mono mr-1">벡터 옵션:</span>
+          <button onclick="toggleVectorLayer('arcs')" id="btn-arcs" class="px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition bg-pink-950 border border-pink-700 text-pink-300">
+            ✨ 이동선 (Arcs)
+          </button>
+          <button onclick="toggleVectorLayer('polygons')" id="btn-polygons" class="px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+            🫧 권역 (Polygons)
+          </button>
+          <button onclick="toggleVectorLayer('heatmap')" id="btn-heatmap" class="px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+            🔥 밀도 (Heatmap)
+          </button>
+        </div>
+
+        <!-- Right: 3D Camera Angles & Fly Controls -->
+        <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-800 backdrop-blur px-3 py-1.5 rounded-2xl shadow-xl pointer-events-auto">
+          <span class="text-[11px] font-bold text-slate-400 font-mono mr-1">3D 시점:</span>
+          <button onclick="setCamera3D('2d')" id="cam-2d" class="px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+            🗺️ 평면 2D
+          </button>
+          <button onclick="setCamera3D('3d')" id="cam-3d" class="px-2.5 py-1 rounded-lg text-[10.5px] font-bold transition bg-pink-600 text-white shadow">
+            📐 3D 입체 (45°)
+          </button>
+          <button onclick="toggle3DOrbit()" id="cam-orbit" class="px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-300 bg-slate-800 hover:text-pink-400 border border-slate-700">
+            🪐 3D 회전
+          </button>
+          <button onclick="resetMapView()" class="px-2 py-0.5 rounded-lg bg-pink-950/80 border border-pink-700/60 text-pink-300 hover:bg-pink-900 hover:text-white transition font-bold text-[10px]">
+            🔄 뷰 리셋
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Map & 3D Layer Wrapper -->
+      <div id="map-wrapper" class="w-full h-full relative" style="transform: rotateX(42deg) scale(1.1);">
+        <!-- Leaflet Raster Map Container -->
+        <div id="map" class="w-full h-full absolute inset-0 z-0"></div>
+        <!-- 3D Vector Flight & Light Beam Canvas Overlay -->
+        <canvas id="vectorCanvas" class="w-full h-full absolute inset-0 z-10 pointer-events-none"></canvas>
+      </div>
+
+      <!-- Bottom Timeline Playback Controller -->
+      <div class="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between bg-slate-950/90 border border-slate-800 backdrop-blur-md px-5 py-3 rounded-2xl shadow-2xl">
+        <div class="flex items-center space-x-3 shrink-0">
+          <button onclick="toggleTimelinePlay()" id="play-btn" class="w-9 h-9 rounded-xl bg-pink-600 hover:bg-pink-500 text-white flex items-center justify-center font-black transition shadow-lg">
+            <svg id="play-icon" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M4.5 3.5l11 6.5-11 6.5v-13z"/></svg>
+            <svg id="pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          </button>
+          <div>
+            <div class="text-[11px] font-bold text-white flex items-center space-x-1.5">
+              <span>타임라인 이동 시계열</span>
+              <span id="timeline-year-badge" class="px-2 py-0.5 rounded-full bg-pink-950 text-pink-300 font-mono text-[10px] font-black border border-pink-800">
+                1979년 (출생)
+              </span>
+            </div>
+            <p id="timeline-address-preview" class="text-[10px] text-slate-400 truncate max-w-[320px]">
+              경기도 성남시 상대원동 407-128
+            </p>
+          </div>
+        </div>
+
+        <!-- Slider Bar -->
+        <div class="flex-1 mx-6 flex items-center space-x-3">
+          <span class="text-[10px] font-mono text-slate-400">1979</span>
+          <input type="range" id="timelineSlider" min="0" max="22" step="1" value="0" oninput="onSliderChange(this.value)" class="flex-1 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-500">
+          <span class="text-[10px] font-mono text-slate-400">2024</span>
+        </div>
+
+        <div class="text-[11px] text-slate-400 font-mono shrink-0">
+          이동 단계: <b id="timeline-step-text" class="text-pink-400">1</b> / 23
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT SIDEBAR: Address & Life Context Inspector -->
+    <aside id="inspector" class="w-80 bg-slate-950 border-l border-slate-800 p-5 flex flex-col shrink-0 space-y-4 z-20 overflow-y-auto custom-scroll">
+      <div class="border-b border-slate-800 pb-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <span id="insp-era-badge" class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 uppercase font-mono">
+            1. 성남 유년기
+          </span>
+          <span id="insp-step-num" class="text-[10px] font-mono text-slate-500">STEP 01 / 23</span>
+        </div>
+        <h3 id="insp-title" class="text-base font-black text-white leading-tight">경기도 성남시 상대원동 407-128</h3>
+        <p id="insp-date" class="text-xs text-pink-400 font-mono mt-1 font-bold">1979년 10월 31일 (출생등록)</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl space-y-2 text-xs">
+        <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">전입 사유 및 세대주 변동</h4>
+        <p id="insp-reason" class="text-slate-200 leading-relaxed text-[11.5px] font-mono">
+          출생등록 (강영완의 자녀)
+        </p>
+      </div>
+
+      <div class="bg-pink-950/40 border border-pink-900/60 p-3.5 rounded-xl space-y-2 text-xs">
+        <h4 class="font-bold text-pink-400 uppercase tracking-wider text-[11px]">체류 기간 & 생애 주기 맥락</h4>
+        <div class="text-slate-200 text-[11px] leading-relaxed space-y-1.5">
+          <div class="flex items-center justify-between font-mono">
+            <span class="text-slate-400">거주 기간:</span>
+            <b id="insp-duration" class="text-pink-300 font-bold">13개월 (1.1년)</b>
+          </div>
+          <div class="flex items-center justify-between font-mono">
+            <span class="text-slate-400">당시 나이:</span>
+            <b id="insp-age" class="text-pink-300 font-bold">만 0세</b>
+          </div>
+          <p id="insp-note" class="text-slate-300 text-[11px] pt-1 border-t border-pink-900/60 leading-relaxed">
+            강은영 (KEY) 탄생지. 성남 원도심 상대원동에서 삶의 첫 여정을 시작.
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-1.5 pt-1 text-xs">
+        <h4 class="font-bold text-slate-400 uppercase tracking-wider text-[10.5px]">GPS 지리 좌표 (WGS84)</h4>
+        <div id="insp-coords" class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-[10px] font-mono text-slate-400 leading-tight">
+          위도: 37.4415° N | 경도: 127.1720° E
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button onclick="flyToCurrentNode()" class="w-full py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs shadow-md transition flex items-center justify-center space-x-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>이 주소로 3D 카메라 이동</span>
+        </button>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <script>
+    // Full 23 Geospatial Migration Milestones from Resident Registration Abstract (주민등록초본 전수 분석)
+    const MIGRATION_DATA = [
+      {
+        step: 1,
+        date: '1979-10-31',
+        year: 1979,
+        month: 10,
+        age: 0,
+        city: '경기도 성남시',
+        district: '상대원동',
+        address: '경기도 성남시 상대원동 407-128',
+        reason: '출생등록 (강영완의 자녀)',
+        era: 'seongnam',
+        eraName: '1. 성남 유년기',
+        eraColor: '#ec4899',
+        lat: 37.4415,
+        lng: 127.1720,
+        durationMonths: 13,
+        note: '강은영 (KEY) 탄생지. 성남 원도심 상대원동에서 삶의 첫 여정을 시작.'
+      },
+      {
+        step: 2,
+        date: '1980-11-22',
+        year: 1980,
+        month: 11,
+        age: 1,
+        city: '경기도 성남시',
+        district: '상대원동',
+        address: '경기도 성남시 상대원동 391-54 (1294 지번정정)',
+        reason: '전입 및 도시계획사업 확정처분',
+        era: 'seongnam',
+        eraName: '1. 성남 유년기',
+        eraColor: '#ec4899',
+        lat: 37.4432,
+        lng: 127.1702,
+        durationMonths: 25,
+        note: '상대원동 구역 내 주소 이동 및 도시계획사업 지번정정 반영.'
+      },
+      {
+        step: 3,
+        date: '1982-12-22',
+        year: 1982,
+        month: 12,
+        age: 3,
+        city: '경기도 성남시',
+        district: '단대동',
+        address: '경기도 성남시 단대동 산 50 동우아파트 5-209',
+        reason: '전입 (강영완의 자녀)',
+        era: 'seongnam',
+        eraName: '1. 성남 유년기',
+        eraColor: '#ec4899',
+        lat: 37.4525,
+        lng: 127.1580,
+        durationMonths: 7,
+        note: '단대동 동우아파트로 이동하여 유아기 거주.'
+      },
+      {
+        step: 4,
+        date: '1983-07-09',
+        year: 1983,
+        month: 7,
+        age: 4,
+        city: '경기도 성남시',
+        district: '상대원동',
+        address: '경기도 성남시 상대원동 1487-2',
+        reason: '전입 (강영완의 자녀)',
+        era: 'seongnam',
+        eraName: '1. 성남 유년기',
+        eraColor: '#ec4899',
+        lat: 37.4450,
+        lng: 127.1680,
+        durationMonths: 4,
+        note: '상대원동 1487번지 거주.'
+      },
+      {
+        step: 5,
+        date: '1983-11-09',
+        year: 1983,
+        month: 11,
+        age: 4,
+        city: '경기도 성남시',
+        district: '상대원동',
+        address: '경기도 성남시 상대원동 2065',
+        reason: '전입 (강영완의 자녀)',
+        era: 'seongnam',
+        eraName: '1. 성남 유년기',
+        eraColor: '#ec4899',
+        lat: 37.4475,
+        lng: 127.1650,
+        durationMonths: 57,
+        note: '약 5년간 상대원동 2065번지에서 유년기 및 초등학교 입학 시기 거주.'
+      },
+      {
+        step: 6,
+        date: '1988-08-20',
+        year: 1988,
+        month: 8,
+        age: 9,
+        city: '서울특별시 송파구',
+        district: '마천동',
+        address: '서울특별시 송파구 마천동 307-13',
+        reason: '전입 (강성완 ➔ 손미자의 자녀)',
+        era: 'songpa_east',
+        eraName: '2. 송파·강동 청소년기',
+        eraColor: '#f43f5e',
+        lat: 37.4980,
+        lng: 127.1510,
+        durationMonths: 17,
+        note: '서울 입성. 1988 서울 올림픽 해에 송파구 마천동으로 이동하여 서울 생활 시작.'
+      },
+      {
+        step: 7,
+        date: '1990-01-18',
+        year: 1990,
+        month: 1,
+        age: 10,
+        city: '서울특별시 강동구',
+        district: '길동',
+        address: '서울특별시 강동구 길동 336-10',
+        reason: '전입 (손미자의 자녀)',
+        era: 'songpa_east',
+        eraName: '2. 송파·강동 청소년기',
+        eraColor: '#f43f5e',
+        lat: 37.5385,
+        lng: 127.1420,
+        durationMonths: 31,
+        note: '강동구 길동 생활권 진입, 청소년기 성장 기반 형성.'
+      },
+      {
+        step: 8,
+        date: '1992-08-27',
+        year: 1992,
+        month: 8,
+        age: 12,
+        city: '서울특별시 강동구',
+        district: '길동',
+        address: '서울특별시 강동구 길동 351-2 무궁화연립 나-202',
+        reason: '전입 (손미자의 자녀)',
+        era: 'songpa_east',
+        eraName: '2. 송파·강동 청소년기',
+        eraColor: '#f43f5e',
+        lat: 37.5372,
+        lng: 127.1435,
+        durationMonths: 2,
+        note: '길동 무궁화연립 거주.'
+      },
+      {
+        step: 9,
+        date: '1992-10-23',
+        year: 1992,
+        month: 10,
+        age: 13,
+        city: '서울특별시 강동구',
+        district: '길동',
+        address: '서울특별시 강동구 길동 322-6',
+        reason: '전입 (손미자의 자녀)',
+        era: 'songpa_east',
+        eraName: '2. 송파·강동 청소년기',
+        eraColor: '#f43f5e',
+        lat: 37.5398,
+        lng: 127.1412,
+        durationMonths: 12,
+        note: '길동 322번지 거주.'
+      },
+      {
+        step: 10,
+        date: '1993-10-06',
+        year: 1993,
+        month: 10,
+        age: 14,
+        city: '서울특별시 강동구',
+        district: '길동',
+        address: '서울특별시 강동구 길동 334-3 일성연립 2-202',
+        reason: '전입 (손미자의 자녀)',
+        era: 'songpa_east',
+        eraName: '2. 송파·강동 청소년기',
+        eraColor: '#f43f5e',
+        lat: 37.5380,
+        lng: 127.1440,
+        durationMonths: 1,
+        note: '강남 대치동 이주 직전 강동구 마지막 주소지.'
+      },
+      {
+        step: 11,
+        date: '1993-10-09',
+        year: 1993,
+        month: 10,
+        age: 14,
+        city: '서울특별시 강남구',
+        district: '대치동',
+        address: '서울특별시 강남구 대치동 956-28',
+        reason: '전입 (손미자의 자녀)',
+        era: 'daechi',
+        eraName: '3. 강남 대치동 학창기',
+        eraColor: '#fb7185',
+        lat: 37.4990,
+        lng: 127.0620,
+        durationMonths: 20,
+        note: '강남 대치동 8학군 생활권 진입. 중·고교 학창시절의 예술·디자인 감성 태동기.'
+      },
+      {
+        step: 12,
+        date: '1995-06-07',
+        year: 1995,
+        month: 6,
+        age: 15,
+        city: '서울특별시 강남구',
+        district: '대치동',
+        address: '서울특별시 강남구 대치동 956-8',
+        reason: '전입 및 세대주변경 (손미자 ➔ 강영완)',
+        era: 'daechi',
+        eraName: '3. 강남 대치동 학창기',
+        eraColor: '#fb7185',
+        lat: 37.4995,
+        lng: 127.0625,
+        durationMonths: 18,
+        note: '대치동 956-8번지 거주, 1996년 7월 재등록 완료.'
+      },
+      {
+        step: 13,
+        date: '1996-12-05',
+        year: 1996,
+        month: 12,
+        age: 17,
+        city: '서울특별시 강남구',
+        district: '대치동',
+        address: '서울특별시 강남구 대치동 965-11 강남빌라 가-B102',
+        reason: '전입 (강영완의 자녀)',
+        era: 'daechi',
+        eraName: '3. 강남 대치동 학창기',
+        eraColor: '#fb7185',
+        lat: 37.4975,
+        lng: 127.0645,
+        durationMonths: 15,
+        note: '대치동 강남빌라 거주, 미술/디자인 대학 진학 준비기.'
+      },
+      {
+        step: 14,
+        date: '1998-03-11',
+        year: 1998,
+        month: 3,
+        age: 18,
+        city: '서울특별시 강남구',
+        district: '대치동',
+        address: '서울특별시 강남구 대치동 965-17 -102',
+        reason: '전입 (강영완의 자녀)',
+        era: 'daechi',
+        eraName: '3. 강남 대치동 학창기',
+        eraColor: '#fb7185',
+        lat: 37.4970,
+        lng: 127.0650,
+        durationMonths: 23,
+        note: '성인 진입 및 2000년 군포 이주 직전까지 대치동 거주.'
+      },
+      {
+        step: 15,
+        date: '2000-02-18',
+        year: 2000,
+        month: 2,
+        age: 20,
+        city: '경기도 군포시',
+        district: '산본동',
+        address: '경기도 군포시 산본동 1107-5 -201',
+        reason: '전입 (강영완의 자녀)',
+        era: 'sanbon',
+        eraName: '4. 군포 산본 청년기',
+        eraColor: '#a855f7',
+        lat: 37.3590,
+        lng: 126.9325,
+        durationMonths: 128,
+        note: '10년 8개월간 장기 거주 (2000.02 ~ 2010.10). 대학 생활, CBS 방송 모션그래픽(2005~2008) 등 청년 디자이너 도약기.'
+      },
+      {
+        step: 16,
+        date: '2010-10-06',
+        year: 2010,
+        month: 10,
+        age: 31,
+        city: '서울특별시 관악구',
+        district: '봉천동',
+        address: '서울특별시 관악구 봉천동 1655-35 (인헌1길 23)',
+        reason: '전입 (강은영 본인 세대주 독립)',
+        era: 'bongcheon',
+        eraName: '5. 관악 봉천 독립/석박사기',
+        eraColor: '#38bdf8',
+        lat: 37.4760,
+        lng: 126.9630,
+        durationMonths: 13,
+        note: '본인 세대주 최초 독립. 낙성대역 인근 거주, 국가자격증 취득 및 본격적인 독립 생활.'
+      },
+      {
+        step: 17,
+        date: '2011-11-02',
+        year: 2011,
+        month: 11,
+        age: 32,
+        city: '서울특별시 관악구',
+        district: '봉천동',
+        address: '서울특별시 관악구 남부순환로233길 5, 301호 (봉천동)',
+        reason: '전입 (강은영의 본인)',
+        era: 'bongcheon',
+        eraName: '5. 관악 봉천 독립/석박사기',
+        eraColor: '#38bdf8',
+        lat: 37.4805,
+        lng: 126.9535,
+        durationMonths: 9,
+        note: '서울대입구역 북측 역세권 거주.'
+      },
+      {
+        step: 18,
+        date: '2012-08-29',
+        year: 2012,
+        month: 8,
+        age: 32,
+        city: '서울특별시 관악구',
+        district: '봉천동',
+        address: '서울특별시 관악구 행운길 28, 303호 (현석하이츠)',
+        reason: '전입 (강은영의 본인)',
+        era: 'bongcheon',
+        eraName: '5. 관악 봉천 독립/석박사기',
+        eraColor: '#38bdf8',
+        lat: 37.4835,
+        lng: 126.9585,
+        durationMonths: 5,
+        note: '봉천동 행운길 거주.'
+      },
+      {
+        step: 19,
+        date: '2013-01-22',
+        year: 2013,
+        month: 1,
+        age: 33,
+        city: '서울특별시 관악구',
+        district: '봉천동',
+        address: '서울특별시 관악구 쑥고개로 100, 1009호 (생모리츠오피스텔)',
+        reason: '전입 (강은영의 본인)',
+        era: 'bongcheon',
+        eraName: '5. 관악 봉천 독립/석박사기',
+        eraColor: '#38bdf8',
+        lat: 37.4785,
+        lng: 126.9490,
+        durationMonths: 26,
+        note: '생모리츠오피스텔 거주. 2015년 홍익대학교 대학원 석사과정 진학 기반 마련.'
+      },
+      {
+        step: 20,
+        date: '2015-03-23',
+        year: 2015,
+        month: 3,
+        age: 35,
+        city: '서울특별시 송파구',
+        district: '방이동',
+        address: '서울특별시 송파구 올림픽로32길 37, 301호',
+        reason: '전입 (강두수의 누나)',
+        era: 'jamsil',
+        eraName: '6. 송파 방이·석촌기',
+        eraColor: '#10b981',
+        lat: 37.5140,
+        lng: 127.1110,
+        durationMonths: 17,
+        note: '잠실 방이동 먹자골목 인근 거주, 식품 패키지 기업 이호(2015~2017) 실무 활동.'
+      },
+      {
+        step: 21,
+        date: '2016-08-25',
+        year: 2016,
+        month: 8,
+        age: 36,
+        city: '서울특별시 송파구',
+        district: '석촌동',
+        address: '서울특별시 송파구 백제고분로36가길 7-7, 202호',
+        reason: '전입 (손미자의 자녀 ➔ 강은영 본인)',
+        era: 'jamsil',
+        eraName: '6. 송파 방이·석촌기',
+        eraColor: '#10b981',
+        lat: 37.5025,
+        lng: 127.1040,
+        durationMonths: 7,
+        note: '석촌호수 인근 거주, 2017년 홍익대 석사 졸업 (평점 4.28) 달성.'
+      },
+      {
+        step: 22,
+        date: '2017-03-02',
+        year: 2017,
+        month: 3,
+        age: 37,
+        city: '서울특별시 서초구',
+        district: '양재동',
+        address: '서울특별시 서초구 논현로11길 16-11, 4층비호 (우림빌라)',
+        reason: '전입 (강은영 본인 거주자)',
+        era: 'yangjae',
+        eraName: '7. 서초 양재 실무/박사기',
+        eraColor: '#f59e0b',
+        lat: 37.4770,
+        lng: 127.0450,
+        durationMonths: 72,
+        note: '6년간 장기 거주 (2017.03 ~ 2023.03). 제이키디자인연구소 실장 7년 총괄, 홍익대 박사 수료(GPA 4.17), KCI 2020 논문 게재, DDP/비엔날레 전시 등 황금 커리어기.'
+      },
+      {
+        step: 23,
+        date: '2023-03-06',
+        year: 2023,
+        month: 3,
+        age: 43,
+        city: '경기도 의정부시',
+        district: '고산동',
+        address: '경기도 의정부시 훈민로 13, 311동 905호 (고산리슈빌포레)',
+        reason: '전입 (2024.07 행정구역변경 반영)',
+        era: 'uijeongbu',
+        eraName: '8. 의정부 고산 현재',
+        eraColor: '#06b6d4',
+        lat: 37.7280,
+        lng: 127.1085,
+        durationMonths: 24,
+        note: '현재 거주지. 경기도 의정부시 고산 신도시 안착. KCI 2024/2025/2026 3연속 등재 및 한국공학대학교·경복대 교수 활동 중.'
+      }
+    ];
+
+    // Initialize Leaflet Map
+    const map = L.map('map', {
+      center: [37.52, 127.05],
+      zoom: 11,
+      minZoom: 9,
+      maxZoom: 17,
+      zoomControl: false,
+      attributionControl: true
+    });
+
+    // Basemap Layer Tile URLs
+    const BASEMAPS = {
+      dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
+        maxZoom: 19
+      }),
+      satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        maxZoom: 19
+      }),
+      light: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; CARTO &copy; OpenStreetMap',
+        maxZoom: 19
+      })
+    };
+
+    let currentBasemap = 'dark';
+    BASEMAPS.dark.addTo(map);
+
+    function setRasterBasemap(name) {
+      if (currentBasemap === name) return;
+      map.removeLayer(BASEMAPS[currentBasemap]);
+      BASEMAPS[name].addTo(map);
+      currentBasemap = name;
+
+      document.querySelectorAll('#base-dark, #base-satellite, #base-light').forEach(b => {
+        b.className = 'px-2.5 py-1 rounded-xl text-[11px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800';
+      });
+      const activeBtn = document.getElementById(`base-${name}`);
+      if (activeBtn) activeBtn.className = 'px-2.5 py-1 rounded-xl text-[11px] font-bold transition bg-pink-600 text-white shadow';
+    }
+
+    // State
+    let currentFilterEra = 'all';
+    let currentStepIndex = 0;
+    let isPlaying = false;
+    let playInterval = null;
+    let is3DMode = true;
+    let isOrbiting = false;
+    let orbitAngle = 0;
+
+    const layerToggles = {
+      arcs: true,
+      polygons: false,
+      heatmap: false
+    };
+
+    function toggleVectorLayer(layerName) {
+      layerToggles[layerName] = !layerToggles[layerName];
+      const btn = document.getElementById(`btn-${layerName}`);
+      if (btn) {
+        btn.className = layerToggles[layerName]
+          ? 'px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition bg-pink-950 border border-pink-700 text-pink-300'
+          : 'px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800 border border-transparent';
+      }
+    }
+
+    // 3D Perspective Angles
+    function setCamera3D(mode) {
+      const wrapper = document.getElementById('map-wrapper');
+      document.querySelectorAll('#cam-2d, #cam-3d').forEach(b => {
+        b.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-400 hover:text-white hover:bg-slate-800';
+      });
+      const activeBtn = document.getElementById(`cam-${mode}`);
+      if (activeBtn) activeBtn.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition bg-pink-600 text-white shadow';
+
+      if (mode === '2d') {
+        is3DMode = false;
+        wrapper.style.transform = 'rotateX(0deg) rotateZ(0deg) scale(1.0)';
+      } else if (mode === '3d') {
+        is3DMode = true;
+        wrapper.style.transform = 'rotateX(42deg) rotateZ(0deg) scale(1.1)';
+      }
+    }
+
+    function toggle3DOrbit() {
+      isOrbiting = !isOrbiting;
+      const btn = document.getElementById('cam-orbit');
+      if (btn) {
+        btn.className = isOrbiting
+          ? 'px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition bg-pink-600 text-white shadow'
+          : 'px-2 py-0.5 rounded-lg text-[10.5px] font-bold transition text-slate-300 bg-slate-800 hover:text-pink-400 border border-slate-700';
+      }
+    }
+
+    function resetMapView() {
+      isOrbiting = false;
+      orbitAngle = 0;
+      setCamera3D('3d');
+      map.flyTo([37.52, 127.05], 11, { duration: 1.2 });
+    }
+
+    // Vector Canvas Overlay
+    const canvas = document.getElementById('vectorCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const rect = map.getContainer().getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    map.on('resize', resizeCanvas);
+    resizeCanvas();
+
+    function isItemVisible(item) {
+      if (currentFilterEra === 'all') return true;
+      return item.era === currentFilterEra;
+    }
+
+    // Canvas Animation Render Loop
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const timestamp = performance.now() * 0.001;
+
+      // Handle 3D Orbiting Motion
+      if (isOrbiting && is3DMode) {
+        orbitAngle += 0.15;
+        const wrapper = document.getElementById('map-wrapper');
+        wrapper.style.transform = `rotateX(42deg) rotateZ(${orbitAngle}deg) scale(1.1)`;
+      }
+
+      const visiblePoints = MIGRATION_DATA.filter(p => isItemVisible(p));
+
+      // Compute screen positions from Leaflet lat/lng
+      visiblePoints.forEach(p => {
+        const point = map.latLngToContainerPoint([p.lat, p.lng]);
+        p.screenX = point.x;
+        p.screenY = point.y;
+      });
+
+      // 1. Draw Density Heatmap Glow (if enabled)
+      if (layerToggles.heatmap) {
+        ctx.save();
+        visiblePoints.forEach(p => {
+          const r = Math.min(80, Math.max(25, Math.sqrt(p.durationMonths) * 10));
+          const grad = ctx.createRadialGradient(p.screenX, p.screenY, 0, p.screenX, p.screenY, r);
+          grad.addColorStop(0, 'rgba(236, 72, 153, 0.45)');
+          grad.addColorStop(0.5, 'rgba(244, 63, 94, 0.2)');
+          grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          ctx.beginPath();
+          ctx.arc(p.screenX, p.screenY, r, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+        });
+        ctx.restore();
+      }
+
+      // 2. Draw 3D Parabolic Curved Migration Flow Lines (if enabled)
+      if (layerToggles.arcs && visiblePoints.length > 1) {
+        ctx.save();
+        for (let i = 0; i < visiblePoints.length - 1; i++) {
+          const p1 = visiblePoints[i];
+          const p2 = visiblePoints[i + 1];
+
+          // Compute 3D curved arc mid-point
+          const midX = (p1.screenX + p2.screenX) / 2;
+          const dist = Math.hypot(p2.screenX - p1.screenX, p2.screenY - p1.screenY);
+          const arcHeight = Math.min(100, Math.max(20, dist * 0.28));
+          const midY = (p1.screenY + p2.screenY) / 2 - arcHeight;
+
+          const isCurrentStep = (i === currentStepIndex - 1);
+
+          // Flow line path
+          ctx.beginPath();
+          ctx.moveTo(p1.screenX, p1.screenY);
+          ctx.quadraticCurveTo(midX, midY, p2.screenX, p2.screenY);
+
+          if (isCurrentStep) {
+            ctx.strokeStyle = '#ec4899';
+            ctx.lineWidth = 3.2;
+            ctx.shadowColor = '#ec4899';
+            ctx.shadowBlur = 18;
+          } else {
+            ctx.strokeStyle = 'rgba(236, 72, 153, 0.45)';
+            ctx.lineWidth = 1.6;
+            ctx.shadowColor = '#f43f5e';
+            ctx.shadowBlur = 6;
+          }
+          ctx.stroke();
+
+          // Animated Shooting Light Comet along each migration segment
+          const speed = 0.5 + (i % 3) * 0.15;
+          const t = ((timestamp * speed + (i * 0.2)) % 1.0);
+          
+          // Quadratic bezier interpolation: B(t) = (1-t)^2*P0 + 2(1-t)t*P1 + t^2*P2
+          const cx = (1 - t) * (1 - t) * p1.screenX + 2 * (1 - t) * t * midX + t * t * p2.screenX;
+          const cy = (1 - t) * (1 - t) * p1.screenY + 2 * (1 - t) * t * midY + t * t * p2.screenY;
+
+          // Glowing Comet Head
+          ctx.beginPath();
+          ctx.arc(cx, cy, isCurrentStep ? 5 : 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = '#ffffff';
+          ctx.shadowBlur = 14;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(cx, cy, isCurrentStep ? 9 : 6.5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.5)';
+          ctx.shadowColor = '#ec4899';
+          ctx.shadowBlur = 20;
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      // 3. Draw Vector Points & 3D Duration Height Extrusion Pillars
+      visiblePoints.forEach((p, idx) => {
+        const isSelected = (idx === currentStepIndex);
+        const radius = Math.min(14, Math.max(6, Math.sqrt(p.durationMonths) * 1.5));
+
+        ctx.save();
+
+        // 3D Extruded Vertical Height Bar (proportional to residency duration)
+        const barHeight = Math.min(70, Math.max(12, p.durationMonths * 0.75));
+        ctx.beginPath();
+        ctx.moveTo(p.screenX, p.screenY);
+        ctx.lineTo(p.screenX, p.screenY - barHeight);
+        ctx.strokeStyle = isSelected ? '#ffffff' : p.eraColor;
+        ctx.lineWidth = isSelected ? 3.5 : 2.2;
+        ctx.shadowColor = p.eraColor;
+        ctx.shadowBlur = isSelected ? 20 : 10;
+        ctx.stroke();
+
+        // Top cap of 3D pillar
+        ctx.beginPath();
+        ctx.arc(p.screenX, p.screenY - barHeight, isSelected ? 5.5 : 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = isSelected ? '#ffffff' : p.eraColor;
+        ctx.fill();
+
+        // Ground Pulsing Ring
+        if (isSelected) {
+          const pulse = (timestamp * 4) % (Math.PI * 2);
+          const pr = radius + 6 + Math.sin(pulse) * 3;
+
+          ctx.beginPath();
+          ctx.arc(p.screenX, p.screenY, pr + 4, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(236, 72, 153, 0.8)';
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(p.screenX, p.screenY, pr, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.4)';
+          ctx.fill();
+        }
+
+        // Base Point Dot
+        ctx.beginPath();
+        ctx.arc(p.screenX, p.screenY, radius, 0, Math.PI * 2);
+        ctx.fillStyle = isSelected ? '#ffffff' : p.eraColor;
+        ctx.fill();
+        ctx.strokeStyle = '#020617';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Step Label & Duration on Top
+        ctx.font = `bold ${isSelected ? 10.5 : 9}px font-mono`;
+        ctx.fillStyle = isSelected ? '#ffffff' : '#cbd5e1';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#000000';
+        ctx.shadowBlur = 6;
+        ctx.fillText(`${p.year} (${p.city.split(' ')[1] || p.district})`, p.screenX, p.screenY - barHeight - 8);
+
+        ctx.restore();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    // Keep Canvas in sync with Leaflet map movements
+    map.on('move', () => {
+      // triggers next animation frame naturally
+    });
+
+    // Inspector Update Function
+    function updateInspector(data) {
+      if (!data) return;
+      document.getElementById('insp-era-badge').innerText = data.eraName;
+      document.getElementById('insp-step-num').innerText = `STEP ${String(data.step).padStart(2, '0')} / 23`;
+      document.getElementById('insp-title').innerText = data.address;
+      document.getElementById('insp-date').innerText = `📅 ${data.date} (${data.year}년 ${data.month}월)`;
+      document.getElementById('insp-reason').innerText = data.reason;
+      
+      const years = (data.durationMonths / 12).toFixed(1);
+      document.getElementById('insp-duration').innerText = `${data.durationMonths}개월 (${years}년)`;
+      document.getElementById('insp-age').innerText = `만 ${data.age}세`;
+      document.getElementById('insp-note').innerText = data.note;
+      document.getElementById('insp-coords').innerText = `위도: ${data.lat.toFixed(4)}° N | 경도: ${data.lng.toFixed(4)}° E`;
+
+      // Timeline preview text
+      document.getElementById('timeline-year-badge').innerText = `${data.year}년 (${data.district})`;
+      document.getElementById('timeline-address-preview').innerText = data.address;
+      document.getElementById('timeline-step-text').innerText = data.step;
+      document.getElementById('timelineSlider').value = data.step - 1;
+    }
+
+    function selectStep(idx, fly = true) {
+      if (idx < 0 || idx >= MIGRATION_DATA.length) return;
+      currentStepIndex = idx;
+      const data = MIGRATION_DATA[idx];
+      updateInspector(data);
+
+      if (fly) {
+        map.flyTo([data.lat, data.lng], Math.max(12, map.getZoom()), {
+          duration: 1.2,
+          easeLinearity: 0.25
+        });
+      }
+    }
+
+    function flyToCurrentNode() {
+      selectStep(currentStepIndex, true);
+    }
+
+    function onSliderChange(val) {
+      selectStep(parseInt(val), true);
+    }
+
+    // Timeline Play/Pause Loop
+    function toggleTimelinePlay() {
+      isPlaying = !isPlaying;
+      const playIcon = document.getElementById('play-icon');
+      const pauseIcon = document.getElementById('pause-icon');
+
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+
+        playInterval = setInterval(() => {
+          let nextIdx = currentStepIndex + 1;
+          if (nextIdx >= MIGRATION_DATA.length) {
+            nextIdx = 0; // loop back
+          }
+          selectStep(nextIdx, true);
+        }, 2600);
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        clearInterval(playInterval);
+      }
+    }
+
+    // Era Filtering
+    function filterEra(era) {
+      currentFilterEra = era;
+      document.querySelectorAll('[id^="era-"]').forEach(btn => {
+        btn.className = 'w-full text-left px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
+      });
+      const activeBtn = document.getElementById(`era-${era}`);
+      if (activeBtn) {
+        activeBtn.className = 'w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
+      }
+
+      if (era === 'all') {
+        map.flyTo([37.52, 127.05], 11, { duration: 1.2 });
+      } else {
+        const matches = MIGRATION_DATA.filter(p => p.era === era);
+        if (matches.length > 0) {
+          selectStep(matches[0].step - 1, true);
+        }
+      }
+    }
+
+    // Click on map to detect closest point
+    map.on('click', e => {
+      const clickPoint = e.containerPoint;
+      let closest = null;
+      let minDist = 30; // pixel distance threshold
+
+      MIGRATION_DATA.forEach((p, idx) => {
+        if (!isItemVisible(p)) return;
+        const pt = map.latLngToContainerPoint([p.lat, p.lng]);
+        const dist = Math.hypot(clickPoint.x - pt.x, clickPoint.y - pt.y);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = idx;
+        }
+      });
+
+      if (closest !== null) {
+        selectStep(closest, true);
+      }
+    });
+
+    // Initialize
+    updateInspector(MIGRATION_DATA[0]);
+    render();
+  </script>
+</body>
+</html>

@@ -223,6 +223,53 @@
       </div>
     </div>
 
+    <!-- Section 4: Resident Migration & 3D Geospatial Visualization Card -->
+    <div>
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
+            <span>🗺️ 4. 생애 거주지 이동 경로 & 3D 지리공간 시각화</span>
+            <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-pink-950 text-pink-300 border border-pink-800 font-mono">NEW</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">주민등록초본 45개년(1979~2024, 23회 전입)을 벡터 & 래스터 3D 공간 데이터와 이동 곡선(Arc)으로 시각화합니다.</p>
+        </div>
+      </div>
+
+      <div class="card-gradient rounded-3xl border border-pink-900/60 p-6 flex flex-col md:flex-row items-center justify-between gap-6 glow-hover">
+        <div class="space-y-3 flex-1">
+          <div class="flex items-center space-x-3">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-pink-950 text-pink-400 border border-pink-800 uppercase">
+              Vector & Raster 3D 지도
+            </span>
+            <span class="text-xs text-slate-400 font-mono">성남 ➔ 송파/강동 ➔ 강남 ➔ 군포 ➔ 관악 ➔ 서초 ➔ 의정부</span>
+          </div>
+          
+          <h3 class="text-xl font-extrabold text-white leading-snug">
+            생애 거주지 시계열 마이그레이션 & 3D 포물선 인터랙티브 맵
+          </h3>
+          
+          <p class="text-xs text-slate-400 leading-relaxed max-w-2xl">
+            초본에 기록된 23개 전입 주소지의 거주 기간을 3D 입체 기둥 높이로 표현하고, 이전 주소지에서 다음 주소지로 이동하는 3D 포물선 곡선 및 이동 빛 입자(Comet) 애니메이션, 위성/다크 타일 래스터 맵 레이어, 연도별 타임슬라이더 재생 인터랙션을 지원합니다.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-800 text-pink-300 border border-slate-700">📍 벡터 포인트 & 거주기간 3D 기둥</span>
+            <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-800 text-pink-300 border border-slate-700">✈️ 3D 포물선 비행 아크 & 유성 효과</span>
+            <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-800 text-pink-300 border border-slate-700">🛰️ 래스터 다크/위성 맵 전환</span>
+            <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-800 text-pink-300 border border-slate-700">🕹️ 3D 틸트(42°) & 360° 카메라 회전</span>
+          </div>
+        </div>
+
+        <div class="shrink-0 text-center md:text-right space-y-2">
+          <div class="text-xs text-slate-400 font-mono">거주지 <b class="text-pink-400 font-bold">23개소</b> · 누적 <b class="text-pink-400 font-bold">45년</b></div>
+          <a href="viz_geospatial_migration.html" class="inline-flex items-center space-x-2 px-6 py-3.5 bg-pink-600 hover:bg-pink-500 text-white rounded-xl text-xs font-bold transition shadow-lg">
+            <span>3D 지리공간 맵 열기</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- Footer -->
