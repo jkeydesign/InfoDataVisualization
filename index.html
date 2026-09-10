@@ -27,14 +27,26 @@
   <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center font-black text-lg text-white shadow-md">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-600 to-indigo-600 flex items-center justify-center font-black text-lg text-white shadow-md">
           V
         </div>
         <div>
           <span class="font-extrabold text-base tracking-tight text-white">DataViz Hub & Lab</span>
-          <span class="text-xs text-indigo-400 font-mono ml-2 px-2 py-0.5 bg-indigo-950/80 border border-indigo-800/80 rounded-full">v1.0</span>
+          <span class="text-xs text-pink-400 font-mono ml-2 px-2 py-0.5 bg-pink-950/80 border border-pink-800/80 rounded-full">Edu & Port</span>
         </div>
       </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="hidden md:flex items-center space-x-1 text-xs">
+        <a href="#portfolio-grid" class="px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition">
+          📊 연구 & 커리어
+        </a>
+        <a href="#education-hub" class="px-3.5 py-1.5 rounded-lg text-pink-400 bg-pink-950/50 border border-pink-800 font-bold hover:bg-pink-900/50 transition flex items-center space-x-1">
+          <span>🎓 데이터 시각화 교육</span>
+          <span class="text-[9px] bg-pink-500 text-slate-950 font-black px-1.5 py-0.2 rounded-full">NEW</span>
+        </a>
+      </nav>
+
       <div class="flex items-center space-x-4 text-xs">
         <a href="https://github.com/jkeydesign/InfoDataVisualization" target="_blank" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold shadow-sm transition">
           GitHub 저장소
@@ -59,7 +71,7 @@
   </section>
 
   <!-- Main Content: Projects Gallery Grid -->
-  <main class="max-w-7xl mx-auto px-6 py-12 flex-1 w-full space-y-12">
+  <main id="portfolio-grid" class="max-w-7xl mx-auto px-6 py-12 flex-1 w-full space-y-12">
     
     <!-- Section 1: Research Paper Visualization Card -->
     <div>
@@ -270,11 +282,132 @@
       </div>
     </div>
 
+    <!-- ======================================================== -->
+    <!-- SECTION 5: 데이터 시각화 교육 (Data Visualization Education) -->
+    <!-- ======================================================== -->
+    <section id="education-hub" class="space-y-8 pt-8 border-t border-slate-800">
+      
+      <!-- Education Section Title & Description -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-pink-950/60 border border-pink-800 text-pink-300 text-xs font-semibold mb-2">
+            <span>🎓 인터랙티브 강의 & 실습 커리큘럼</span>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-black text-white tracking-tight flex items-center space-x-3">
+            <span>데이터 시각화 교육</span>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-pink-950 text-pink-300 border border-pink-800 font-mono font-bold">Edu Hub</span>
+          </h2>
+          <p class="text-xs md:text-sm text-slate-400 mt-1 max-w-3xl">
+            학생들에게 데이터 시각화의 기본 원리와 시각적 인지 왜곡(Deceptive Visualization)을 방지하는 방법, 실전 대안 차트 설계를 직접 체험하도록 제작된 실시간 모션 교육 모듈입니다.
+          </p>
+        </div>
+
+        <div class="flex items-center space-x-2 shrink-0">
+          <span class="text-xs font-mono text-pink-400 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">
+            📚 모듈 확장형 구조
+          </span>
+        </div>
+      </div>
+
+      <!-- Education Category: 메뉴 1. 차트 기본 원칙 & 왜곡 방지 -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-5">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-pink-950 text-pink-400 border border-pink-800 flex items-center justify-center font-black text-sm">
+              M1
+            </div>
+            <div>
+              <span class="text-[10px] font-mono font-bold text-pink-400 uppercase tracking-wider">메뉴 1 (Module 1)</span>
+              <h3 class="text-lg font-extrabold text-white">차트 기본 원칙 & 인지 왜곡 방지 (Chart Integrity)</h3>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 font-mono">사례 모듈 (1-1, 1-2 ...)</span>
+        </div>
+
+        <!-- Sub-menus (메뉴 1-1, 메뉴 1-2, ...) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- 메뉴 1-1 (사례 1): 왜 막대/기둥 그래프는 항상 0에서 시작해야 하는가? -->
+          <div class="bg-slate-950 rounded-2xl border border-pink-900/70 p-6 flex flex-col justify-between space-y-5 glow-hover relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="space-y-3.5">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 font-mono">
+                  메뉴 1-1 (사례 1)
+                </span>
+                <span class="text-[10px] text-emerald-400 font-mono bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800 flex items-center space-x-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>실시간 모션 시뮬레이터</span>
+                </span>
+              </div>
+
+              <h4 class="text-lg font-extrabold text-white leading-snug">
+                왜 막대/기둥 그래프는 항상 0에서 시작해야 하는가?
+              </h4>
+
+              <p class="text-xs text-slate-400 leading-relaxed">
+                <b class="text-slate-200">Datawrapper 원칙 & Pandey et al.(2015) 연구:</b> Y축 기저선(Baseline)을 0이 아닌 곳에서 자를 때 발생하는 시각적 왜곡과 착시를 슬라이더 모션으로 직접 체험하고, 3가지 올바른 대안(점 플롯, 꺾은선 그래프, 차이값 막대)을 학습합니다.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">🎚️ 실시간 축 왜곡 슬라이더</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">🔬 실시간 착시 배율 계산</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">💡 3가지 올바른 대안 차트</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-900">
+              <a href="viz_edu_bar_zero_baseline.html" class="w-full py-3.5 bg-pink-600 hover:bg-pink-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 shadow-lg shadow-pink-900/30">
+                <span>메뉴 1-1 교육 모듈 열기</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- 메뉴 1-2 (사례 2): 향후 추가될 모듈 플레이스홀더 (메뉴 1에 계속 추가 가능) -->
+          <div class="bg-slate-950/60 rounded-2xl border border-dashed border-slate-800 p-6 flex flex-col justify-between space-y-5 text-slate-500">
+            <div class="space-y-3.5">
+              <div class="flex items-center justify-between">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-900 text-slate-400 border border-slate-800 font-mono">
+                  메뉴 1-2 (사례 2)
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono">준비 중 (+ 추가 예정)</span>
+              </div>
+
+              <h4 class="text-base font-bold text-slate-300 leading-snug">
+                3D 파이차트의 원근 착시와 면적 왜곡 (예정)
+              </h4>
+
+              <p class="text-xs text-slate-500 leading-relaxed">
+                원형 그래프(Pie Chart)를 3차원으로 기울였을 때 앞쪽 조각이 비정상적으로 커 보이는 입체 원근 착시와 배경 명도 대비 왜곡을 다루는 인터랙티브 교육 모듈이 순차적으로 추가됩니다.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 pt-1 opacity-60">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">🥧 3D 원형 왜곡</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">🎨 색상 대비 착시</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-900">
+              <button disabled class="w-full py-3.5 bg-slate-900/80 text-slate-500 border border-slate-800 rounded-xl text-xs font-semibold cursor-not-allowed">
+                + 차기 교육 모듈 준비 중
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
   </main>
 
   <!-- Footer -->
   <footer class="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
-    <p>© 2026 Interactive Data Visualization Lab. Built for Eun-Young Kang Academic & Professional Portfolio.</p>
+    <p>© 2026 Interactive Data Visualization Lab. Built for Eun-Young Kang Academic & Educational Portfolio.</p>
   </footer>
 
 </body>

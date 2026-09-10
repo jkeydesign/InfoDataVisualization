@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>데이터 시각화 교육: 왜 막대그래프는 항상 0에서 시작해야 하는가?</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(236, 72, 153, 0.4);
+      border-radius: 3px;
+    }
+    .glow-pink {
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+    }
+    .bar-transition {
+      transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s ease, background-color 0.3s;
+    }
+    .grid-line-transition {
+      transition: all 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <!-- Header Navigation -->
+  <header class="h-16 bg-slate-900/80 border-b border-slate-800 px-6 flex items-center justify-between sticky top-0 z-40 backdrop-blur">
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-pink-400 transition bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl mr-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <span>포털 메인</span>
+      </a>
+      <div class="w-8 h-8 rounded-xl bg-pink-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-md">
+        EDU
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
+          <span>데이터 시각화 강의: 왜 막대그래프는 항상 0부터 시작해야 할까?</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">Datawrapper Academy</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">데이터 시각화 원리와 시각적 왜곡(Deceptive Visualization) 방지 & 3가지 올바른 대안</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-2 text-xs">
+      <span class="px-2.5 py-1 rounded-lg bg-pink-950/60 border border-pink-800 text-pink-300 font-semibold text-[11px]">
+        🎓 교육자료
+      </span>
+      <a href="https://www.datawrapper.de/academy/why-our-column-and-bar-charts-start-at-zero" target="_blank" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-mono transition text-[11px] flex items-center space-x-1">
+        <span>원문 보기</span>
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Educational Hierarchy & Submenu Navigation Bar -->
+  <div class="bg-slate-900/90 border-b border-slate-800 px-6 py-2.5 flex items-center justify-between text-xs sticky top-16 z-30 backdrop-blur">
+    <div class="flex items-center space-x-2 text-slate-400">
+      <a href="index.html#education-hub" class="hover:text-pink-400 transition flex items-center space-x-1 font-semibold text-slate-300">
+        <span>🎓 데이터 시각화 교육</span>
+      </a>
+      <span>›</span>
+      <span class="text-slate-300 font-medium">메뉴 1: 차트 기본 원칙</span>
+      <span>›</span>
+      <span class="text-pink-400 font-bold bg-pink-950/80 px-2 py-0.5 rounded border border-pink-800/80">메뉴 1-1: 막대그래프의 0 시작 원칙</span>
+    </div>
+
+    <!-- Sibling Modules Switcher -->
+    <div class="flex items-center space-x-2">
+      <span class="text-[11px] text-slate-500 font-mono hidden sm:inline">메뉴 1 시리즈:</span>
+      <span class="px-2.5 py-1 rounded-lg bg-pink-600 text-white font-bold text-[11px] shadow-sm">
+        사례 1 (학습 중)
+      </span>
+      <span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-500 text-[11px] border border-slate-800 cursor-not-allowed">
+        사례 2 (준비 중)
+      </span>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-12 flex-1 w-full">
+
+    <!-- Hero Intro Section -->
+    <section class="space-y-4 text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-pink-950/50 border border-pink-800 text-pink-300 text-xs font-semibold">
+        <span>📊 Data Visualization Principles #1</span>
+      </div>
+      <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+        "막대그래프의 Y축 기저선(Baseline)을<br class="hidden md:inline"> 0이 아닌 곳에서 자르면 왜 사기일까?"
+      </h2>
+      <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+        독일의 세계적인 시각화 도구 <b class="text-slate-200">Datawrapper</b>는 사용자가 막대그래프의 최소 범위를 0보다 큰 숫자로 설정하는 것을 <span class="text-pink-400 font-semibold underline underline-offset-4">원천적으로 금지</span>하고 있습니다. 아래 인터랙티브 모션 시뮬레이터를 통해 그 이유를 눈으로 직접 확인해 보세요.
+      </p>
+    </section>
+
+    <!-- SECTION 1: Interactive Live Distortion Simulator with Motion -->
+    <section class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-8 glow-pink">
+      
+      <!-- Controls Top Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-mono font-bold text-pink-400 uppercase tracking-wider">Interactive Experiment</span>
+          <h3 class="text-xl font-bold text-white mt-0.5">실시간 축 왜곡 모션 시뮬레이터</h3>
+          <p class="text-xs text-slate-400">슬라이더를 드래그하여 Y축 기준선(Baseline)을 올려보세요. 막대 높이가 실시간으로 왜곡됩니다.</p>
+        </div>
+
+        <!-- Quick Preset Toggle Buttons -->
+        <div class="flex items-center space-x-2 shrink-0">
+          <button id="btn-preset-zero" onclick="setBaseline(0)" class="px-3.5 py-2 rounded-xl text-xs font-bold border border-pink-500 bg-pink-950/60 text-pink-300 transition flex items-center space-x-1.5 shadow-sm">
+            <span>✅ 0부터 시작 (정직한 축)</span>
+          </button>
+          <button id="btn-preset-truncated" onclick="setBaseline(80)" class="px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:border-red-500/50 transition flex items-center space-x-1.5 shadow-sm">
+            <span>🚨 80부터 시작 (잘린 Y축)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Chart Stage & Analytics -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left: Interactive Animated SVG / DOM Chart (7 Cols) -->
+        <div class="lg:col-span-7 bg-slate-950 border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between h-[420px]">
+          
+          <!-- Chart Header Info -->
+          <div class="flex items-center justify-between text-xs mb-2">
+            <span class="font-bold text-slate-300">📊 2024년 1분기 vs 2분기 만족도 점수 비교</span>
+            <span id="chart-baseline-indicator" class="font-mono text-pink-400 font-semibold">기저선: Y = 0</span>
+          </div>
+
+          <!-- The Chart Canvas Area -->
+          <div class="flex-1 relative flex items-end justify-center px-12 pb-8 pt-4">
+            
+            <!-- Grid Lines (Dynamically repositioned) -->
+            <div class="absolute inset-x-12 bottom-8 top-4 flex flex-col justify-between pointer-events-none text-[10px] text-slate-600 font-mono">
+              <div class="border-b border-slate-800/60 w-full flex justify-between">
+                <span id="label-y-100">100</span>
+              </div>
+              <div class="border-b border-slate-800/60 w-full flex justify-between">
+                <span id="label-y-mid">50</span>
+              </div>
+              <div class="border-b-2 border-slate-700 w-full flex justify-between text-slate-400">
+                <span id="label-y-min" class="font-bold text-pink-400">0 (Base)</span>
+              </div>
+            </div>
+
+            <!-- The Two Columns Container -->
+            <div class="w-full max-w-sm flex justify-around items-end h-[280px] z-10">
+              
+              <!-- Column A (Blue / Sky) -->
+              <div class="flex flex-col items-center w-28 group">
+                <span id="val-badge-a" class="text-xs font-mono font-bold text-sky-400 mb-2 transition-all">90점</span>
+                <div id="bar-a" class="w-20 bg-gradient-to-t from-sky-600 to-sky-400 rounded-t-xl bar-transition shadow-lg relative flex items-center justify-center">
+                  <span class="text-[10px] text-sky-950 font-bold opacity-0 group-hover:opacity-100 transition">A (90)</span>
+                </div>
+                <span class="text-xs text-slate-400 mt-2 font-medium">1분기 (A)</span>
+              </div>
+
+              <!-- Column B (Hot Pink / Orange) -->
+              <div class="flex flex-col items-center w-28 group">
+                <span id="val-badge-b" class="text-xs font-mono font-bold text-pink-400 mb-2 transition-all">98점</span>
+                <div id="bar-b" class="w-20 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t-xl bar-transition shadow-lg relative flex items-center justify-center">
+                  <span class="text-[10px] text-pink-950 font-bold opacity-0 group-hover:opacity-100 transition">B (98)</span>
+                </div>
+                <span class="text-xs text-pink-300 mt-2 font-medium">2분기 (B)</span>
+              </div>
+
+            </div>
+
+            <!-- Optical Ratio Visual Bridge (Shows how many times bigger B looks compared to A) -->
+            <div id="ratio-bracket" class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-center text-center transition-all">
+              <span class="text-[10px] text-slate-400 font-mono">시각적 높이비</span>
+              <span id="optical-ratio-text" class="text-lg font-black font-mono text-pink-400">1.09배</span>
+            </div>
+
+          </div>
+
+          <!-- Interactive Slider Control -->
+          <div class="space-y-2 pt-3 border-t border-slate-800/80">
+            <div class="flex justify-between items-center text-xs">
+              <label for="slider-baseline" class="text-slate-300 font-medium flex items-center space-x-1">
+                <span>🎚️ Y축 시작값(Baseline) 조절:</span>
+                <b id="slider-val-text" class="text-pink-400 font-mono text-sm ml-1">0</b>
+              </label>
+              <span class="text-[11px] text-slate-500 font-mono">범위: 0 ~ 85</span>
+            </div>
+            <input 
+              id="slider-baseline" 
+              type="range" 
+              min="0" 
+              max="85" 
+              value="0" 
+              step="1"
+              oninput="handleSliderChange(this.value)"
+              class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-500"
+            />
+          </div>
+
+        </div>
+
+        <!-- Right: Real-time Distortion Analysis & Cognitive Impact (5 Cols) -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <!-- Live Diagnostic Card -->
+          <div id="diagnostic-card" class="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3 transition-colors">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">실시간 데이터 진단</span>
+              <span id="distortion-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
+                정직한 시각화
+              </span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between py-1 border-b border-slate-900">
+                <span class="text-slate-400">실제 데이터 비율 (98 ÷ 90)</span>
+                <span class="font-mono font-bold text-slate-200">1.089배 (+8.8%)</span>
+              </div>
+              <div class="flex justify-between py-1 border-b border-slate-900">
+                <span class="text-slate-400">눈에 보이는 막대 높이 비율</span>
+                <span id="analysis-visual-ratio" class="font-mono font-bold text-emerald-400">1.089배</span>
+              </div>
+              <div class="flex justify-between py-1">
+                <span class="text-slate-400">시각적 왜곡 과장 배율</span>
+                <span id="analysis-distortion-factor" class="font-mono font-bold text-slate-300">1.0배 (왜곡 없음)</span>
+              </div>
+            </div>
+
+            <!-- Insight Callout Box -->
+            <div id="insight-callout" class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 leading-relaxed">
+              기저선이 0일 때는 90점과 98점의 차이가 실제 크기 그대로 정직하게 전달됩니다.
+            </div>
+          </div>
+
+          <!-- Academic Research Quote Card -->
+          <div class="bg-pink-950/20 border border-pink-900/50 rounded-2xl p-4 space-y-2">
+            <div class="flex items-center space-x-2 text-pink-400 text-xs font-bold">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+              <span>연구 논문 실증 결과 (Pandey et al., 2015)</span>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              "막대그래프의 Y축을 잘라낸 시각화를 본 참가자들은 정보의 격차를 실제보다 극단적으로 과장되어 인식했으며, 이는 <b>독자의 중대한 오판(Major Misinterpretation)</b>을 야기한다."
+            </p>
+            <div class="text-[10px] text-slate-500 font-mono">
+              - SSRN: How Deceptive are Deceptive Visualizations?
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- INTERACTIVE STUDENT QUIZ: Pandey et al. (2015) Experiment Simulation -->
+    <section class="bg-gradient-to-br from-indigo-950/40 via-slate-900 to-pink-950/40 border border-indigo-800/60 rounded-3xl p-6 md:p-8 space-y-5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-pink-400 animate-pulse"></span>
+          <span class="text-xs font-mono font-bold text-pink-400 uppercase tracking-wider">Student Checkpoint Quiz</span>
+        </div>
+        <span class="text-[11px] text-slate-500 font-mono">Pandey et al. (2015) 인지 지각 실험 재현</span>
+      </div>
+
+      <div class="space-y-2">
+        <h3 class="text-lg font-extrabold text-white">
+          🎯 퀴즈: 만약 Y축이 80에서 시작한다면, 주황색 막대(98점)는 파란색 막대(90점)보다 눈으로 보기에 몇 배 더 커 보일까요?
+        </h3>
+        <p class="text-xs text-slate-400">직접 하나를 선택해 보세요. 참가자들의 실제 실험 응답 결과와 비교해 드립니다.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+        <button onclick="checkQuiz('a')" id="quiz-btn-a" class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 text-left transition flex items-center justify-between group">
+          <div>
+            <div class="text-xs font-bold text-slate-300 group-hover:text-white">A) 약 1.1배</div>
+            <div class="text-[10px] text-slate-500">실제 데이터 비율 수준</div>
+          </div>
+          <span class="text-xs font-mono text-slate-600">선택</span>
+        </button>
+
+        <button onclick="checkQuiz('b')" id="quiz-btn-b" class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 text-left transition flex items-center justify-between group">
+          <div>
+            <div class="text-xs font-bold text-slate-300 group-hover:text-white">B) 약 1.8배</div>
+            <div class="text-[10px] text-slate-500">중간 수준의 착시</div>
+          </div>
+          <span class="text-xs font-mono text-slate-600">선택</span>
+        </button>
+
+        <button onclick="checkQuiz('c')" id="quiz-btn-c" class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 hover:border-slate-700 text-left transition flex items-center justify-between group">
+          <div>
+            <div class="text-xs font-bold text-slate-300 group-hover:text-white">C) 약 2.5배 이상</div>
+            <div class="text-[10px] text-slate-500">극적인 격차로 인식</div>
+          </div>
+          <span class="text-xs font-mono text-slate-600">선택</span>
+        </button>
+      </div>
+
+      <!-- Quiz Feedback Box -->
+      <div id="quiz-feedback" class="hidden p-4 rounded-2xl bg-slate-950 border border-pink-900/60 text-xs space-y-2">
+      </div>
+    </section>
+
+    <!-- SECTION 2: Why Human Brain Perceives it this way (Theory) -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+      
+      <!-- Card 1: Visual Encoding of Bars -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+        <div class="w-10 h-10 rounded-2xl bg-indigo-950 text-indigo-400 border border-indigo-800 flex items-center justify-center font-bold text-lg">
+          📏
+        </div>
+        <h4 class="text-base font-bold text-white">1. 막대(Bar/Column)는 '길이와 면적'을 인코딩한다</h4>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          인간의 시각 체계(Visual Perception)는 <b>막대의 색칠된 면적과 전체 길이</b>를 수량의 절대적인 크기로 직관 지각합니다.
+          기저선을 80으로 자르면 바닥의 80만큼이 사라져, 90과 98의 차이(8점)가 막대 전체 길이의 절반 이상을 차지하게 됩니다. 뇌는 <b>"오렌지색이 파란색의 2배 이상 크다"</b>고 착각하게 됩니다.
+        </p>
+      </div>
+
+      <!-- Card 2: Responsibility of the Visualizer -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+        <div class="w-10 h-10 rounded-2xl bg-pink-950 text-pink-400 border border-pink-800 flex items-center justify-center font-bold text-lg">
+          🛡️
+        </div>
+        <h4 class="text-base font-bold text-white">2. 시각화 디자이너의 윤리적 책임</h4>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Datawrapper가 Y축 기준선을 0 이상으로 설정하지 못하도록 기능을 잠근 이유는 독자를 속이지 않기 위한 <b>데이터 저널리즘 원칙</b> 때문입니다.
+          비록 작은 차이를 극적으로 보이고 싶은 유혹이 있더라도, 막대그래프를 자르는 순간 그것은 사실 전달이 아니라 왜곡과 기만이 됩니다.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- SECTION 3: The 3 Honest Alternatives (Interactive Tabs) -->
+    <section class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 space-y-6">
+      
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 uppercase">
+            Datawrapper's Best Practice
+          </span>
+          <span class="text-xs text-slate-400 font-mono">Solutions</span>
+        </div>
+        <h3 class="text-xl font-extrabold text-white mt-1">
+          "그렇다면 미세한 차이를 정직하게 강조하고 싶을 땐 어떻게 할까?"
+        </h3>
+        <p class="text-xs text-slate-400 mt-0.5">
+          막대그래프의 축을 억지로 자르는 대신, <b>목적에 맞는 올바른 대안 차트</b>를 선택해야 합니다.
+        </p>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+        <button id="tab-btn-dot" onclick="switchAltTab('dot')" class="px-4 py-2 rounded-xl text-xs font-bold bg-pink-600 text-white transition flex items-center space-x-1.5 shadow-sm">
+          <span>⚪ 1. 점 플롯 (Dot / Range Plot)</span>
+        </button>
+        <button id="tab-btn-line" onclick="switchAltTab('line')" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+          <span>📈 2. 꺾은선 그래프 (Line Chart)</span>
+        </button>
+        <button id="tab-btn-diff" onclick="switchAltTab('diff')" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+          <span>⚖️ 3. 차이값(변화량) 막대그래프 (Difference Chart)</span>
+        </button>
+      </div>
+
+      <!-- Tab Content 1: Dot Plot -->
+      <div id="tab-content-dot" class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="md:col-span-7 bg-slate-950 border border-slate-800 rounded-2xl p-6 h-64 flex flex-col justify-center relative">
+          <div class="text-xs font-bold text-slate-300 mb-4">점 플롯: 위치(Position)로 값 비교 (Y축: 85 ~ 100)</div>
+          
+          <!-- Dot Track -->
+          <div class="relative w-full h-20 flex items-center">
+            <!-- Axis Line -->
+            <div class="absolute inset-x-4 h-1 bg-slate-800 rounded-full"></div>
+            
+            <!-- Scale Marks -->
+            <div class="absolute inset-x-4 flex justify-between text-[10px] text-slate-500 font-mono -bottom-4">
+              <span>85점</span>
+              <span>90점</span>
+              <span>95점</span>
+              <span>100점</span>
+            </div>
+
+            <!-- Point A (90 - at 33.3%) -->
+            <div class="absolute left-[33.3%] -translate-x-1/2 flex flex-col items-center">
+              <span class="text-[10px] text-sky-400 font-mono font-bold mb-1">A: 90점</span>
+              <div class="w-5 h-5 rounded-full bg-sky-500 border-2 border-white shadow-lg animate-pulse"></div>
+              <span class="text-[10px] text-slate-400 mt-1">1분기</span>
+            </div>
+
+            <!-- Distance Line -->
+            <div class="absolute left-[33.3%] right-[13.3%] h-0.5 bg-pink-500/60 border-t border-dashed border-pink-400"></div>
+
+            <!-- Point B (98 - at 86.6%) -->
+            <div class="absolute left-[86.6%] -translate-x-1/2 flex flex-col items-center">
+              <span class="text-[10px] text-pink-400 font-mono font-bold mb-1">B: 98점</span>
+              <div class="w-5 h-5 rounded-full bg-pink-500 border-2 border-white shadow-lg"></div>
+              <span class="text-[10px] text-pink-300 mt-1">2분기</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 space-y-3">
+          <h4 class="text-sm font-bold text-white">왜 점 플롯은 축을 잘라도 괜찮을까?</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            점 플롯(Dot Plot)은 <b>색칠된 바닥(면적)</b>이 존재하지 않습니다.
+            독자는 점의 '위치(Position)'를 좌표축을 보고 판단하기 때문에 0에서 시작하는 것을 기대하지 않으며, 왜곡 없이 미세한 수치 차이를 고해상도로 비교할 수 있습니다.
+          </p>
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] text-emerald-400 font-mono">
+            ✔ 권장 용도: 범주 간 미세한 값 차이 및 범위(Range) 비교
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Line Chart (Hidden by default) -->
+      <div id="tab-content-line" class="hidden grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="md:col-span-7 bg-slate-950 border border-slate-800 rounded-2xl p-6 h-64 flex flex-col justify-center relative">
+          <div class="text-xs font-bold text-slate-300 mb-2">꺾은선 그래프: 추세와 기울기 강조 (Y축: 85 ~ 100)</div>
+          
+          <svg viewBox="0 0 400 160" class="w-full h-40">
+            <!-- Grid Lines -->
+            <line x1="40" y1="20" x2="380" y2="20" stroke="#334155" stroke-dasharray="2" />
+            <text x="25" y="24" fill="#64748b" font-size="9" font-family="monospace">100</text>
+            
+            <line x1="40" y1="80" x2="380" y2="80" stroke="#334155" stroke-dasharray="2" />
+            <text x="25" y="84" fill="#64748b" font-size="9" font-family="monospace">92</text>
+
+            <line x1="40" y1="140" x2="380" y2="140" stroke="#475569" stroke-width="1.5" />
+            <text x="25" y="144" fill="#64748b" font-size="9" font-family="monospace">85</text>
+
+            <!-- Line Path -->
+            <path d="M 100 106 L 300 42" fill="none" stroke="#ec4899" stroke-width="3" stroke-linecap="round" />
+
+            <!-- Points -->
+            <circle cx="100" cy="106" r="5" fill="#38bdf8" stroke="#fff" stroke-width="2" />
+            <text x="100" y="95" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="bold" font-family="monospace">90점</text>
+            <text x="100" y="155" text-anchor="middle" fill="#94a3b8" font-size="9">1분기</text>
+
+            <circle cx="300" cy="42" r="5" fill="#ec4899" stroke="#fff" stroke-width="2" />
+            <text x="300" y="32" text-anchor="middle" fill="#ec4899" font-size="10" font-weight="bold" font-family="monospace">98점</text>
+            <text x="300" y="155" text-anchor="middle" fill="#ec4899" font-size="9">2분기</text>
+          </svg>
+        </div>
+
+        <div class="md:col-span-5 space-y-3">
+          <h4 class="text-sm font-bold text-white">시간의 흐름이 있다면 꺾은선 차트로</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            데이터가 월별, 분기별, 연도별처럼 <b>연속된 시간의 순서</b>를 가진다면 꺾은선 그래프(Line Chart)가 최적의 해답입니다.
+            독자는 선의 기울기(Slope)와 변화율에 집중하므로, Y축 기준선을 데이터 범위에 맞춰 자유롭게 확대해도 왜곡으로 간주하지 않습니다.
+          </p>
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] text-emerald-400 font-mono">
+            ✔ 권장 용도: 시계열 추세 및 등락률 시각화
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Content 3: Difference Chart (Hidden by default) -->
+      <div id="tab-content-diff" class="hidden grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <div class="md:col-span-7 bg-slate-950 border border-slate-800 rounded-2xl p-6 h-64 flex flex-col justify-center relative">
+          <div class="text-xs font-bold text-slate-300 mb-2">차이값 막대: 0을 기준으로 '변화량(+8점)'만 시각화</div>
+          
+          <div class="flex items-end justify-center h-36 border-b-2 border-slate-600 pb-2 relative px-12">
+            <!-- Zero Line Badge -->
+            <div class="absolute left-4 bottom-2 text-[10px] font-mono text-slate-400 font-bold">
+              Baseline: 0 (변화 없음)
+            </div>
+
+            <!-- Single Diff Bar -->
+            <div class="flex flex-col items-center">
+              <span class="text-sm font-mono font-bold text-pink-400 mb-1">+8점 상승 (+8.8%)</span>
+              <div class="w-24 h-24 bg-gradient-to-t from-pink-600 to-pink-400 rounded-t-xl shadow-lg flex items-center justify-center">
+                <span class="text-xs font-bold text-slate-950 font-mono">Δ +8</span>
+              </div>
+              <span class="text-xs text-slate-300 mt-2">1분기 대비 2분기 성장폭</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-5 space-y-3">
+          <h4 class="text-sm font-bold text-white">막대를 꼭 쓰고 싶다면 '차이' 자체를 그려라</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            원래의 90점과 98점을 그리지 않고, <b>두 값의 차이인 '+8점'을 데이터로 계산</b>하여 그립니다.
+            이렇게 하면 기준선이 자연스럽게 '0(변화 없음)'이 되므로, 막대그래프의 0 시작 원칙을 완벽히 지키면서도 미세한 변화를 가장 강력하게 시각화할 수 있습니다.
+          </p>
+          <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] text-emerald-400 font-mono">
+            ✔ 권장 용도: 전년 대비 증감액, 목표 대비 격차 표시
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 4: Summary Rules for Students -->
+    <section class="bg-gradient-to-r from-pink-950/40 via-slate-900 to-indigo-950/40 border border-pink-900/60 rounded-3xl p-8 space-y-6">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <span class="text-xs font-mono text-pink-400 font-bold uppercase tracking-wider">Summary & Checklist</span>
+        <h3 class="text-2xl font-black text-white">학생들을 위한 데이터 시각화 3대 황금 원칙</h3>
+        <p class="text-xs text-slate-400">데이터 시각화 과제 및 보고서 작성 시 반드시 점검해야 할 체크리스트입니다.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 space-y-2">
+          <div class="text-pink-400 font-black text-xl font-mono">01.</div>
+          <h5 class="text-sm font-bold text-white">막대와 기둥은 언제나 0부터</h5>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            막대(Bar)나 기둥(Column) 차트는 무조건 Y축 기저선이 0이어야 합니다. 예외는 없습니다.
+          </p>
+        </div>
+
+        <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 space-y-2">
+          <div class="text-sky-400 font-black text-xl font-mono">02.</div>
+          <h5 class="text-sm font-bold text-white">차이가 작으면 차트 유형을 변경</h5>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            미세한 차이를 확대하고 싶다면 축을 자르지 말고, 점 플롯(Dot Plot)이나 꺾은선 차트(Line Chart)를 선택하세요.
+          </p>
+        </div>
+
+        <div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 space-y-2">
+          <div class="text-purple-400 font-black text-xl font-mono">03.</div>
+          <h5 class="text-sm font-bold text-white">차이 자체를 계산해 시각화</h5>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            절댓값 대신 '변화량(Difference)'을 계산하여 0을 기준으로 막대를 그리면 왜곡 없이 핵심을 보여줄 수 있습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
+    <p>© 2026 Interactive Data Visualization Lab. Created for 한국공학대학교 국제미래학부 시각화 교육자료.</p>
+    <p class="text-[11px] text-slate-600 mt-1">Based on Datawrapper Academy ("Why our column and bar charts start at zero")</p>
+  </footer>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // State
+    const valA = 90;
+    const valB = 98;
+    const maxScale = 100; // top of chart
+
+    function updateChart(baseline) {
+      baseline = Number(baseline);
+      
+      // Update labels
+      document.getElementById('slider-val-text').textContent = baseline;
+      document.getElementById('chart-baseline-indicator').textContent = `기저선: Y = ${baseline}`;
+      document.getElementById('label-y-min').textContent = `${baseline} (Base)`;
+      document.getElementById('label-y-mid').textContent = Math.round((maxScale + baseline) / 2);
+
+      // Heights calculation relative to range [baseline, 100]
+      const range = maxScale - baseline;
+      const heightA = Math.max(8, ((valA - baseline) / range) * 260);
+      const heightB = Math.max(12, ((valB - baseline) / range) * 260);
+
+      // Apply animated heights
+      document.getElementById('bar-a').style.height = `${heightA}px`;
+      document.getElementById('bar-b').style.height = `${heightB}px`;
+
+      // Optical Ratio calculation
+      const visibleDiffA = Math.max(0.1, valA - baseline);
+      const visibleDiffB = Math.max(0.1, valB - baseline);
+      const opticalRatio = (visibleDiffB / visibleDiffA).toFixed(2);
+      const actualRatio = (valB / valA).toFixed(3);
+      const distortionMultiple = (opticalRatio / (valB / valA)).toFixed(1);
+
+      document.getElementById('optical-ratio-text').textContent = `${opticalRatio}배`;
+      document.getElementById('analysis-visual-ratio').textContent = `${opticalRatio}배`;
+      document.getElementById('analysis-distortion-factor').textContent = `${distortionMultiple}배 과장`;
+
+      // Warning styling based on distortion severity
+      const badge = document.getElementById('distortion-badge');
+      const callout = document.getElementById('insight-callout');
+      const ratioText = document.getElementById('optical-ratio-text');
+
+      if (baseline === 0) {
+        badge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800';
+        badge.textContent = '정직한 시각화';
+        callout.className = 'p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300 leading-relaxed';
+        callout.innerHTML = '기저선이 0일 때는 90점과 98점의 차이가 <b>실제 수치(1.089배, +8.8%)</b> 그대로 정직하게 전달됩니다.';
+        ratioText.className = 'text-lg font-black font-mono text-emerald-400';
+      } else if (baseline < 50) {
+        badge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800';
+        badge.textContent = '약한 시각적 왜곡';
+        callout.className = 'p-3 rounded-xl bg-amber-950/30 border border-amber-800/60 text-[11px] text-amber-200 leading-relaxed';
+        callout.innerHTML = `기저선이 ${baseline}으로 올라가며 차이가 실제보다 <b>${distortionMultiple}배 더 커 보이게 왜곡</b>되기 시작합니다.`;
+        ratioText.className = 'text-lg font-black font-mono text-amber-400';
+      } else {
+        badge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800 animate-pulse';
+        badge.textContent = '🚨 심각한 기만적 시각화 (Deceptive)';
+        callout.className = 'p-3 rounded-xl bg-rose-950/40 border border-rose-800 text-[11px] text-rose-200 leading-relaxed';
+        callout.innerHTML = `🚨 <b>심각한 왜곡:</b> 실제 차이는 단 8.8%에 불과한데, 눈으로는 2분기가 1분기보다 <b>${opticalRatio}배(과장도 ${distortionMultiple}배)</b>나 커 보이는 치명적 착시가 발생합니다!`;
+        ratioText.className = 'text-lg font-black font-mono text-rose-400';
+      }
+    }
+
+    function handleSliderChange(val) {
+      updateChart(val);
+      // Sync preset buttons
+      const btnZero = document.getElementById('btn-preset-zero');
+      const btnTrunc = document.getElementById('btn-preset-truncated');
+      if (Number(val) === 0) {
+        btnZero.className = 'px-3.5 py-2 rounded-xl text-xs font-bold border border-pink-500 bg-pink-950/60 text-pink-300 transition flex items-center space-x-1.5 shadow-sm';
+        btnTrunc.className = 'px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm';
+      } else if (Number(val) === 80) {
+        btnTrunc.className = 'px-3.5 py-2 rounded-xl text-xs font-bold border border-rose-500 bg-rose-950/60 text-rose-300 transition flex items-center space-x-1.5 shadow-sm';
+        btnZero.className = 'px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm';
+      } else {
+        btnZero.className = 'px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm';
+        btnTrunc.className = 'px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 hover:text-white transition flex items-center space-x-1.5 shadow-sm';
+      }
+    }
+
+    function setBaseline(val) {
+      document.getElementById('slider-baseline').value = val;
+      handleSliderChange(val);
+    }
+
+    // Tab switcher
+    function switchAltTab(tabId) {
+      const tabs = ['dot', 'line', 'diff'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`tab-content-${t}`);
+        if (t === tabId) {
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-pink-600 text-white transition flex items-center space-x-1.5 shadow-sm';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-400 hover:text-white transition flex items-center space-x-1.5';
+          content.classList.add('hidden');
+        }
+      });
+    }
+
+    // Interactive Quiz Logic
+    function checkQuiz(choice) {
+      const fb = document.getElementById('quiz-feedback');
+      fb.classList.remove('hidden');
+      
+      const btnA = document.getElementById('quiz-btn-a');
+      const btnB = document.getElementById('quiz-btn-b');
+      const btnC = document.getElementById('quiz-btn-c');
+
+      btnA.className = 'p-3.5 rounded-xl border border-slate-800 bg-slate-950 text-left text-slate-400 text-xs';
+      btnB.className = 'p-3.5 rounded-xl border border-slate-800 bg-slate-950 text-left text-slate-400 text-xs';
+      btnC.className = 'p-3.5 rounded-xl border border-slate-800 bg-slate-950 text-left text-slate-400 text-xs';
+
+      if (choice === 'a') {
+        btnA.className = 'p-3.5 rounded-xl border border-amber-500 bg-amber-950/40 text-left text-amber-200 text-xs font-bold';
+        fb.innerHTML = `
+          <div class="font-bold text-amber-300 flex items-center space-x-1.5">
+            <span>🤔 실제 데이터 계산은 맞지만, 사람의 눈은 그렇게 보지 못합니다!</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed mt-1">
+            실제 수학적 비율은 <b>98 ÷ 90 = 약 1.089배(+8.8%)</b>가 맞습니다. 하지만 Y축이 80에서 잘려 있으면 남은 높이는 (90-80)=10 vs (98-80)=18이 되어, <b>인간의 뇌는 주황색 막대가 1.8배(80% 이상) 훨씬 거대하다고 직관적으로 오판</b>합니다.
+          </p>
+        `;
+      } else if (choice === 'b') {
+        btnB.className = 'p-3.5 rounded-xl border border-emerald-500 bg-emerald-950/40 text-left text-emerald-200 text-xs font-bold';
+        fb.innerHTML = `
+          <div class="font-bold text-emerald-400 flex items-center space-x-1.5">
+            <span>🎯 정확합니다! 눈에 보이는 막대의 시각적 높이는 정확히 1.8배입니다!</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed mt-1">
+            Y축이 80부터 시작하면 막대 높이는 10px 대 18px이 되어 <b>정확히 1.8배</b>로 보입니다. 
+            그러나 실제 데이터 차이는 단 <b>8.8%</b>에 불과합니다. 즉, <b>독자는 실제보다 2배 가까운 차이로 상황을 심각하게 과장 해석</b>하게 됩니다.
+          </p>
+        `;
+      } else {
+        btnC.className = 'p-3.5 rounded-xl border border-pink-500 bg-pink-950/40 text-left text-pink-200 text-xs font-bold';
+        fb.innerHTML = `
+          <div class="font-bold text-pink-300 flex items-center space-x-1.5">
+            <span>😲 기저선을 85 이상으로 더 자르면 실제로 2.6배 이상의 극단적 왜곡이 발생합니다!</span>
+          </div>
+          <p class="text-slate-300 leading-relaxed mt-1">
+            Pandey et al.(2015) 논문에 따르면, 기저선을 높일수록 독자의 지각 왜곡은 기하급수적으로 폭증합니다. 
+            위 시뮬레이터 슬라이더를 85로 올려보세요! 막대 차이가 순식간에 <b>2.6배</b>로 둔갑하는 시각적 왜곡 효과를 확인할 수 있습니다.
+          </p>
+        `;
+      }
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateChart(0);
+    });
+  </script>
+</body>
+</html>
