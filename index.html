@@ -366,34 +366,42 @@
             </div>
           </div>
 
-          <!-- 메뉴 1-2 (사례 2): 향후 추가될 모듈 플레이스홀더 (메뉴 1에 계속 추가 가능) -->
-          <div class="bg-slate-950/60 rounded-2xl border border-dashed border-slate-800 p-6 flex flex-col justify-between space-y-5 text-slate-500">
+          <!-- 메뉴 1-2 (사례 2): 동일한 통계, 완전히 다른 그래프 - 3D 우주 별자리 산점도 (Datasaurus Dozen) -->
+          <div class="bg-slate-950 rounded-2xl border border-pink-900/70 p-6 flex flex-col justify-between space-y-5 glow-hover relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
             <div class="space-y-3.5">
               <div class="flex items-center justify-between">
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-900 text-slate-400 border border-slate-800 font-mono">
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 font-mono">
                   메뉴 1-2 (사례 2)
                 </span>
-                <span class="text-[10px] text-slate-500 font-mono">준비 중 (+ 추가 예정)</span>
+                <span class="text-[10px] text-pink-400 font-mono bg-pink-950/60 px-2 py-0.5 rounded border border-pink-800 flex items-center space-x-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-pink-400 animate-ping"></span>
+                  <span>3D 우주 별자리 & 모핑</span>
+                </span>
               </div>
 
-              <h4 class="text-base font-bold text-slate-300 leading-snug">
-                3D 파이차트의 원근 착시와 면적 왜곡 (예정)
+              <h4 class="text-lg font-extrabold text-white leading-snug">
+                동일한 통계, 완전히 다른 그래프 (Datasaurus Dozen 3D)
               </h4>
 
-              <p class="text-xs text-slate-500 leading-relaxed">
-                원형 그래프(Pie Chart)를 3차원으로 기울였을 때 앞쪽 조각이 비정상적으로 커 보이는 입체 원근 착시와 배경 명도 대비 왜곡을 다루는 인터랙티브 교육 모듈이 순차적으로 추가됩니다.
+              <p class="text-xs text-slate-400 leading-relaxed">
+                <b class="text-slate-200">Justin Matejka & George Fitzmaurice (CHI 2017) 연구:</b> 평균(54.02, 48.09), 표준편차(14.52, 24.79), 상관계수(-0.06)가 100% 동일하지만, 시각화하면 공룡·별·원·수평선·심슨역설 등 완전히 다른 형상이 되는 142개 별 입자를 3D 심우주 인터랙션과 슬라이더 모핑으로 탐색합니다.
               </p>
 
-              <div class="flex flex-wrap gap-1.5 pt-1 opacity-60">
-                <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">🥧 3D 원형 왜곡</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">🎨 색상 대비 착시</span>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">🪐 3D 심우주 & 성단 입체 뷰</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">🎚️ 10가지 형상 실시간 모핑 슬라이더</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">✨ 반짝이는 별빛 & 별자리 선</span>
+                <span class="text-[10px] px-2.5 py-1 rounded-lg bg-slate-900 text-pink-300 border border-slate-800">🦖 공룡·별·원·심슨역설 10종</span>
               </div>
             </div>
 
             <div class="pt-3 border-t border-slate-900">
-              <button disabled class="w-full py-3.5 bg-slate-900/80 text-slate-500 border border-slate-800 rounded-xl text-xs font-semibold cursor-not-allowed">
-                + 차기 교육 모듈 준비 중
-              </button>
+              <a href="viz_edu_datasaurus_3d.html" class="w-full py-3.5 bg-pink-600 hover:bg-pink-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2 shadow-lg shadow-pink-900/30">
+                <span>메뉴 1-2 교육 모듈 열기</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
             </div>
           </div>
 
