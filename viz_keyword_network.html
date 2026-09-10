@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강은영 (KEY) - 연구 키워드 & 학술 관계 네트워크</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      user-select: none;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(236, 72, 153, 0.4);
+      border-radius: 3px;
+    }
+    .glow-pink {
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen w-screen flex flex-col overflow-hidden antialiased">
+
+  <!-- Header Navigation -->
+  <header class="h-16 bg-slate-950/90 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 z-30 backdrop-blur">
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-pink-400 transition bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl mr-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        <span>포털 메인</span>
+      </a>
+      <div class="w-8 h-8 rounded-xl bg-pink-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-md">
+        KEY
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-slate-100 flex items-center space-x-2">
+          <span>강은영 (KEY) - 연구 키워드 & 학술 관계 네트워크</span>
+          <span class="text-[10px] bg-pink-950 text-pink-300 border border-pink-800 px-2 py-0.5 rounded-full font-mono">Academic Graph</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">인공지능, 디자이너 판단, 브랜드 신뢰도, KCI 논문 간의 지식 네트워크 맵</p>
+      </div>
+    </div>
+
+    <!-- Layout Switcher Bar (Stress / Eigen / Linear / Circlepack) -->
+    <div class="flex items-center space-x-2 bg-slate-900/90 border border-slate-800 p-1 rounded-2xl shadow-inner">
+      <span class="text-[11px] font-bold text-slate-400 px-2.5 font-mono">LAYOUT:</span>
+      <button onclick="switchLayout('stress')" id="layout-stress" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-pink-600 text-white shadow-md">
+        🌀 Stress
+      </button>
+      <button onclick="switchLayout('eigen')" id="layout-eigen" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+        ⚡ Eigen
+      </button>
+      <button onclick="switchLayout('linear')" id="layout-linear" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+        📏 Linear
+      </button>
+      <button onclick="switchLayout('circlepack')" id="layout-circlepack" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-800">
+        🫧 Circlepack
+      </button>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="flex items-center space-x-3 text-xs font-mono">
+      <span class="text-slate-400">노드 수: <b class="text-pink-400">26개</b></span>
+      <span class="text-slate-600">|</span>
+      <span class="text-slate-400">연결선: <b class="text-pink-400">35개</b></span>
+      <span class="text-slate-600">|</span>
+      <span class="text-slate-400">클러스터: <b class="text-pink-400">4대 연구영역</b></span>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-64 bg-slate-950 border-r border-slate-800 p-4 flex flex-col justify-between shrink-0 z-20">
+      <div class="space-y-4">
+        <div>
+          <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">연구 영역별 필터</h2>
+          <div class="space-y-1.5 text-xs">
+            <button onclick="filterCluster('all')" id="flt-all" class="w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between">
+              <span>💖 전체 연구 네트워크</span>
+              <span class="text-[10px] font-mono text-pink-400">ALL</span>
+            </button>
+            <button onclick="filterCluster('ai')" id="flt-ai" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#ec4899]"></span>
+                <span>🤖 AI & 인지디자인</span>
+              </div>
+              <span class="text-[10px] font-mono text-pink-400">8노드</span>
+            </button>
+            <button onclick="filterCluster('brand')" id="flt-brand" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#f43f5e]"></span>
+                <span>🏷️ 브랜드 & 패키지</span>
+              </div>
+              <span class="text-[10px] font-mono text-rose-400">7노드</span>
+            </button>
+            <button onclick="filterCluster('exhibit')" id="flt-exhibit" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#fb7185]"></span>
+                <span>🎨 국제전시 & 수상</span>
+              </div>
+              <span class="text-[10px] font-mono text-rose-300">6노드</span>
+            </button>
+            <button onclick="filterCluster('faculty')" id="flt-faculty" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#d946ef]"></span>
+                <span>🏫 실무 & 대학교육</span>
+              </div>
+              <span class="text-[10px] font-mono text-fuchsia-400">5노드</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl space-y-2 text-xs">
+          <h3 class="font-bold text-pink-400 flex items-center space-x-1.5 text-[11px]">
+            <span>💡 4개 레이아웃 특징</span>
+          </h3>
+          <p class="text-slate-300 leading-relaxed text-[11px]" id="layout-description">
+            <b>Stress 모드</b>: 그래프 거리 최적화를 통해 연구 키워드들이 의미론적으로 밀접한 군집을 이룹니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-[10.5px] text-slate-500 font-mono">
+        D:\○바로바로서류\01.논문 전수 분석
+      </div>
+    </aside>
+
+    <!-- CENTER CANVAS -->
+    <main class="flex-1 relative bg-slate-950 flex flex-col justify-end items-center overflow-hidden">
+      <!-- Interactive Network Canvas -->
+      <canvas id="networkCanvas" class="w-full h-full absolute inset-0 z-0"></canvas>
+
+      <!-- Center Bottom Info Pill Badge -->
+      <div class="relative z-10 flex flex-col items-center mb-4 pointer-events-auto transition-all duration-300">
+        <div id="center-info-badge" class="w-[440px] bg-slate-950/95 border border-pink-500/80 rounded-full px-5 py-2 shadow-2xl backdrop-blur-md text-center space-y-0.5 glow-pink flex flex-col items-center justify-center">
+          <div id="badge-category" class="bg-pink-950/90 border border-pink-800 text-pink-300 font-mono px-3 py-0.5 rounded-full text-[10px] font-bold">
+            🤖 AI & 인지디자인 핵심 허브
+          </div>
+          <h3 id="badge-title" class="text-xs font-black text-white tracking-tight leading-tight truncate max-w-[400px]">
+            인공지능 (AI & 디자인 판단)
+          </h3>
+          <p id="badge-connected" class="text-[9.5px] text-slate-400 font-mono truncate max-w-[400px]">
+            연결 노드 7개 · KCI 논문 3편 및 박사학위 연구 연계
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR: NODE INSPECTOR -->
+    <aside id="inspector" class="w-80 bg-slate-950 border-l border-slate-800 p-5 flex flex-col shrink-0 space-y-4 z-20 overflow-y-auto custom-scroll">
+      <div class="border-b border-slate-800 pb-3">
+        <span id="insp-badge" class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-300 border border-pink-800 uppercase mb-1.5 font-mono">
+          CORE HUB NODE
+        </span>
+        <h3 id="insp-title" class="text-lg font-black text-white leading-tight">인공지능 (AI)</h3>
+        <p id="insp-type" class="text-xs text-pink-400 font-mono mt-1 font-bold">중심 연구 키워드</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-xl space-y-2 text-xs">
+        <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">핵심 학술 개요 및 연구 연계</h4>
+        <p id="insp-desc" class="text-slate-300 leading-relaxed text-[11.5px]">
+          생성형 AI 웹서비스 환경에서 디자이너의 인지-감정 상호작용 및 포스트휴머니즘 시대 역할 변화를 규명한 핵심 연구 주제입니다.
+        </p>
+      </div>
+
+      <div class="bg-pink-950/40 border border-pink-900/60 p-3.5 rounded-xl space-y-2 text-xs">
+        <h4 class="font-bold text-pink-400 uppercase tracking-wider text-[11px]">연결된 연구 논문 & 활동</h4>
+        <div id="insp-links" class="text-slate-200 text-[11px] leading-relaxed space-y-1">
+          <div>• KCI 2024: AI 로고 웹서비스 연구</div>
+          <div>• KCI 2025: Post-Humanism 디자이너 역할</div>
+          <div>• KCI 2026: AI 로고 감정-인지 판단 연구</div>
+          <div>• 홍익대 박사: 생성형 AI 환경 디자이너 판단 과정</div>
+        </div>
+      </div>
+
+      <div class="space-y-1.5 pt-2">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider text-[10.5px]">학술 검증 데이터</h4>
+        <div id="insp-ref" class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-[10px] font-mono text-slate-400 break-all leading-tight">
+          KCI 등재지 (한국디지털정책학회, IJACT, 한국브랜드디자인학회)
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    // Cluster Configuration
+    const CLUSTERS = {
+      ai: { name: 'AI & 인지디자인', color: '#ec4899', light: '#f472b6', desc: 'Stress 모드: 인공지능과 디자이너 인지 상호작용 중심의 연구 군집입니다.' },
+      brand: { name: '브랜드 & 패키지', color: '#f43f5e', light: '#fb7185', desc: 'Stress 모드: 편의점 도시락 라벨 및 OEM 표기 불일치 실증 연구 군집입니다.' },
+      exhibit: { name: '국제전시 & 수상', color: '#fb7185', light: '#fca5a5', desc: 'Stress 모드: 일본, 대만, DDP 등 국제 초대전시 및 학술상 성과 군집입니다.' },
+      faculty: { name: '실무 & 대학교육', color: '#d946ef', light: '#e879f9', desc: 'Stress 모드: 제이키디자인연구소 실무 및 5개 대학 강의 경력 연계망입니다.' }
+    };
+
+    // 26 Research Nodes
+    const graphNodes = [
+      // Cluster 1: AI & Cognitive Design
+      { id: 'k_ai', label: '인공지능 (AI)', cluster: 'ai', size: 18, isHub: true, desc: '생성형 AI 웹서비스 환경에서 디자이너 인지-감정 상호작용 및 역할 변화를 규명한 핵심 주제입니다.' },
+      { id: 'k_cog', label: '감정-인지 상호작용', cluster: 'ai', size: 13, isHub: false, desc: 'AI 이미지 생성 시 디자이너의 직관적 감정과 분석적 인지의 피드백 루프를 분석한 개념입니다.' },
+      { id: 'k_jud', label: '디자인 판단 과정', cluster: 'ai', size: 15, isHub: true, desc: 'AI 도구 도입에 따라 디자이너가 결과물을 수용하고 수정·판단하는 휴리스틱 의사결정 프로세스입니다.' },
+      { id: 'k_gen', label: '생성형 AI 웹서비스', cluster: 'ai', size: 12, isHub: false, desc: '웹 기반 AI 로고 생성기 등 자동화 디자인 도구의 사용성 및 디자이너 적응도 평가입니다.' },
+      { id: 'k_post', label: '포스트휴머니즘', cluster: 'ai', size: 14, isHub: false, desc: '인간 중심 디자인을 넘어 기계 지능과 협업하는 차세대 디자인 패러다임 연구입니다.' },
+      { id: 'p_kci24', label: '📄 KCI 2024: AI 로고 연구', cluster: 'ai', size: 14, isHub: false, desc: 'AI 로고 웹서비스 활용에 따른 디자이너 만족도 및 디자인 퀄리티 실증 연구 (IJACT 게재).' },
+      { id: 'p_kci25', label: '📄 KCI 2025: Post-Humanism', cluster: 'ai', size: 14, isHub: false, desc: '포스트휴머니즘 시대의 인공지능과 디자이너 역할 변화 고찰 (IJCC Best Paper 수상).' },
+      { id: 'p_kci26', label: '📄 KCI 2026: AI 디자인판단', cluster: 'ai', size: 14, isHub: false, desc: 'AI 로고 생성 환경에서의 감정-인지 상호작용 디자인 판단 연구 (한국브랜드디자인학회).' },
+
+      // Cluster 2: Brand & Packaging
+      { id: 'k_brand', label: '브랜드 신뢰도', cluster: 'brand', size: 17, isHub: true, desc: '소비자 정보 불일치 및 패키지 시각요소가 브랜드 충성도 및 구매의도에 미치는 영향입니다.' },
+      { id: 'k_pkg', label: '패키지 라벨 디자인', cluster: 'brand', size: 14, isHub: false, desc: '식품 및 가공식품의 시각적 요소(컬러, 폰트, 레이아웃) 차별화 표현 기법 연구입니다.' },
+      { id: 'k_oem', label: 'OEM 표기사항 불일치', cluster: 'brand', size: 13, isHub: false, desc: '판매업체와 제조업체 정보 불일치가 소비자 구매태도에 미치는 리스크 실증 분석입니다.' },
+      { id: 'k_lunch', label: '프리미엄 편의점 도시락', cluster: 'brand', size: 14, isHub: false, desc: '1인 가구 증가에 따른 편의점 간편식 라벨 디자인 시각 평가 차이 연구입니다.' },
+      { id: 'k_ttest', label: 'SPSS T-검정 (t=14.921)', cluster: 'brand', size: 12, isHub: false, desc: '224명 설문 데이터를 기반으로 일반 vs 프리미엄 라벨 시각요소의 통계적 유의성 검증입니다.' },
+      { id: 'p_kci20', label: '📄 KCI 2020: 도시락 라벨연구', cluster: 'brand', size: 15, isHub: false, desc: '프리미엄 편의점 도시락 라벨디자인이 구매의도에 미치는 영향 연구 (한국디지털정책학회).' },
+      { id: 'p_msc', label: '🎓 석사학위 논문 (OEM)', cluster: 'brand', size: 15, isHub: false, desc: '홍익대학교 대학원 석사학위논문 (OEM 판매업체와 제조업체 불일치 연구, 평점 4.28).' },
+
+      // Cluster 3: International Exhibitions & Recognition
+      { id: 'k_vidak', label: 'VIDAK 국제초대전', cluster: 'exhibit', size: 15, isHub: true, desc: '사단법인 한국시각정보디자인협회 주관 국내외 권위 있는 정기 국제초대전입니다.' },
+      { id: 'k_osaka', label: '🎨 오사카 한글 포스터전', cluster: 'exhibit', size: 12, isHub: false, desc: '2020 일본 오사카 미리내 갤러리 HANGEUL Poster Exhibition 작품 "Ah" 출품.' },
+      { id: 'k_ddp_ex', label: '🎨 DDP D-SPACE 초대전', cluster: 'exhibit', size: 12, isHub: false, desc: '2022 동대문디자인플라자 VIDAK D-SPACE 초대전 작품 "일상" 출품.' },
+      { id: 'k_gwangju', label: '🎨 광주디자인비엔날레', cluster: 'exhibit', size: 13, isHub: false, desc: '2023 광주디자인비엔날레 국제포스터 초대전시회 출품 및 아카이빙.' },
+      { id: 'k_okinawa', label: '🎨 오키나와 초대전 (일본)', cluster: 'exhibit', size: 12, isHub: false, desc: '2025 일본 오키나와 류큐대학 VIDAK K-Identity 국제초대전 포스터 출품.' },
+      { id: 'k_award', label: '🏆 IJCC 최우수 논문상', cluster: 'exhibit', size: 14, isHub: false, desc: 'IJCC & ICAI 2025 국제컨퍼런스 Post-Humanism AI 연구 Best Paper Award 수상.' },
+
+      // Cluster 4: Industry Practice & University Faculty
+      { id: 'k_jkey', label: '제이키디자인연구소', cluster: 'faculty', size: 16, isHub: true, desc: '7년간 임원 실장으로 지자체 관광 B.I 및 기업 MCN BX 브랜딩 총괄 디렉팅.' },
+      { id: 'k_gov', label: '지자체 B.I (남원·강릉)', cluster: 'faculty', size: 13, isHub: false, desc: '남원시 관광브랜드(지금여행, 힛잇남원), 강릉관광개발공사 CI 통합 디자인 개발.' },
+      { id: 'k_univ', label: '대학 외래/겸임교수', cluster: 'faculty', size: 15, isHub: true, desc: '숭의여대, 경복대, 충북대, 청운대 등에서 시각디자인 및 브랜드 패키지 강의.' },
+      { id: 'k_kpu', label: '🏫 한국공학대학교', cluster: 'faculty', size: 14, isHub: false, desc: '국제미래학부 겸임교수, 데이터 시각화 및 UX/UI 디자인 실무 교육.' },
+      { id: 'k_judge', label: '⚖️ 디자인전람회 심사위원', cluster: 'faculty', size: 13, isHub: false, desc: '대한민국디자인전람회 1·2차 심사위원 및 우수디자인(GD) 상품선정 위원 위촉.' }
+    ];
+
+    // 35 Graph Edges / Connections
+    const graphLinks = [
+      // AI Cluster Interconnections
+      { source: 'k_ai', target: 'k_jud', weight: 3 },
+      { source: 'k_ai', target: 'k_cog', weight: 2.5 },
+      { source: 'k_ai', target: 'k_gen', weight: 2.5 },
+      { source: 'k_ai', target: 'k_post', weight: 2.5 },
+      { source: 'k_ai', target: 'p_kci24', weight: 2 },
+      { source: 'k_ai', target: 'p_kci25', weight: 2 },
+      { source: 'k_ai', target: 'p_kci26', weight: 2.5 },
+      { source: 'k_jud', target: 'k_cog', weight: 2 },
+      { source: 'k_jud', target: 'p_kci26', weight: 2 },
+      { source: 'k_gen', target: 'p_kci24', weight: 2 },
+      { source: 'k_post', target: 'p_kci25', weight: 2 },
+      { source: 'p_kci25', target: 'k_award', weight: 2.5 },
+
+      // Brand & Packaging Interconnections
+      { source: 'k_brand', target: 'k_pkg', weight: 2.5 },
+      { source: 'k_brand', target: 'k_oem', weight: 2.5 },
+      { source: 'k_brand', target: 'p_msc', weight: 3 },
+      { source: 'k_pkg', target: 'k_lunch', weight: 2.5 },
+      { source: 'k_lunch', target: 'p_kci20', weight: 3 },
+      { source: 'p_kci20', target: 'k_ttest', weight: 2 },
+      { source: 'p_kci20', target: 'k_brand', weight: 1.5 },
+      { source: 'p_msc', target: 'k_oem', weight: 2 },
+
+      // Bridges between AI & Brand & Industry
+      { source: 'k_ai', target: 'k_brand', weight: 2 },
+      { source: 'k_pkg', target: 'k_jkey', weight: 2 },
+      { source: 'k_brand', target: 'k_jkey', weight: 2.5 },
+      { source: 'k_jkey', target: 'k_gov', weight: 2 },
+      { source: 'k_jkey', target: 'k_univ', weight: 2.5 },
+      { source: 'k_univ', target: 'k_kpu', weight: 2.5 },
+      { source: 'k_univ', target: 'k_judge', weight: 2 },
+      { source: 'k_jkey', target: 'k_judge', weight: 1.5 },
+
+      // Exhibition Interconnections
+      { source: 'k_vidak', target: 'k_osaka', weight: 2 },
+      { source: 'k_vidak', target: 'k_ddp_ex', weight: 2 },
+      { source: 'k_vidak', target: 'k_gwangju', weight: 2 },
+      { source: 'k_vidak', target: 'k_okinawa', weight: 2 },
+      { source: 'k_vidak', target: 'k_pkg', weight: 1.5 },
+      { source: 'k_gwangju', target: 'k_brand', weight: 1.5 },
+      { source: 'k_award', target: 'k_ai', weight: 2 }
+    ];
+
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = canvas.clientWidth;
+    let height = canvas.height = canvas.clientHeight;
+
+    let currentLayout = 'stress';
+    let currentFilter = 'all';
+    let hoveredNode = null;
+    let selectedNode = graphNodes[0];
+
+    // Compute node targets for 4 layouts
+    function computeLayoutTargets() {
+      width = canvas.width = canvas.clientWidth;
+      height = canvas.height = canvas.clientHeight;
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // 1. Stress Layout (Force-directed / graph-distance Majorization)
+      const stressPositions = {
+        'k_ai': { x: cx - 120, y: cy - 90 },
+        'k_cog': { x: cx - 210, y: cy - 140 },
+        'k_jud': { x: cx - 50, y: cy - 170 },
+        'k_gen': { x: cx - 230, y: cy - 50 },
+        'k_post': { x: cx - 110, y: cy + 10 },
+        'p_kci24': { x: cx - 270, y: cy + 10 },
+        'p_kci25': { x: cx - 60, y: cy + 90 },
+        'p_kci26': { x: cx + 10, y: cy - 110 },
+        'k_award': { x: cx - 10, y: cy + 180 },
+
+        'k_brand': { x: cx + 130, y: cy - 50 },
+        'k_pkg': { x: cx + 160, y: cy + 40 },
+        'k_oem': { x: cx + 240, y: cy - 120 },
+        'k_lunch': { x: cx + 250, y: cy + 10 },
+        'k_ttest': { x: cx + 330, y: cy + 70 },
+        'p_kci20': { x: cx + 270, y: cy + 120 },
+        'p_msc': { x: cx + 180, y: cy - 170 },
+
+        'k_vidak': { x: cx - 130, y: cy + 180 },
+        'k_osaka': { x: cx - 230, y: cy + 190 },
+        'k_ddp_ex': { x: cx - 190, y: cy + 130 },
+        'k_gwangju': { x: cx - 70, y: cy + 240 },
+        'k_okinawa': { x: cx - 170, y: cy + 245 },
+
+        'k_jkey': { x: cx + 50, y: cy + 120 },
+        'k_gov': { x: cx + 140, y: cy + 190 },
+        'k_univ': { x: cx + 30, y: cy + 220 },
+        'k_kpu': { x: cx + 80, y: cy + 280 },
+        'k_judge': { x: cx - 20, y: cy + 275 }
+      };
+
+      // 2. Eigen Layout (Spectral Projection / Hub Centrality)
+      const eigenPositions = {};
+      const nodeCount = graphNodes.length;
+      graphNodes.forEach((node, idx) => {
+        // Degree / centrality radius
+        const degree = graphLinks.filter(l => l.source === node.id || l.target === node.id).length;
+        const eigenRadius = 260 - (degree * 24);
+        const theta = (idx / nodeCount) * 2 * Math.PI;
+        eigenPositions[node.id] = {
+          x: cx + Math.cos(theta) * eigenRadius,
+          y: cy + Math.sin(theta) * (eigenRadius * 0.82)
+        };
+      });
+
+      // 3. Linear Layout (Linear Arc Diagram Axis)
+      const linearPositions = {};
+      const padding = 100;
+      const startX = padding + 20;
+      const endX = width - padding - 20;
+      const stepX = (endX - startX) / (nodeCount - 1);
+      const axisY = cy + 110;
+      graphNodes.forEach((node, idx) => {
+        linearPositions[node.id] = {
+          x: startX + idx * stepX,
+          y: axisY
+        };
+      });
+
+      // 4. Circlepack Layout (4 Domain Clusters)
+      const circlepackPositions = {};
+      const clusterCenters = {
+        ai: { x: cx - 180, y: cy - 70, r: 140 },
+        brand: { x: cx + 180, y: cy - 70, r: 130 },
+        exhibit: { x: cx - 170, y: cy + 150, r: 120 },
+        faculty: { x: cx + 160, y: cy + 150, r: 120 }
+      };
+
+      const clusterCounters = { ai: 0, brand: 0, exhibit: 0, faculty: 0 };
+      const clusterTotals = { ai: 8, brand: 7, exhibit: 6, faculty: 5 };
+
+      graphNodes.forEach(node => {
+        const c = clusterCenters[node.cluster];
+        const idx = clusterCounters[node.cluster]++;
+        const total = clusterTotals[node.cluster];
+        
+        if (node.isHub) {
+          circlepackPositions[node.id] = { x: c.x, y: c.y };
+        } else {
+          const angle = (idx / (total - 1)) * 2 * Math.PI;
+          const dist = c.r * 0.65;
+          circlepackPositions[node.id] = {
+            x: c.x + Math.cos(angle) * dist,
+            y: c.y + Math.sin(angle) * dist
+          };
+        }
+      });
+
+      // Assign target coordinates to nodes
+      graphNodes.forEach(node => {
+        if (node.x === undefined) {
+          const init = stressPositions[node.id] || { x: cx, y: cy };
+          node.x = init.x;
+          node.y = init.y;
+        }
+
+        if (currentLayout === 'stress') {
+          node.targetX = stressPositions[node.id].x;
+          node.targetY = stressPositions[node.id].y;
+        } else if (currentLayout === 'eigen') {
+          node.targetX = eigenPositions[node.id].x;
+          node.targetY = eigenPositions[node.id].y;
+        } else if (currentLayout === 'linear') {
+          node.targetX = linearPositions[node.id].x;
+          node.targetY = linearPositions[node.id].y;
+        } else if (currentLayout === 'circlepack') {
+          node.targetX = circlepackPositions[node.id].x;
+          node.targetY = circlepackPositions[node.id].y;
+        }
+      });
+    }
+
+    function isNodeVisible(node) {
+      if (currentFilter === 'all') return true;
+      return node.cluster === currentFilter;
+    }
+
+    // Canvas Render Loop with Smooth Layout Tweening
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+      const timestamp = performance.now() * 0.001;
+
+      // Tween node positions toward target
+      graphNodes.forEach(node => {
+        node.x += (node.targetX - node.x) * 0.09;
+        node.y += (node.targetY - node.y) * 0.09;
+      });
+
+      // Draw Cluster Boundaries in Circlepack mode
+      if (currentLayout === 'circlepack') {
+        const cx = width / 2;
+        const cy = height / 2;
+        const clusterCenters = [
+          { name: '🤖 AI & 인지디자인', x: cx - 180, y: cy - 70, r: 155, color: 'rgba(236, 72, 153, 0.12)' },
+          { name: '🏷️ 브랜드 & 패키지', x: cx + 180, y: cy - 70, r: 145, color: 'rgba(244, 63, 94, 0.12)' },
+          { name: '🎨 국제전시 & 수상', x: cx - 170, y: cy + 150, r: 135, color: 'rgba(251, 113, 133, 0.12)' },
+          { name: '🏫 실무 & 대학교육', x: cx + 160, y: cy + 150, r: 135, color: 'rgba(217, 70, 239, 0.12)' }
+        ];
+
+        clusterCenters.forEach(c => {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+          ctx.fillStyle = c.color;
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+          ctx.lineWidth = 1.2;
+          ctx.setLineDash([4, 4]);
+          ctx.stroke();
+
+          ctx.font = 'bold 11px sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          ctx.textAlign = 'center';
+          ctx.fillText(c.name, c.x, c.y - c.r - 8);
+          ctx.restore();
+        });
+      }
+
+      // Draw Links
+      graphLinks.forEach(link => {
+        const s = graphNodes.find(n => n.id === link.source);
+        const t = graphNodes.find(n => n.id === link.target);
+        if (!s || !t) return;
+        if (!isNodeVisible(s) && !isNodeVisible(t)) return;
+
+        const isHighlighted = (hoveredNode && (hoveredNode.id === s.id || hoveredNode.id === t.id)) ||
+                              (selectedNode && (selectedNode.id === s.id || selectedNode.id === t.id));
+
+        ctx.save();
+        ctx.beginPath();
+
+        if (currentLayout === 'linear') {
+          // Curved Arc above axis in Linear Mode
+          const midX = (s.x + t.x) / 2;
+          const arcHeight = Math.abs(t.x - s.x) * 0.45;
+          ctx.moveTo(s.x, s.y);
+          ctx.quadraticCurveTo(midX, s.y - arcHeight, t.x, t.y);
+        } else {
+          // Direct Line in Stress / Eigen / Circlepack
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(t.x, t.y);
+        }
+
+        if (isHighlighted) {
+          ctx.strokeStyle = '#ec4899';
+          ctx.lineWidth = 2.4;
+          ctx.shadowColor = '#ec4899';
+          ctx.shadowBlur = 10;
+        } else {
+          ctx.strokeStyle = 'rgba(100, 116, 139, 0.22)';
+          ctx.lineWidth = 1;
+        }
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // Draw Nodes
+      graphNodes.forEach(node => {
+        if (!isNodeVisible(node)) return;
+
+        const isSelected = selectedNode && selectedNode.id === node.id;
+        const isHovered = hoveredNode && hoveredNode.id === node.id;
+        const isHighlight = isSelected || isHovered;
+        const clusterCfg = CLUSTERS[node.cluster];
+
+        ctx.save();
+
+        // Node Glow Wave on Hover
+        if (isHighlight) {
+          const pulse = (timestamp * 4) % (Math.PI * 2);
+          const pr = node.size + 6 + Math.sin(pulse) * 3;
+
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, pr + 4, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(236, 72, 153, 0.6)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, pr, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(236, 72, 153, 0.35)';
+          ctx.fill();
+        }
+
+        // Solid Node Dot
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+        ctx.fillStyle = isHighlight ? '#ffffff' : clusterCfg.color;
+        ctx.fill();
+        ctx.lineWidth = node.isHub ? 2.8 : 1.8;
+        ctx.strokeStyle = isHighlight ? '#ec4899' : '#0f172a';
+        ctx.stroke();
+
+        // Label on Canvas
+        ctx.font = `${isHighlight ? 'bold' : (node.isHub ? 'bold' : 'normal')} 10.5px sans-serif`;
+        ctx.fillStyle = isHighlight ? '#ffffff' : (node.isHub ? '#f1f5f9' : '#94a3b8');
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(node.label, node.x, node.y + node.size + 11);
+
+        ctx.restore();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    // Update Bottom Center Info Pill & Right Sidebar Inspector
+    function updateInspector(node) {
+      if (!node) return;
+      const clusterCfg = CLUSTERS[node.cluster];
+
+      // Update Center Badge
+      document.getElementById('badge-category').innerText = `${clusterCfg.name} ${node.isHub ? '· 핵심 허브' : '· 연구 노드'}`;
+      document.getElementById('badge-title').innerText = node.label;
+      
+      const connectedEdges = graphLinks.filter(l => l.source === node.id || l.target === node.id);
+      document.getElementById('badge-connected').innerText = `연결 관계 ${connectedEdges.length}개 · ${clusterCfg.name} 영역`;
+
+      // Update Right Sidebar
+      document.getElementById('insp-badge').innerText = node.isHub ? 'CORE HUB NODE' : 'RESEARCH NODE';
+      document.getElementById('insp-title').innerText = node.label;
+      document.getElementById('insp-type').innerText = `${clusterCfg.name} (${node.isHub ? '핵심 주제' : '세부 연구'})`;
+      document.getElementById('insp-desc').innerText = node.desc;
+
+      // Connected Nodes List
+      const connectedHTML = connectedEdges.map(edge => {
+        const otherId = edge.source === node.id ? edge.target : edge.source;
+        const otherNode = graphNodes.find(n => n.id === otherId);
+        return `<div>• ${otherNode ? otherNode.label : otherId}</div>`;
+      }).join('');
+      document.getElementById('insp-links').innerHTML = connectedHTML || '<div>• 연결된 세부 항목 없음</div>';
+    }
+
+    // Switch Layout Mode
+    function switchLayout(layout) {
+      currentLayout = layout;
+      document.querySelectorAll('#layout-stress, #layout-eigen, #layout-linear, #layout-circlepack').forEach(btn => {
+        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white hover:bg-slate-800';
+      });
+      const activeBtn = document.getElementById(`layout-${layout}`);
+      if (activeBtn) {
+        activeBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition bg-pink-600 text-white shadow-md';
+      }
+
+      const descMap = {
+        stress: '<b>Stress 모드</b>: 그래프 거리 최적화를 통해 연구 키워드들이 의미론적으로 밀접한 구름형 군집을 형성합니다.',
+        eigen: '<b>Eigen 모드</b>: 고유벡터 중심성 알고리즘을 적용하여 가장 영향력 높은 핵심 연구 허브가 중앙에 정렬됩니다.',
+        linear: '<b>Linear 모드</b>: 연구 키워드를 수평 1차원 축에 정렬하고, 상단 곡선 아크로 학술 연계 관계를 시각화합니다.',
+        circlepack: '<b>Circlepack 모드</b>: 4대 핵심 연구 영역(AI, 브랜드, 전시, 교육)별로 원형 버블 경계를 형성하여 계층화합니다.'
+      };
+      document.getElementById('layout-description').innerHTML = descMap[layout];
+
+      computeLayoutTargets();
+    }
+
+    // Filter by Cluster
+    function filterCluster(cluster) {
+      currentFilter = cluster;
+      document.querySelectorAll('#flt-all, #flt-ai, #flt-brand, #flt-exhibit, #flt-faculty').forEach(btn => {
+        btn.className = 'w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
+      });
+      const activeBtn = document.getElementById(`flt-${cluster}`);
+      if (activeBtn) {
+        activeBtn.className = 'w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
+      }
+    }
+
+    // Mouse Interactions
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mX = e.clientX - rect.left;
+      const mY = e.clientY - rect.top;
+
+      let found = null;
+      for (let node of graphNodes) {
+        if (!isNodeVisible(node)) continue;
+        const dx = mX - node.x;
+        const dy = mY - node.y;
+        if (dx * dx + dy * dy <= (node.size + 8) * (node.size + 8)) {
+          found = node; break;
+        }
+      }
+
+      if (found !== hoveredNode) {
+        hoveredNode = found;
+        if (found) updateInspector(found);
+      }
+    });
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mX = e.clientX - rect.left;
+      const mY = e.clientY - rect.top;
+
+      for (let node of graphNodes) {
+        if (!isNodeVisible(node)) continue;
+        const dx = mX - node.x;
+        const dy = mY - node.y;
+        if (dx * dx + dy * dy <= (node.size + 8) * (node.size + 8)) {
+          selectedNode = node;
+          updateInspector(node);
+          break;
+        }
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      computeLayoutTargets();
+    });
+
+    computeLayoutTargets();
+    updateInspector(selectedNode);
+    render();
+  </script>
+</body>
+</html>
