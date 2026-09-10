@@ -48,8 +48,8 @@
     </div>
 
     <!-- Quick Stats -->
-    <div class="flex items-center space-x-4 text-xs font-mono">
-      <span class="text-slate-400">궤도 수: <b class="text-pink-400">27개 (2000~2026)</b></span>
+    <div class="flex items-center space-x-3 text-xs font-mono">
+      <span class="text-slate-400">대학 강의: <b class="text-fuchsia-400">5개 대</b></span>
       <span class="text-slate-600">|</span>
       <span class="text-slate-400">KCI 등재: <b class="text-pink-400">4편</b></span>
       <span class="text-slate-600">|</span>
@@ -79,6 +79,13 @@
                 <span>🏢 기업 실무 (Hot Pink)</span>
               </div>
               <span class="text-[10px] font-mono text-pink-400">15년+</span>
+            </button>
+            <button onclick="setCategoryFilter('teaching')" id="btn-teaching" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#d946ef] shadow-xs"></span>
+                <span>🏫 대학 강의 (Fuchsia)</span>
+              </div>
+              <span class="text-[10px] font-mono text-fuchsia-400">5개 대</span>
             </button>
             <button onclick="setCategoryFilter('research')" id="btn-research" class="w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between">
               <div class="flex items-center space-x-2">
@@ -203,6 +210,7 @@
   <script>
     const CATEGORY_COLORS = {
       career: { main: '#ec4899', light: '#f472b6', name: 'Hot Pink (기업 실무)' },
+      teaching: { main: '#d946ef', light: '#e879f9', name: 'Fuchsia (대학 강의)' },
       research: { main: '#f43f5e', light: '#fb7185', name: 'Rose Pink (학력/KCI)' },
       exhibit: { main: '#fb7185', light: '#fca5a5', name: 'Coral Pink (국제 전시)' },
       judge: { main: '#64748b', light: '#94a3b8', name: 'Slate Gray (심사위원)' },
@@ -217,6 +225,13 @@
       { id: 'c1', year: 2018, month: 1, yearLabel: '2018.01~2024.12', label: '제이키디자인연구소 (실장 7년)', category: 'career', date: '2018.01 ~ 2024.12', org: '제이키디자인연구소', desc: '남원시 관광 B.I 및 커뮤니케이션 디자인(지금여행, 힛잇남원), 드림플라이 MCN BI, 강릉관광개발공사 CI BX 총괄.', status: '브랜딩 리디자인 내부 지지율 90% 이상 획득' },
       { id: 'c2', year: 2021, month: 6, yearLabel: '2021.06~2022.05', label: '고트레 (팀장 1년)', category: 'career', date: '2021.06 ~ 2022.05', org: '고트레', desc: '자사몰 리뉴얼, 퍼포먼스 광고 운영, 롯데백화점 라이브 방송 기획 출연.', status: '온라인 매출 2.5배 신장 및 광고비 40% 절감' },
       { id: 'c3', year: 2025, month: 1, yearLabel: '2025.01~2025.12', label: '상상공장 (과장 1년)', category: 'career', date: '2025.01 ~ 2025.12', org: '상상공장', desc: '여수 물축제, 합정 먹자골목 HAP PLACE 등 지역 콘텐츠 행사 홍보 및 디지털 광고.', status: '디지털 콘텐츠 및 이벤트 개발' },
+
+      // Academic Teaching & Faculty Experience (대학 강의 및 겸임교수 경력)
+      { id: 't1', year: 2022, month: 3, yearLabel: '2022.03~2023.12', label: '🏫 숭의여대 시각디자인과 강사 (2년)', category: 'teaching', date: '2022.03 ~ 2023.12', org: '숭의여자대학교', desc: '시각디자인과 타이포그래피, 브랜드디자인, 타이틀 그래픽 실습 전공 강의.', status: '교육경력증명서 증빙 완료' },
+      { id: 't2', year: 2024, month: 3, yearLabel: '2024.03~현재', label: '🏫 경복대학교 시각디자인과 겸임교수 (3년)', category: 'teaching', date: '2024.03 ~ 2026.02', org: '경복대학교', desc: '디자인학부 시각디자인 전공 겸임교수, 브랜드디자인 및 패키지디자인 실습 강의.', status: '강의경력증명서 증빙 완료' },
+      { id: 't3', year: 2025, month: 3, yearLabel: '2025.03~현재', label: '🏫 충북대학교 디자인학과 강사 (2년)', category: 'teaching', date: '2025.03 ~ 2026.02', org: '충북대학교', desc: '조형예술학부/디자인학과 브랜드디자인 전공 강의.', status: '경력과목증명서 증빙 완료' },
+      { id: 't4', year: 2025, month: 9, yearLabel: '2025.09~현재', label: '🏫 청운대학교 디자인학부 강사 (2년)', category: 'teaching', date: '2025.09 ~ 2026.02', org: '청운대학교', desc: '디자인학부 콘텐츠디자인 및 시각디자인 실습 전공 강의.', status: '강의경력서 증빙 완료' },
+      { id: 't5', year: 2026, month: 3, yearLabel: '2026.03~현재', label: '🏫 한국공학대학교 겸임교수', category: 'teaching', date: '2026.03 ~ 현재', org: '한국공학대학교', desc: '국제미래학부 인포메이션 데이터 시각화 및 UX/UI 디자인 강의.', status: '겸임교수 임용 증빙' },
 
       // Education & KCI Papers
       { id: 'd2', year: 2017, month: 2, yearLabel: '2017.02', label: '홍익대 석사 졸업 (GPA 4.28)', category: 'research', date: '2015.02 ~ 2017.02', org: '홍익대학교 대학원', desc: 'OEM 표기사항 불일치가 브랜드 신뢰도 및 구매의도에 미치는 영향 연구.', status: '석사학위기 PDF 증빙 완료' },
@@ -491,12 +506,12 @@
 
     function setCategoryFilter(filter) {
       currentCategoryFilter = filter;
-      document.querySelectorAll('#btn-all, #btn-career, #btn-research, #btn-exhibit, #btn-judge, #btn-awards').forEach(b => {
-        b.className = 'w-full text-left px-3.5 py-2.5 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
+      document.querySelectorAll('#btn-all, #btn-career, #btn-teaching, #btn-research, #btn-exhibit, #btn-judge, #btn-awards').forEach(b => {
+        b.className = 'w-full text-left px-3 py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 hover:text-white transition flex items-center justify-between';
       });
       const activeBtn = document.getElementById(`btn-${filter}`);
       if (activeBtn) {
-        activeBtn.className = 'w-full text-left px-3.5 py-2.5 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
+        activeBtn.className = 'w-full text-left px-3 py-2 rounded-xl border border-pink-500 bg-pink-950/40 text-pink-300 font-bold transition flex items-center justify-between';
       }
     }
 
